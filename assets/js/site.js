@@ -652,6 +652,17 @@
             it.stats.map(function (s) { return '<li><span>' + esc(s.l) + '</span><b>' + esc(s.v) + '</b></li>'; }).join("") +
             '<li><span>Effort to ship</span><b>' + esc(it.effortLabel) + '</b></li>' +
           '</ul></div>' +
+          /* Source repo. Private repos render as plain text, because a link
+             to a private repo is a 404 for everyone but me. Flip `public`
+             to true in data.js and it becomes a real link. */
+          (it.repo ?
+            '<div class="side-box"><h4>Source</h4><ul class="side-links">' +
+              '<li>' + (it.repo.public
+                ? '<a href="' + esc(it.repo.url) + '" target="_blank" rel="noopener"><span class="k">GitHub</span>' + esc(it.repo.name) + '</a>'
+                : '<span class="side-flat"><span class="k">GitHub · private repo</span>' + esc(it.repo.name) + '</span>') +
+              '</li>' +
+              (it.repo.note ? '<li><span class="side-flat"><span class="k">Note</span>' + esc(it.repo.note) + '</span></li>' : '') +
+            '</ul></div>' : '') +
           '<div class="side-box"><h4>Tagged</h4><ul class="tags" style="margin:0">' +
             it.tags.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") +
           '</ul></div>' +

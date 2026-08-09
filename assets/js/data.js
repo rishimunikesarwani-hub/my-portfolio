@@ -69,6 +69,16 @@ window.PORTFOLIO = {
       lens: "Where does this system earn autonomy, and where does it hand control back?"
     },
     {
+      slug: "builds",
+      name: "Tools I've Built",
+      blurb:
+        "Small pieces of working software I built for my own use, then kept. Not demos and not " +
+        "tutorials — each one exists because I wanted the thing to exist and nothing off the shelf " +
+        "did it the way I wanted. The interesting part of each is the same: what got deliberately " +
+        "left out, and what that cost.",
+      lens: "What did I refuse to build, and what did refusing it buy me?"
+    },
+    {
       slug: "advisory",
       name: "Advisory",
       blurb:
@@ -948,7 +958,309 @@ window.PORTFOLIO = {
       related: ["job-qualifier", "investor-agent", "swiggy-instamart"]
     },
 
-    /* ============ 9. AAYO APP ============ */
+    /* ============ 9. WHAT IS HOT? ============ */
+    {
+      id: "what-is-hot",
+      title: "What Is Hot? — A Newspaper With No Buttons",
+      org: "Built on webcmd",
+      category: "builds",
+      industry: "Agent Infrastructure · Scraping · Editorial AI",
+      year: "2026",
+      status: "Shipped",
+      effortDays: 4,
+      effortLabel: "Shipped, re-reports every 20 minutes",
+      tagline: "The cheapest agent call is the one you designed out.",
+      summary:
+        "A daily broadsheet of what is actually hot across 16 tech sources, scraped without a model, " +
+        "sub-edited by a single Claude call, and rendered as print — no buttons, no spinners, no chat " +
+        "box. The design question was never how to make the AI better. It was how little AI the thing " +
+        "needed.",
+      tags: ["Agent infrastructure", "Cost measurement", "Schema-enforced grounding", "Scraping", "Shipped"],
+      stats: [
+        { v: "1",    l: "model call per edition" },
+        { v: "0",    l: "tokens to fetch all 16 sources" },
+        { v: "$0.47", l: "to set one whole edition" }
+      ],
+      repo: {
+        name: "rishimunikesarwani-hub/what-is-hot",
+        url: "https://github.com/rishimunikesarwani-hub/what-is-hot",
+        public: false,
+        note: "Working folder is still called ironman on disk"
+      },
+      gate: {
+        rule: "Can this sentence be traced to something the app fetched itself?",
+        pass: "It prints — headlines copied byte-for-byte from the publisher",
+        fail: "It cannot be written at all; the model's output schema has no title field"
+      },
+      sections: [
+        {
+          h: "What it actually is",
+          type: "prose",
+          body: [
+            "Sixteen tech sources — Hacker News, GitHub Trending, Product Hunt, Lobsters, dev.to, Stack Overflow, TechCrunch, Reddit, X, four RSS feeds and more — read every twenty minutes, ranked against each other, and laid out as a broadsheet front page.",
+            "There is nothing to click. No refresh button, no filter chips, no loading spinner, no chat strip. The front room is print: it shows you a finished edition and nothing else. All the machinery — retries, caches, ranking, the sub-editor — happens in the back room and never surfaces.",
+            "That constraint is the product. A page with controls is a tool you have to operate. A page with none is something you read."
+          ]
+        },
+        {
+          h: "Three rooms, and what each one is forbidden to do",
+          type: "table",
+          head: ["Room", "What it does", "What it is not allowed to do"],
+          body: [
+            ["The back room — ingest.js", "Spawns webcmd adapters and RSS parsers straight from Node. Retries, 15-minute cache, ranking, dedupe.", "Never calls a model. Not once, for any of the 16 sources."],
+            ["The editor — edit-pass.js", "One Claude call. Writes the masthead headline, assigns sections, writes summaries and a 'why it matters' line.", "Cannot touch a headline. Its output schema contains no title field."],
+            ["The paper — public/", "Renders the finished edition from digest.json.", "No controls, no logs, no machinery. It reads the file and stops."]
+          ]
+        },
+        {
+          h: "Why the model cannot rewrite a headline",
+          type: "prose",
+          body: [
+            "Every printed headline is the publisher's own words, copied verbatim. That is not enforced by asking the model nicely in a prompt — it is enforced by the shape of what the model is allowed to return. The output schema has no <code>title</code> field. There is no slot to write a headline into, so there is no headline to hallucinate.",
+            "This is the same discipline as the anti-fabrication guardrail in the Job Qualifier, applied one layer lower. A prompt instruction is a request. A schema with the field removed is a wall.",
+            "<code>node app/verify-edition.js</code> then checks all 45 printed titles against the raw source caches byte-for-byte. On the verified 8 August run: <strong>all checks passed, 15 of 16 sources live, 0 failed</strong>."
+          ]
+        },
+        {
+          h: "The token experiment whose result I did not want",
+          type: "table",
+          head: ["Arm", "What it was", "Total tokens", "Cost"],
+          body: [
+            ["A", "No webcmd — generic WebFetch/WebSearch, the agent finds the page itself", "127,546", "$0.78"],
+            ["B", "webcmd CLI plus its 7 agent skills — the agent works out the command", "885,518", "$6.63"],
+            ["C", "Script-fed — data already on disk, the model only reads the cache file", "155,887", "$1.57"],
+            ["D", "What this app does — Node spawns the adapter, no model at any point", "0", "$0.00"]
+          ]
+        },
+        {
+          h: "What that table cost me to publish",
+          type: "prose",
+          body: [
+            "The tool this app is built on claims that its adapters cut browser-agent token spend by up to ~90%. On my task, adding its skills cost <strong>8.5× more</strong>, not less — $6.63 against $0.78. Tokens went up 594%.",
+            "The reason is in the cache-write column. Arm B wrote 648,854 tokens of cache just loading skill files and an adapter registry describing 119 commands into context, before fetching a single story. Then it amortised all of that over one question.",
+            "<strong>This does not refute the vendor's claim</strong>, and the write-up says so. Their number is about browser agents re-discovering a site by screenshot and DOM dump on every run. One query against Hacker News is the friendliest possible case for the arm with no webcmd — there was almost nothing to save. The measurement is fair for what it measures, and what it measures is narrow.",
+            "I published it anyway, because arm D is the actual lesson and it only makes sense next to the others."
+          ]
+        },
+        {
+          h: "Arm D is the design",
+          type: "note",
+          body: [
+            "Skills exist so an <em>agent</em> can work out what to do. Once you already know the command, you do not need the agent, the skills, or the tokens. So the app never asks a model to scrape — Node spawns the adapters directly and pays zero tokens for all 16 sources.",
+            "The only model cost in the entire daily build is the sub-editor writing the headline and summaries: <strong>one call, ~29,000 tokens, $0.47 for the whole edition</strong> on the verified run.",
+            "The token saving is real. It comes from removing the model, not from making the model cheaper. That sentence is the whole project."
+          ]
+        },
+        {
+          h: "Ranking — why 'buzz' is the only honest signal",
+          type: "list",
+          body: [
+            "<strong>The problem:</strong> 232 Hacker News points and 7,299 GitHub stars cannot be sorted against each other. They are different units pretending to be the same one.",
+            "<strong>Standing</strong> — position <em>within its own source</em>. A #1 is a #1 anywhere, and that comparison is legitimate.",
+            "<strong>Weight</strong> — editorial trust in that source. My judgement, stated as mine.",
+            "<strong>Freshness</strong> — an 18-hour half-life; unknown dates sit mid-scale rather than being guessed.",
+            "<strong>Buzz</strong> — how many <em>different</em> sources carry the same story. This is the one that matters: a story running on three mastheads at once is the only real evidence of 'hot', and it is precisely what no single feed can ever show you. Those get boxed under <strong>Extra! Extra!</strong>"
+          ]
+        },
+        {
+          h: "No API key, by construction",
+          type: "prose",
+          body: [
+            "The sub-editor is not built on an API key. It spawns the <code>claude</code> CLI already installed and signed in on the machine. There is no <code>.env</code>, and no key that could leak to the browser — because there is no key.",
+            "A pleasant side effect of a decision made for a different reason: one less secret to rotate, and nothing to accidentally commit."
+          ]
+        },
+        {
+          h: "What I cut, and what is still wrong with it",
+          type: "note",
+          body: [
+            "<strong>Seven feeds dropped.</strong> Four weekly newsletters repeat unchanged for seven days inside a daily paper. Syntax.fm served 1,027 back-catalogue episodes. DZone was low signal. Hashnode and Python Weekly are genuinely dead — Hashnode's API went paid, and Python Weekly returns a 404 page under an HTTP 200 status. Both verified rather than assumed.",
+            "<strong>Dead code left standing.</strong> <code>app/parse.js</code> and <code>POST /api/upload</code> still work and are tested against real PDF, Word, CSV, XML and image files, but the chat strip that consumed them was removed. Nothing in the page reaches them. They are API-only until something does.",
+            "<strong>The experiment is one sample per arm.</strong> No repeats, no error bars. An earlier version of it was outright invalid — a permission flag silently denied the fetch tools, so two arms measured a polite refusal and still reported plausible token counts. The harness now refuses to count a run that did not produce a numbered list. A run that refuses is not a result."
+          ]
+        }
+      ],
+      related: ["mission-control-hq", "job-qualifier", "tablink"]
+    },
+
+    /* ============ 10. TABLINK ============ */
+    {
+      id: "tablink",
+      title: "TabLink — A Tablet That Dials Its Own Loopback",
+      org: "Personal infrastructure",
+      category: "builds",
+      industry: "Windows · Android · Network design",
+      year: "2026",
+      status: "Shipped",
+      effortDays: 2,
+      effortLabel: "Two evenings, in daily use",
+      tagline: "The safest port is the one that was never listening.",
+      summary:
+        "Open, edit and save the files on a Windows PC from an Android tablet, over the USB-C cable and " +
+        "nothing else. No wifi, no cloud, no copies. The tablet connects to 127.0.0.1 — its own loopback " +
+        "address — and lands on the desktop's disk.",
+      tags: ["Network design", "Security by construction", "Windows", "adb", "Shipped"],
+      stats: [
+        { v: "0",   l: "network addresses listening" },
+        { v: "2",   l: "approaches built, one kept" },
+        { v: "USB", l: "the only route in" }
+      ],
+      repo: {
+        name: "rishimunikesarwani-hub/TabLink",
+        url: "https://github.com/rishimunikesarwani-hub/TabLink",
+        public: false
+      },
+      gate: {
+        rule: "Is the USB-C cable physically connected right now?",
+        pass: "The tunnel exists and the tablet reaches the disk, read and write",
+        fail: "There is no route in — not a blocked one, an absent one"
+      },
+      sections: [
+        {
+          h: "The one counter-intuitive bit",
+          type: "prose",
+          body: [
+            "The tablet types <code>127.0.0.1</code> into its file manager — the address every device on earth understands as <em>me</em> — and arrives on a different machine's hard drive.",
+            "That is the whole trick. Windows runs an SSH/SFTP server bound to <code>127.0.0.1:22</code> and nothing else. <code>adb reverse tcp:2222 tcp:22</code> then forwards a port on the tablet, down the physical cable, to that listener. <code>adb reverse</code> is what makes a local address resolve to a remote machine.",
+            "<strong>ELI10:</strong> the tablet phones a number that normally means 'myself', and the cable quietly redirects the call to the computer. Pull the cable out and the number stops working."
+          ]
+        },
+        {
+          h: "Security by construction, not by rule",
+          type: "table",
+          head: ["Property", "Why it holds"],
+          body: [
+            ["Nothing listens on a network address", "sshd_config has ListenAddress 127.0.0.1 — loopback only"],
+            ["The tablet is the only possible client", "The only route in is adb reverse, over the USB cable"],
+            ["Access dies with the cable", "Unplugging drops the forward; so does the device re-enumerating"],
+            ["No file ever leaves the PC", "SFTP edits in place — the tablet is a window, not a copy"]
+          ]
+        },
+        {
+          h: "Why that table matters more than a firewall rule",
+          type: "prose",
+          body: [
+            "A firewall rule is a thing that says no. It can be misconfigured, overridden by a profile change, or quietly disabled by something else on the machine. It is a decision that has to keep being made correctly.",
+            "A service bound to loopback is not saying no. There is no door to guard, because the address a remote attacker would have to reach does not exist on any interface they can route to. Take the cable out and there is no attack surface left to describe."
+          ]
+        },
+        {
+          h: "The version I built first and threw away",
+          type: "prose",
+          body: [
+            "The first attempt shared the user folder over SMB, turned on Samsung USB tethering, and opened port 445 to the <code>192.168.42.0/24</code> tether network only. It worked. It is still in the repo.",
+            "It was replaced because it needs Administrator, it creates a real SMB share that outlives the cable, and it pins its safety on a firewall rule scoped to a network range — three pieces of standing state that persist whether or not the tablet is anywhere nearby.",
+            "The SFTP route needs no admin, creates nothing permanent, and is unreachable by construction rather than by rule. I kept the old script in the repo on purpose: the trade-off between the two is more interesting than either one alone."
+          ]
+        },
+        {
+          h: "The bug that cost an hour",
+          type: "note",
+          body: [
+            "A Windows login name can be renamed independently of the profile folder, and on this machine they had diverged. The tablet kept rejecting the credentials with no useful error.",
+            "<code>%USERNAME%</code> is frozen at sign-in and can be stale, so the script resolves the live account name from the SID instead — that is what SSH actually asks for. Then it <em>prints</em> the name rather than assuming you know it.",
+            "There is also a <code>check-password.ps1</code>, which exists for one reason: when the tablet says the password is wrong there are two possible causes with opposite fixes — the password is wrong, or the tablet is mangling what you typed. The script asks Windows directly, so you find out which. It reads into a <code>SecureString</code> and never writes it anywhere."
+          ]
+        },
+        {
+          h: "What it deliberately does not do",
+          type: "list",
+          body: [
+            "<strong>No sync.</strong> Nothing is copied to the tablet, so nothing can drift out of date or conflict. You are editing the real file.",
+            "<strong>No wireless fallback.</strong> Adding one would undo the entire security model to save plugging in a cable.",
+            "<strong>No persistent access.</strong> The tunnel is gone the moment the cable is. That is a feature I would not trade.",
+            "<strong>No credentials stored anywhere.</strong> The Windows password is typed on the tablet and validated by Windows. Nothing in the repo holds it."
+          ]
+        }
+      ],
+      related: ["what-is-hot", "portfolio-site", "mission-control-hq"]
+    },
+
+    /* ============ 11. THIS SITE ============ */
+    {
+      id: "portfolio-site",
+      title: "This Site — One Object, No Build Step",
+      org: "Self",
+      category: "builds",
+      industry: "Static web · Content architecture",
+      year: "2026",
+      status: "Shipped",
+      effortDays: 3,
+      effortLabel: "Live, edited continuously",
+      tagline: "Every page you are reading renders from a single JavaScript object.",
+      summary:
+        "The site you are on. No framework, no bundler, no build step, no deploy pipeline — five HTML " +
+        "shells and one data file. Every page, card, filter, search result and detail view is generated " +
+        "from one object, so content is edited in exactly one place and can never disagree with itself.",
+      tags: ["Static site", "Content architecture", "No build step", "Progressive rendering", "Shipped"],
+      stats: [
+        { v: "1",  l: "file holds all content" },
+        { v: "0",  l: "build steps to publish" },
+        { v: "5",  l: "HTML shells, no duplication" }
+      ],
+      repo: {
+        name: "rishimunikesarwani-hub/my-portfolio",
+        url: "https://github.com/rishimunikesarwani-hub/my-portfolio",
+        public: false
+      },
+      gate: {
+        rule: "Does this change require a build, a bundler or a deploy step to see?",
+        pass: "It goes in — edit the file, refresh the page",
+        fail: "It does not ship, however good the feature is"
+      },
+      sections: [
+        {
+          h: "The one decision everything else follows from",
+          type: "prose",
+          body: [
+            "All content lives in a single object in <code>assets/js/data.js</code> — person, categories, every project, experience, skills, education. The HTML files are shells. They contain a header, a footer and an empty div.",
+            "That means the same project entry renders the card on the work page, the row in its category, the detail page, the previous/next pager, the related-work sidebar, and the search index. Write it once; it cannot fall out of sync with itself, because there is no second copy to fall out of sync with.",
+            "The alternative — a page per project — is faster for the first three projects and worse for every one after that. I have thirteen."
+          ]
+        },
+        {
+          h: "What 'no build step' actually buys",
+          type: "table",
+          head: ["Decision", "What it costs", "What it buys"],
+          body: [
+            ["Plain script tags, no modules", "No npm ecosystem, no imports", "The site opens over file:// — double-click the HTML and it works, offline, on any machine"],
+            ["No framework", "Everything is hand-rolled string templating", "Nothing to upgrade, and no dependency can break the site while I am not looking"],
+            ["No bundler", "No tree-shaking, no minification", "The file I edit is the file that runs. Debugging is just reading."],
+            ["One data object", "The file is long and getting longer", "Every consumer of a project entry is guaranteed to agree with every other one"]
+          ]
+        },
+        {
+          h: "Where the seams show",
+          type: "prose",
+          body: [
+            "This is not free, and it would be dishonest to present it as free. <code>data.js</code> is over a thousand lines and growing — every new project makes it longer, and there is a point where one file stops being an advantage and starts being a scroll.",
+            "Diagrams are the sharper limitation. Figures are hand-written inline SVG inside <code>site.js</code>, one function per drawing, so adding an illustration is a code change rather than a content change. That is exactly the coupling the data file was meant to avoid. The four architecture drawings on the Mission Control HQ breakdown are the only ones that exist, and that is why.",
+            "Neither is worth fixing yet. Both are worth writing down before someone else notices them first."
+          ]
+        },
+        {
+          h: "Rendering rules I gave myself",
+          type: "list",
+          body: [
+            "<strong>Escaping is inconsistent, and that is a real flaw.</strong> Table cells and headings go through <code>esc()</code>; prose, lists and notes render raw HTML so I can bold a phrase mid-sentence. Every string is mine, so nothing is exploitable — but 'trusted input' is the reasoning behind most injection bugs, and writing it down is the first step to fixing it.",
+            "<strong>Sections are typed, not free-form.</strong> A section is <code>prose</code>, <code>list</code>, <code>table</code>, <code>note</code> or <code>figure</code>. Five shapes, and the renderer knows all of them — so a new project cannot invent a layout that the search index or the category page then fails to handle.",
+            "<strong>Categories are data.</strong> Adding a fourth category is a four-line edit to one array; the nav, the work page, the filters and the search all pick it up with no other change. This section exists because of that.",
+            "<strong>Private repos render as text, not links.</strong> A link to a private repo is a 404 for every visitor. One boolean per project flips it to a real link the day it goes public."
+          ]
+        },
+        {
+          h: "Honest status",
+          type: "note",
+          body: [
+            "It runs from a local Python web server or straight off the filesystem. There is no hosting, no domain and no analytics on it yet — those are decisions I have not made rather than work I have finished.",
+            "The source repo is private, so the link in the sidebar is deliberately not a link."
+          ]
+        }
+      ],
+      related: ["what-is-hot", "tablink", "mission-control-hq"]
+    },
+
+    /* ============ 12. AAYO APP ============ */
     {
       id: "aayo-app",
       title: "Aayo App — Revenue Model & Roadmap Scope",

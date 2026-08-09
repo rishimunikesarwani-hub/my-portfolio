@@ -1,0 +1,18 @@
+# Local scratch
+SCRATCHPAD.md
+
+# Third-party agent skill packs (Vercel, Anthropic and others) — installed
+# here, not authored here. skills-lock.json records which ones and at what
+# version, so this is reproducible without vendoring 95 files of their content.
+.claude/
+.agents/
+
+# Empty working folder for design source files
+design-assets/
+
+# OS / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store
+.idea/
+.vscode/

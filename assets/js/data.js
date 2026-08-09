@@ -1,0 +1,1135 @@
+/* =============================================================
+   data.js — single source of truth for the whole site.
+   Loaded as a plain script so the site works over file:// too.
+   Every page (work, category, compare, search, detail) renders
+   from this object. Edit content here, nowhere else.
+   ============================================================= */
+
+window.PORTFOLIO = {
+
+  person: {
+    name: "Rishi Muni Kesarwani",
+    short: "Rishi",
+    role: "AI Product Manager",
+    location: "Greater Noida, India · Open to Remote",
+    email: "rishi.rte@gmail.com",
+    phone: "+91 87078 92507",
+    linkedin: "https://linkedin.com/in/imrishirich93",
+    /* Set to "" to hide the GitHub link everywhere it appears. */
+    github: "https://github.com/rishimunikesarwani-hub",
+    resume: "assets/files/Rishi_Muni_Kesarwani_Resume.pdf",
+    photo: "assets/img/rishi.jpg",
+    photoCaption: "Networking Mixer, Delhi — “The AI was agentic, the vibe was organic.”",
+    rotating: [
+      "I build agentic AI products.",
+      "I decide what ships without a human.",
+      "I write the evals before the demo.",
+      "I design where the model hands back."
+    ],
+    pitch:
+      "I build agentic AI products and design the point where they stop deciding. Two shipped agents " +
+      "with grounded retrieval, evaluation suites and human-approval gates — plus six teardowns of AI " +
+      "products other teams already put in front of users. Nine years owning B2B revenue at NTPC, " +
+      "Siemens and Fincantieri taught me the part most AI teams skip: what it actually costs when the " +
+      "system is wrong.",
+    thesis:
+      "Every AI system worth trusting has a line drawn through it: the point where the machine stops " +
+      "and a person takes over. Most teams draw that line by accident, after something breaks. " +
+      "I draw it on purpose, before.",
+    /* Not rendered anywhere right now — the stats strip came off the
+       home page on 4 Aug 2026. Kept here in case it comes back. */
+    stats: [
+      { v: "9",    l: "years in B2B revenue" },
+      { v: "2",    l: "agents built and shipped" },
+      { v: "6",    l: "AI product breakdowns" },
+      { v: "70%",  l: "revenue growth, Fincantieri" }
+    ]
+  },
+
+  /* ---------------------------------------------------------------
+     Categories — every item belongs to exactly one.
+     --------------------------------------------------------------- */
+  categories: [
+    {
+      slug: "breakdowns",
+      name: "AI Product Breakdowns",
+      blurb:
+        "Six shipped AI products, taken apart the way I would take apart my own. Five are constrained " +
+        "to a 10% budget cut, so the answer has to be a config or policy change rather than a new " +
+        "system. The sixth is an architecture teardown read from a live product's own code.",
+      lens: "What actually broke — and what would I put in the next sprint?"
+    },
+    {
+      slug: "agents",
+      name: "Agents I've Built",
+      blurb:
+        "Working software, not slideware. Built on the Hermes platform — grounded retrieval, " +
+        "anti-fabrication guardrails, evaluation suites, and human-approval gates that fire on a " +
+        "threshold rather than on vibes.",
+      lens: "Where does this system earn autonomy, and where does it hand control back?"
+    },
+    {
+      slug: "advisory",
+      name: "Advisory",
+      blurb:
+        "Product work for a pre-seed founder on the decisions that determine whether anything " +
+        "survives contact with a market: revenue model, positioning, and what comes off the roadmap.",
+      lens: "What does this team have to stop building in order to ship?"
+    }
+  ],
+
+  /* ---------------------------------------------------------------
+     Items. Section `type` is one of: prose | list | table | note
+     --------------------------------------------------------------- */
+  items: [
+
+    /* ============ 1. NESTLÉ ============ */
+    {
+      id: "nestle-nesgpt",
+      title: "NesGPT & the Nescafé Content Engine",
+      org: "Nestlé",
+      category: "breakdowns",
+      industry: "FMCG · Marketing · Agentic AI",
+      year: "2026",
+      status: "Breakdown",
+      effortDays: 3,
+      effortLabel: "3 days of engineering",
+      tagline: "The AI worked perfectly. That was the problem.",
+      summary:
+        "A private ChatGPT for 30,000 employees cut campaign production time 60% across 15 markets — " +
+        "and produced content that was technically correct and culturally flat. Not a model problem. " +
+        "A decision-rights problem.",
+      tags: ["Governance", "Decision rights", "Prompt engineering", "Human-in-the-loop", "Zero-cost"],
+      stats: [
+        { v: "60%",  l: "faster campaign production" },
+        { v: "15",   l: "markets affected" },
+        { v: "₹0",   l: "incremental cost of the fix" }
+      ],
+      gate: {
+        rule: "Cultural confidence < 3 / 5",
+        pass: "NesGPT publishes on schedule",
+        fail: "Routes to the local brand manager's review queue"
+      },
+      sections: [
+        {
+          h: "The problem, deconstructed",
+          type: "prose",
+          body: [
+            "Nestlé built NesGPT, a private ChatGPT deployed to 30,000 employees, to run content pipelines for Nescafé across 15 markets. Campaign production time dropped 60%. But local brand managers felt sidelined — the AI produced technically correct but culturally flat content.",
+            "The core tension: who owns the brand voice, the AI system or the local human? This is not a technology problem. The AI works. The question is which decisions the AI should own globally, and which must stay with local managers."
+          ]
+        },
+        {
+          h: "Root cause",
+          type: "prose",
+          body: [
+            "The AI was trained on global brand guidelines but lacked local cultural context — slang, humour, regional sentiment, festival-specific language. The system centralised creative control without building in local override mechanisms. Local managers had no structured way to inject cultural nuance back into the pipeline."
+          ]
+        },
+        {
+          h: "The constraint: a 10% budget cut",
+          type: "prose",
+          body: [
+            "No new hires. No new tools. We cannot build a separate local content engine or hire cultural consultants per market. We work inside the existing NesGPT infrastructure and add governance logic, not new systems.",
+            "Instead of 15 separate cultural engines, one configurable cultural layer: a prompt template library owned by local teams, feeding the same NesGPT instance. Zero infrastructure cost. Process redesign only."
+          ]
+        },
+        {
+          h: "Frameworks applied",
+          type: "list",
+          body: [
+            "<strong>Continuous Training (CI/CD/CT/CM)</strong> — NesGPT's cultural flatness is data staleness from a single global training source. <em>The AI Product Manager's Handbook</em> warns that when an iterative process stagnates, it stops being effective.",
+            "<strong>Gartner Decision Intelligence</strong> — NesGPT should not make final calls on culturally sensitive content. It surfaces recommendations with confidence scores and routes low-confidence output to a human.",
+            "<strong>Dominant strategy (SHEIN)</strong> — AI handles volume and consistency; local teams handle cultural responsiveness. The split is clean: AI owns the template, humans own the flavour."
+          ]
+        },
+        {
+          h: "What I'd ship: a cultural governance layer",
+          type: "list",
+          body: [
+            "<strong>Cultural prompt library</strong> — 20–30 templates per market (festival greetings, regional humour, local idioms) feeding NesGPT as input context. Lives in a shared document. No new tool.",
+            "<strong>Content confidence scoring</strong> — NesGPT rates its own cultural confidence High / Medium / Low based on available local training data. Low auto-routes to the manager's queue.",
+            "<strong>Local override protocol</strong> — Managers edit and tag their overrides. Overrides feed back into the prompt library. The feedback loop is the product."
+          ]
+        },
+        {
+          h: "Decision rights matrix",
+          type: "table",
+          head: ["AI owns (global)", "Human owns (local)"],
+          body: [
+            ["Brand logo usage & visual guidelines", "Cultural tone, humour, regional idioms"],
+            ["Grammar, spelling, formatting", "Festival and event-specific messaging"],
+            ["Content volume & scheduling", "Final approval on sensitive content"],
+            ["SEO optimisation & keywords", "Influencer partnerships & local endorsements"]
+          ]
+        },
+        {
+          h: "Success metrics",
+          type: "table",
+          head: ["Metric", "Target", "Measurement"],
+          body: [
+            ["Local manager satisfaction", "> 80% approval", "Quarterly survey"],
+            ["Cultural relevance score", "> 4.2 / 5 per market", "Content audit sampling"],
+            ["Content production speed", "No more than 10% slower", "Pipeline throughput logs"],
+            ["Budget impact", "Zero incremental cost", "Quarterly budget review"]
+          ]
+        },
+        {
+          h: "Rollout",
+          type: "list",
+          body: [
+            "<strong>Week 1–2</strong> — Pilot in India and Brazil, the two highest-variation markets. Local managers build the first prompt libraries. Baseline the satisfaction score.",
+            "<strong>Week 3–4</strong> — Confidence scoring goes into the pipeline. Low-confidence content routes to review queues. Collect override data.",
+            "<strong>Month 2</strong> — Expand to 5 markets. Feed overrides back into the libraries. Measure the satisfaction delta.",
+            "<strong>Month 3</strong> — All 15 markets. Quarterly prompt-library refresh becomes a standing cycle."
+          ]
+        },
+        {
+          h: "How this actually ships",
+          type: "note",
+          body: [
+            "This ships as a process change, not a product build. The prompt library is a shared doc per market. Confidence scoring is one line added to the system prompt — <em>rate your cultural confidence 1–5</em> — and anything under 3 routes to email. The override mechanism is a form where managers paste edited copy and tag what they changed.",
+            "Total engineering: roughly two days of prompt work plus one day of routing logic. Ship it next week."
+          ]
+        }
+      ],
+      related: ["swiggy-instamart", "zomato-ops", "job-qualifier"]
+    },
+
+    /* ============ 2. McKINSEY ============ */
+    {
+      id: "mckinsey-lilli",
+      title: "Lilli, and the Death of Hourly Billing",
+      org: "McKinsey",
+      category: "breakdowns",
+      industry: "Professional Services · Business Model",
+      year: "2026",
+      status: "Breakdown",
+      effortDays: 5,
+      effortLabel: "1 analyst-week + 5 pilot clients",
+      tagline: "Every minute Lilli saves is a minute you cannot bill for.",
+      summary:
+        "An internal AI that searches 100,000 documents in seconds turned two days of research into two " +
+        "hours. Everyone read that as a workforce crisis. It is a business model crisis that shows up " +
+        "first as a workforce question.",
+      tags: ["Business model", "Pricing", "Outcome-based", "Workforce", "AI enablement"],
+      stats: [
+        { v: "2 days → 2 hrs", l: "junior research time" },
+        { v: "25,000",         l: "employees working with agents" },
+        { v: "50%",            l: "outcome-priced target, year 2" }
+      ],
+      gate: {
+        rule: "Can the outcome be measured and co-defined upfront?",
+        pass: "Fixed fee, priced on what it produces",
+        fail: "Stays hour-billed — and stays exposed"
+      },
+      sections: [
+        {
+          h: "The problem, deconstructed",
+          type: "prose",
+          body: [
+            "McKinsey built Lilli — an internal AI that searches 100,000 documents, past case studies and expert transcripts in seconds. Junior consultants using Lilli produce in two hours what previously took two days.",
+            "The surface tension: if a first-year with Lilli can do the work of a third-year, what is the career path? Partners are asking whether they are training people or just training them to use the tool.",
+            "The deeper problem everyone is avoiding: if AI helps you deliver 10× faster, clients will eventually ask for 10× cheaper. Do you have a good answer? McKinsey is already having that conversation. With itself."
+          ]
+        },
+        {
+          h: "Three things shift when AI eats execution",
+          type: "list",
+          body: [
+            "<strong>Pricing</strong> — Hours lose ground, outcomes win. Three-week projects close in three days and clients can tell. If your billing model is hours-based, your most productive tool is actively destroying your revenue model.",
+            "<strong>Teams</strong> — The old pyramid had armies of juniors at the bottom. The new shape is narrow top to bottom. Agents do the volume, humans do the judgement.",
+            "<strong>Speed</strong> — Clients are living the same 10× in their own workflows. A sprint ships in an afternoon; a designer round-trip becomes twenty minutes. You cannot hide behind slow delivery any more."
+          ]
+        },
+        {
+          h: "Root cause",
+          type: "prose",
+          body: [
+            "McKinsey's entire value chain — hiring, training, promotion, billing — was built on two assumptions: research takes time, and clients pay for time. Lilli collapsed the first overnight. The market is collapsing the second. If clients shift to outcome-based pricing, internal assessment of juniors has to become outcome-based too. Judgement, not hours."
+          ]
+        },
+        {
+          h: "The constraint: a 10% budget cut",
+          type: "prose",
+          body: [
+            "No new performance management software. No external consultants to redesign the talent framework. We use Lilli's own data — who searched what, what was useful, what insight came out — to build the new metrics. The tool that caused the problem becomes the tool that measures the solution.",
+            "The reframe: the budget cut is a gift. You cannot afford to maintain the old pyramid and build the new model at the same time. The cut kills the old model faster, which is exactly what needs to happen."
+          ]
+        },
+        {
+          h: "New performance metrics",
+          type: "table",
+          head: ["Old metric", "New metric", "Why"],
+          body: [
+            ["Research hours logged", "Insight quality score", "Speed is commoditised; judgement is not"],
+            ["Documents reviewed", "Synthesis depth rating", "Lilli finds docs; humans connect dots"],
+            ["Utilisation rate", "Client outcome attribution", "Billed hours ≠ value delivered"],
+            ["Years of experience", "Skill velocity & judgement accuracy", "AI compresses the learning curve"],
+            ["Billable hours per week", "Outcomes delivered per engagement", "Hours are a cost metric, not a value metric"]
+          ]
+        },
+        {
+          h: "The pricing shift",
+          type: "table",
+          head: ["Old model", "New model", "Transition mechanism"],
+          body: [
+            ["Bill per consultant per week", "Fixed fee per outcome delivered", "Pilot 5 engagements this quarter"],
+            ["Scope by time estimate", "Scope by outcome definition", "Client co-defines success upfront"],
+            ["Partner comp = book of hours", "Comp = locked equity tied to results", "Deferred over 2–3 years"],
+            ["Junior value = time on project", "Junior value = quality of judgement", "Decision audit trail replaces timesheet"]
+          ]
+        },
+        {
+          h: "The new pyramid is a diamond",
+          type: "prose",
+          body: [
+            "Old shape: 100 juniors, 30 mid-level, 10 partners. Work flowed down — juniors did volume research, mid-level synthesised, partners sold.",
+            "New shape: 25 agents, 20 juniors on judgement and client interface, 15 mid-level on outcome architecture and quality, 10 partners on relationships and direction. Widest in the middle, where outcome design and client collaboration happen."
+          ]
+        },
+        {
+          h: "Rollout",
+          type: "list",
+          body: [
+            "<strong>Month 1</strong> — Instrument Lilli for usage metadata. Baseline current performance. Identify 5 clients willing to pilot outcome pricing.",
+            "<strong>Month 2</strong> — Pilot new metrics in one practice area. Ask the uncomfortable question: are the old-metric top performers the same people as the new-metric top performers?",
+            "<strong>Month 3</strong> — Calibrate rubrics with engagement managers. Measure whether outcome-priced work is more profitable.",
+            "<strong>Month 4–6</strong> — Firm-wide. Align promotion criteria. Move 20% of new engagements to outcome pricing.",
+            "<strong>Year 2</strong> — 50% outcome-priced. Partner comp includes deferred equity. Junior intake down 40% by natural attrition, with each remaining junior producing 3× output."
+          ]
+        },
+        {
+          h: "How this actually ships",
+          type: "note",
+          body: [
+            "The internal metric change is one analyst for one week: Lilli already logs queries and document access, so export it to a dashboard, add a five-question scoring form per deliverable, fold it into the quarterly review template.",
+            "The pricing shift is harder and matters more. The Managing Partner picks five clients and has the conversation this week: <em>we can deliver this in three days instead of three weeks, and we want to price it on what it produces for you, not how long it takes us.</em> Co-define three to five measurable outcomes. Price it fixed. Track profitability against the old model.",
+            "The question that matters: have you had that conversation with a client yet? Your competitors will."
+          ]
+        }
+      ],
+      related: ["goldman-analysts", "nestle-nesgpt", "aayo-app"]
+    },
+
+    /* ============ 3. ZOMATO ============ */
+    {
+      id: "zomato-ops",
+      title: "AI-Led Operations & the Human Delivery Manager",
+      org: "Zomato",
+      category: "breakdowns",
+      industry: "Consumer Tech · Operations",
+      year: "2026",
+      status: "Breakdown",
+      effortDays: 4,
+      effortLabel: "3–4 days of engineering",
+      tagline: "The system was doing its job perfectly, and causing harm.",
+      summary:
+        "50 million decisions a day. During a heat wave the AI optimised for speed and cost and routed " +
+        "riders into unsafe conditions. The AI was not wrong — its objective function simply had no " +
+        "safety constraint in it.",
+      tags: ["Safety constraints", "Concept drift", "Gig workers", "Ethics", "Pre-processing"],
+      stats: [
+        { v: "50M",   l: "decisions per day" },
+        { v: "42°C",  l: "heat index cut-off" },
+        { v: "50", l: "lines of code to fix it", suffix: true }
+      ],
+      gate: {
+        rule: "Heat index > 42°C, AQI > 300, or rider past 6 continuous hours",
+        pass: "Assignment enters the optimiser",
+        fail: "Removed before the optimiser ever sees it"
+      },
+      sections: [
+        {
+          h: "The problem, deconstructed",
+          type: "prose",
+          body: [
+            "Zomato deployed AI agents to manage delivery partner allocation, dynamic pricing and restaurant ranking in real time — 50 million decisions a day. During a heat wave, the AI optimised for speed and cost but routed delivery partners into unsafe conditions. No human had oversight of the real-time decision.",
+            "The root cause is not that the AI was wrong. The AI's optimisation function had no safety constraint. Speed and cost were inputs; rider welfare was not. That is a model architecture problem, not a human oversight problem."
+          ]
+        },
+        {
+          h: "The constraint: a 10% budget cut",
+          type: "prose",
+          body: [
+            "We cannot hire a team of humans watching a dashboard 24/7 — expensive and slow. Instead we build the safety constraint into the decision function itself. The AI becomes its own safety layer, at no additional human cost."
+          ]
+        },
+        {
+          h: "Frameworks applied",
+          type: "list",
+          body: [
+            "<strong>Concept drift</strong> — A heat wave changes what <em>optimal delivery</em> means. The model did not drift technically; it was never trained on the concept that rider safety is a constraint, not something to optimise.",
+            "<strong>Training–production gap (MLOps)</strong> — Training data assumed normal weather. Production hit a heat wave. Textbook.",
+            "<strong>Ethics of system design</strong> — Delivery partners are gig workers with limited power. An AI that routes them without a safety consideration is a bias baked into the design.",
+            "<strong>Hard-constraint precedent</strong> — Fraud detection models carry non-negotiable thresholds. Delivery assignment needs the same: no assignment above a safety risk threshold, regardless of speed or cost."
+          ]
+        },
+        {
+          h: "Safety constraints, baked into the model",
+          type: "table",
+          head: ["Condition", "AI action", "Data source"],
+          body: [
+            ["Heat index > 42°C", "Suspend outdoor deliveries in zone", "Weather API"],
+            ["Rider continuous hours > 6", "Force break, reassign pending orders", "Rider app login timestamp"],
+            ["AQI > 300 (hazardous)", "Reduce delivery radius by 50%", "Government AQI API"],
+            ["Flood or storm alert active", "Pause all deliveries in affected zones", "IMD weather alerts"],
+            ["Rider declines 3+ in a row", "Auto-flag for welfare check", "App assignment logs"]
+          ]
+        },
+        {
+          h: "Rollout",
+          type: "list",
+          body: [
+            "<strong>Week 1</strong> — Wire the weather and AQI APIs into the assignment pipeline. Add hard constraints as rules that run <em>before</em> the optimiser. Three to four days of engineering.",
+            "<strong>Week 2–3</strong> — Shadow mode. Run constraints alongside the live system and log how many assignments would have been blocked. Measure the speed and cost impact honestly.",
+            "<strong>Week 4</strong> — Activate in three cities. Watch delivery delays against safety blocks.",
+            "<strong>Month 2</strong> — All cities. Add the rider-hours constraint. Weekly safety report generates itself."
+          ]
+        },
+        {
+          h: "How this actually ships",
+          type: "note",
+          body: [
+            "This is not a model retraining job. It is a pre-processing filter. Before the optimiser runs, ask: is the weather safe, is the rider within hours, is the zone accessible? Any <em>no</em> and that assignment is removed from the optimiser's input set. The optimiser never even sees the unsafe option.",
+            "One function — <code>check_safety_constraints()</code> — called before the existing optimisation API. Around fifty lines. Ship it in a sprint."
+          ]
+        }
+      ],
+      related: ["swiggy-instamart", "nestle-nesgpt", "investor-agent"]
+    },
+
+    /* ============ 4. GOLDMAN SACHS ============ */
+    {
+      id: "goldman-analysts",
+      title: "AI Coding & the Disappearing Analyst Class",
+      org: "Goldman Sachs",
+      category: "breakdowns",
+      industry: "Finance · Workforce Strategy",
+      year: "2026",
+      status: "Breakdown",
+      effortDays: 20,
+      effortLabel: "policy change + 40-hour curriculum",
+      tagline: "The analyst programme was always two things. AI only broke one of them.",
+      summary:
+        "AI cut equity research from four hours to 25 minutes. Goldman still recruits hundreds of " +
+        "analysts a year. You cannot cut junior headcount without cutting your future Managing " +
+        "Directors — the labour function and the leadership pipeline were never the same thing.",
+      tags: ["Workforce", "AI enablement", "Role design", "Hiring", "Policy change"],
+      stats: [
+        { v: "4 hrs → 25 min", l: "per equity research report" },
+        { v: "50%",            l: "headcount by year 3" },
+        { v: "3×",             l: "output per remaining analyst" }
+      ],
+      gate: {
+        rule: "Is the task AI-replaceable?",
+        pass: "AI produces it, the analyst validates and adds proprietary insight",
+        fail: "Human-essential: judgement, narrative, client advisory"
+      },
+      sections: [
+        {
+          h: "The problem, deconstructed",
+          type: "prose",
+          body: [
+            "Goldman Sachs' CEO stated AI can now pass the bar exam and produce code that replaces entry-level engineering work. Internally, AI tools cut equity research report time from four hours to 25 minutes per analyst. Goldman still recruits hundreds of analysts every year. If AI does 70% of the work, what are these analysts being hired for? Senior leadership disagrees on whether to cut junior headcount or invest in retraining.",
+            "The real problem: Goldman's analyst programme was always two things at once — a labour force and a leadership pipeline. AI disrupted the labour function. The pipeline function still exists. Cut junior headcount and you cut your future MDs."
+          ]
+        },
+        {
+          h: "The constraint: a 10% budget cut",
+          type: "prose",
+          body: [
+            "No external retraining consultants. No new LMS platform. Use the AI tools that caused the disruption to deliver the retraining. If AI writes equity research in 25 minutes, the remaining three and a half hours of the analyst's day becomes training time — at zero incremental cost."
+          ]
+        },
+        {
+          h: "Frameworks applied",
+          type: "list",
+          body: [
+            "<strong>AI enablement</strong> — You cannot have a supported AI programme if internal teams have not emotionally internalised it. Tool access is not enablement.",
+            "<strong>Selling expertise, not hours</strong> — The analyst's value shifts from producing outputs (reports) to producing insight (theses, advisory, risk judgement). The hard part is cerebral and emotional, not technical.",
+            "<strong>Platform standardisation</strong> — Uber built Michelangelo to end siloed, inconsistent ML work. Goldman needs the same for its analyst programme: standardise the AI-augmented workflow so <em>analyst</em> means 100% AI-amplified decision-maker, not 70% AI-replaced worker."
+          ]
+        },
+        {
+          h: "Year 1: redefine the role",
+          type: "table",
+          head: ["Current role (AI does 70%)", "New role (AI amplifies)", "Hiring impact"],
+          body: [
+            ["Write equity research reports", "Validate AI research, add proprietary insight", "Hire for judgement, not speed"],
+            ["Build financial models", "Stress-test AI models, find edge cases", "Hire for critical thinking"],
+            ["Compile data for presentations", "Craft client narratives, present theses", "Hire for communication"],
+            ["Process compliance checks", "Monitor AI compliance for false negatives", "Hire for regulatory knowledge"]
+          ]
+        },
+        {
+          h: "Headcount model",
+          type: "list",
+          body: [
+            "<strong>Year 1</strong> — Cut new analyst intake 30%. Not firing; natural attrition. Redirect the saving into the training budget.",
+            "<strong>Year 2</strong> — A further 20%. Those who remain are AI-augmented analysts with higher per-person output. Revenue per analyst should double.",
+            "<strong>Year 3</strong> — Stabilise at 50% of original headcount, each producing 3× output. Division output holds or rises. Payroll down roughly 40% over three years."
+          ]
+        },
+        {
+          h: "The board pitch",
+          type: "note",
+          body: [
+            "Current cost: 200 analysts × ₹80 LPA = ₹160 Cr a year. Year 3: 100 analysts × ₹1.2 Cr — higher salary for a higher-skilled role — = ₹120 Cr a year. Saving of ₹40 Cr a year at the same or better output.",
+            "The line to say out loud: <em>we are not cutting analysts, we are upgrading the analyst programme from labour to leverage.</em>"
+          ]
+        },
+        {
+          h: "Rollout",
+          type: "list",
+          body: [
+            "<strong>Q1</strong> — Audit analyst tasks. Sort into AI-replaceable and human-essential. Tell current analysts before they hear it elsewhere: transparency, not surprise.",
+            "<strong>Q2</strong> — Launch the AI-augmented workflow training. Forty hours per analyst on tool use, prompting, and output validation.",
+            "<strong>Q3</strong> — Pilot new hiring criteria for one recruiting cycle. Measure whether the new cohort is genuinely better at judgement tasks.",
+            "<strong>Year 2–3</strong> — Scale. Track revenue per analyst quarterly and adjust headcount on measured productivity, not projections."
+          ]
+        },
+        {
+          h: "How this actually ships",
+          type: "note",
+          body: [
+            "A memo, a curriculum, and a rubric — no technology build. The VP of Talent redefines what <em>analyst</em> means this week. The existing AI tools team builds the 40-hour curriculum using the tools themselves, in two weeks. HR rewrites the job description and interview rubric to test judgement, synthesis and communication rather than Excel speed and research stamina, in one week. First new-criteria hire happens next cycle."
+          ]
+        }
+      ],
+      related: ["mckinsey-lilli", "zomato-ops", "job-qualifier"]
+    },
+
+    /* ============ 5. SWIGGY ============ */
+    {
+      id: "swiggy-instamart",
+      title: "Agentic AI in Supply Chain & Dark Store Management",
+      org: "Swiggy Instamart",
+      category: "breakdowns",
+      industry: "Quick Commerce · Supply Chain",
+      year: "2026",
+      status: "Breakdown",
+      effortDays: 10,
+      effortLabel: "~10 days of engineering",
+      tagline: "It treated tomatoes the same as rice.",
+      summary:
+        "During a festival surge the AI over-ordered perishables in 12 cities on last year's data. " +
+        "₹2 crore spoiled before a human noticed. A forecasting model with no spoilage-aware ordering " +
+        "strategy, and no continuous monitoring to catch it.",
+      tags: ["Causal AI", "Data drift", "Continuous monitoring", "Config change", "Autonomy tiers"],
+      stats: [
+        { v: "₹2 Cr", l: "stock spoiled" },
+        { v: "12",    l: "cities affected" },
+        { v: "< 2%",  l: "target spoilage rate" }
+      ],
+      gate: {
+        rule: "Shelf life < 5 days",
+        pass: "Standard forecasting applies",
+        fail: "Order capped at (shelf life − 1) days of supply"
+      },
+      sections: [
+        {
+          h: "The problem, deconstructed",
+          type: "prose",
+          body: [
+            "Swiggy Instamart uses AI agents to manage inventory replenishment, demand forecasting and dark store staffing across 500+ locations. During a festival surge, the AI over-ordered perishables in 12 cities based on last year's data. By the time a human noticed, ₹2 crore in stock had spoiled. The system was not wrong — it was working with the data it had.",
+            "The diagnosis: the AI had no concept of perishability as a constraint on ordering volume. It treated tomatoes the same as rice. And it had no mechanism to split large orders into smaller batches against real-time sales velocity. A forecasting model without a spoilage-aware ordering strategy."
+          ]
+        },
+        {
+          h: "The constraint: a 10% budget cut",
+          type: "prose",
+          body: [
+            "No new models. No human-in-the-loop monitoring team. No new dashboards. We rewire the existing decision logic with three config-level changes — batch ordering, shelf-life awareness, and inter-store redistribution. All three use data and infrastructure that already exist."
+          ]
+        },
+        {
+          h: "Frameworks applied",
+          type: "list",
+          body: [
+            "<strong>Data drift</strong> — A festival surge renders last year's baseline unreliable. When a major event reshapes the dataset, the foundation you built on stops applying.",
+            "<strong>Continuous monitoring</strong> — The failure mode the textbook warns about exactly: the model operated incorrectly and nobody noticed until the damage was done. CM was absent.",
+            "<strong>Rollback and throttle (MLOps)</strong> — Continuous delivery is not just shipping a package; it is a pipeline that scales back automatically when there is trouble ahead. Swiggy had no throttle when ordering diverged from real-time sales.",
+            "<strong>Gartner Causal AI</strong> — The current model is correlation-based: last year's festival equals this year's demand. A causal approach asks what <em>causes</em> the spike — which products, which regions, which timing — and orders against that, rather than replaying last year's volumes."
+          ]
+        },
+        {
+          h: "Feature 1 — batch ordering",
+          type: "prose",
+          body: [
+            "Instead of one bulk order before a festival, split it into waves. Wave 1 is 40% of forecast. Wait 48 hours. Wave 2 adjusts on actual sales velocity. Wave 3 fine-tunes. The AI already tracks real-time sales — this just makes it act on that data between waves instead of committing everything upfront."
+          ]
+        },
+        {
+          h: "Feature 2 — shelf-life constraint",
+          type: "table",
+          head: ["Product category", "Shelf life", "Max order horizon", "Auto-discount trigger"],
+          body: [
+            ["Leafy greens", "2 days", "Max 2-day supply", "Day 1: 15% off"],
+            ["Dairy & paneer", "4 days", "Max 3-day supply", "Day 3: 20% off"],
+            ["Fruits (ripe)", "3 days", "Max 2-day supply", "Day 2: 15% off"],
+            ["Dry staples (rice, dal)", "180+ days", "Standard forecasting", "—"]
+          ]
+        },
+        {
+          h: "Feature 3 — inter-store redistribution",
+          type: "prose",
+          body: [
+            "If Store A over-ordered curd and Store B within 10km is running low, redistribute using the existing delivery fleet rather than letting it spoil in A and ordering fresh for B. The inventory data exists. The fleet exists. Connect the dots."
+          ]
+        },
+        {
+          h: "Decision architecture",
+          type: "table",
+          head: ["Decision type", "AI action", "Constraint"],
+          body: [
+            ["Routine daily replenishment", "Fully autonomous", "Shelf-life cap on perishables"],
+            ["Festival / surge ordering", "Autonomous but batched", "Max 40% of forecast in wave 1"],
+            ["Perishable past 70% of shelf life", "Auto-trigger discount", "Pushed to app as deals near you"],
+            ["Forecast confidence < 60%", "Order conservatively at 50%", "Auto-logged for post-event review"],
+            ["Adjacent store has excess", "Auto-trigger redistribution", "Within 10km radius only"]
+          ]
+        },
+        {
+          h: "Rollout",
+          type: "list",
+          body: [
+            "<strong>Week 1</strong> — Tag products with shelf-life metadata; most of it already sits in supplier catalogues. Add the batch-ordering flag. Three days.",
+            "<strong>Week 2</strong> — Implement the shelf-life cap in the ordering function. One day.",
+            "<strong>Week 3–4</strong> — Shadow mode. How much spoilage would this have prevented? Put a number on it.",
+            "<strong>Month 2</strong> — Three cities live. Add redistribution logic.",
+            "<strong>Month 3</strong> — Full rollout with auto-discount triggers. Target under 2% spoilage on perishables, against an estimated 8–12% today."
+          ]
+        },
+        {
+          h: "How this actually ships",
+          type: "note",
+          body: [
+            "<strong>Batch ordering:</strong> change <code>place_order(total_forecast)</code> to <code>place_order(total_forecast * 0.4)</code> and schedule a review trigger 48 hours later. One line of logic. Ship today.",
+            "<strong>Shelf-life cap:</strong> add a <code>shelf_life_days</code> column, then cap order quantity at daily average × shelf life. One column and one if-statement. Two days.",
+            "<strong>Redistribution:</strong> query nearby stores for excess before placing a supplier order. A SQL query and a transfer API call. One week.",
+            "Ten days of engineering. Zero new cost. Estimated saving of ₹2 crore per festival season."
+          ]
+        }
+      ],
+      related: ["zomato-ops", "nestle-nesgpt", "investor-agent"]
+    },
+
+    /* ============ 6. MISSION CONTROL HQ ============ */
+    {
+      id: "mission-control-hq",
+      title: "Mission Control HQ — What They're Actually Selling",
+      org: "MissionControlHQ",
+      category: "breakdowns",
+      industry: "Dev Tools · Multi-Agent · Unit Economics",
+      year: "2026",
+      status: "Breakdown",
+      effortDays: 2,
+      effortLabel: "a weekend of reading their code",
+      tagline: "The AI turned out to be the least interesting part.",
+      summary:
+        "An AI agent product for solo founders that runs no models of its own — you connect the " +
+        "ChatGPT or Claude plan you already pay for. What's being sold isn't intelligence. It's " +
+        "coordination. Four decisions make it work, and every one of them costs something.",
+      tags: ["Architecture teardown", "Multi-agent", "Unit economics", "Cost observability", "Human-in-the-loop"],
+      stats: [
+        { v: "0",    l: "models they run themselves" },
+        { v: "215",  l: "backend functions, 38 modules" },
+        { v: "~100", l: "pre-built tool connectors" }
+      ],
+      gate: {
+        rule: "Agent needs to act outside the board — send, post or spend",
+        pass: "Runs on the customer's own machine, comments the result back to the board",
+        fail: "Becomes an escalation ticket; one tap on the founder's phone releases it"
+      },
+      sections: [
+        {
+          h: "What the product actually is",
+          type: "prose",
+          body: [
+            "A hosted coordination layer for a squad of AI agents working a shared task board. The founder talks to a lead agent on Telegram; the squad works a persistent board, runs on schedules, and escalates to the human only when a decision is genuinely needed.",
+            "Their own homepage line is the giveaway: <em>your AI agents are working, you just can't see them</em>. The product is not the agents. It is the seeing."
+          ]
+        },
+        {
+          h: "The verified stack",
+          type: "table",
+          head: ["Layer", "What they actually use"],
+          body: [
+            ["Frontend", "React + Vite single-page app, React Router, Tailwind"],
+            ["Backend", "Convex — 215 functions across 38 modules"],
+            ["Auth", "Convex Auth — password, Google, GitHub"],
+            ["Billing", "Paddle + ProfitWell; credits with auto-top-up"],
+            ["Agent runtime", "One cloud machine per customer, nicknamed a “sprite”"],
+            ["Agent CLIs", "Claude Code, Codex, OpenClaw, GitHub Copilot"],
+            ["Integrations", "Composio — roughly 100 toolkits"],
+            ["Memory", "Supermemory"],
+            ["Channels", "Telegram bots, Discord bots"],
+            ["Analytics", "PostHog + Plausible (both self-proxied), Dub, Sentry"]
+          ]
+        },
+        {
+          h: "How I read it",
+          type: "prose",
+          body: [
+            "Everything in that table is confirmed — read from their public site and the JavaScript their site ships to browsers. One thing I deliberately did <strong>not</strong> establish: who hosts the per-customer machines. They confirm the machines exist and can be snapshotted, never the host, so neither do I.",
+            "The four-layer framing below is <strong>mine, not theirs</strong>. They don't publish it this way. Their own pieces map into it with nothing dropped, and it makes the trade-offs legible."
+          ]
+        },
+        {
+          h: "Four layers, and the line each one refuses to cross",
+          type: "table",
+          head: ["Layer", "The question it answers", "What it deliberately does not do"],
+          body: [
+            ["The Board — coordination", "Where does work live so it outlives the conversation?", "Holds the work and decides who's next; doesn't do the work"],
+            ["The Workshop — execution", "Where does work get done, and whose money pays for it?", "Where autonomy lives; also where the money burns"],
+            ["The Hands — connection", "How do agents touch the tools the business runs on?", "Enables action; doesn't decide to act"],
+            ["Mission Control — oversight", "How does one person stay in charge of eight agents?", "You stop being the doer; you become the exception handler"]
+          ]
+        },
+        {
+          h: "The architecture, in four drawings",
+          type: "figure",
+          body: [
+            {
+              key: "mchq-task",
+              tag: "Artifact 01",
+              name: "How one task gets done",
+              cap: "From a chat message to completed work. The founder asks in plain English, a chat bot creates a task, the coordination core tracks it, a cloud machine runs an agent, tool connectors reach email and CRM, and the founder approves only when needed. <b>Task board, memory and cost log sit underneath</b> — that is the part that makes it a product rather than a chat window."
+            },
+            {
+              key: "mchq-squad",
+              tag: "Artifact 02",
+              name: "A squad, not one assistant",
+              cap: "A lead agent breaks work into rows on a shared board; research, build and review agents claim rows and comment back. <b>Because every task has an ID, a second agent can pick it up tomorrow.</b> The founder is pulled in only when something is blocked."
+            },
+            {
+              key: "mchq-providers",
+              tag: "Artifact 03",
+              name: "Telegram as the front door",
+              cap: "The founder chats, a lead agent creates tasks on the board, and agents draw on the founder's own ChatGPT, Claude or Copilot plans — falling through to the next one when a daily limit is hit. <b>Borrowing the customer's subscription keeps their cost flat as usage grows.</b> The price is that failover chain."
+            },
+            {
+              key: "mchq-isolation",
+              tag: "Artifact 04",
+              name: "One private workspace per customer",
+              cap: "Each customer gets an isolated agent machine with its own files and settings, able to sleep when idle and be snapshotted, so customer data never mixes. <b>You pay for that machine whether or not they ever log in</b> — which is where the margin gets decided."
+            }
+          ]
+        },
+        {
+          h: "Four decisions, and what each one costs",
+          type: "list",
+          body: [
+            "<strong>1. Work lives in a table, not a chat.</strong> Every task is a row with an ID and a status. Sounds mundane — it's the entire product. The moment work has an ID, another agent can pick it up tomorrow, a second can comment on it, and you can watch it move. Memory stops being a transcript.",
+            "<strong>2. Every customer gets their own machine.</strong> Agents need somewhere to actually run commands, not just produce text, and one customer's logins can't sit beside another's. <em>The cost:</em> you pay for that machine whether or not they ever log in.",
+            "<strong>3. The customer's own AI subscription pays for the tokens.</strong> Eight agents working all day burn an enormous amount of usage. Resell it and you price yourself out; borrow it and your cost stays flat as usage grows. <em>The cost:</em> consumer plans have daily limits, so they built failover across several just to survive a workday.",
+            "<strong>4. Spend is visible per agent, per task, per day.</strong> This looks like an accounting feature. It's the reason anyone will leave the system running overnight — if you can't see that one agent burned forty dollars re-reading the same page, you won't trust it, so you'll switch it off."
+          ]
+        },
+        {
+          h: "What I'd watch if I were their PM",
+          type: "list",
+          body: [
+            "<strong>Idle-machine ratio.</strong> Machines per paying customer versus machines that saw a command this week. This single number decides gross margin, and it is invisible from the outside.",
+            "<strong>Failover depth per workday.</strong> How often a customer drops to their second and third provider. Two is a design choice; three every afternoon means the value promise quietly depends on the customer buying more subscriptions.",
+            "<strong>Escalations per completed task.</strong> Too high and the founder is still the doer. Too low and nobody is checking the work. The healthy band is the actual product metric, and it is not a number they publish.",
+            "<strong>Cost per completed task, not per token.</strong> Tokens are the input the customer already owns. The thing worth pricing against is a finished piece of work."
+          ]
+        },
+        {
+          h: "The lesson I keep coming back to",
+          type: "note",
+          body: [
+            "With software that acts on its own, <strong>cost visibility isn't a finance feature. It's trust.</strong> Ship it early, before anyone asks for it.",
+            "And the uncomfortable part for anyone building here: the model is a commodity and gets cheaper every month. The defensible thing is the boring protocol underneath — how work gets claimed, handed over, and escalated to a human."
+          ]
+        }
+      ],
+      related: ["investor-agent", "swiggy-instamart", "eval-framework"]
+    },
+
+    /* ============ 7. JOB QUALIFIER AGENT ============ */
+    {
+      id: "job-qualifier",
+      title: "The Job Qualifier Agent",
+      org: "Built on Hermes",
+      category: "agents",
+      industry: "Agentic AI · Retrieval · Evaluation",
+      year: "2026",
+      status: "Shipped",
+      effortDays: 0,
+      effortLabel: "Shipped and running",
+      tagline: "An agent that refuses to say things it cannot prove.",
+      summary:
+        "A corpus-grounded reasoning loop with an anti-fabrication integrity guardrail and a two-layer " +
+        "evaluation suite: deterministic citation-existence checks plus a scoped LLM faithfulness judge.",
+      tags: ["RAG", "Guardrails", "LLM-as-judge", "Golden sets", "Shipped"],
+      stats: [
+        { v: "2",   l: "eval layers" },
+        { v: "0",   l: "unbacked claims allowed" },
+        { v: "Live", l: "status" }
+      ],
+      gate: {
+        rule: "Is this claim backed by verified evidence in the corpus?",
+        pass: "Asserted, with its citation attached",
+        fail: "Flagged — the agent says it does not know"
+      },
+      sections: [
+        {
+          h: "What it does",
+          type: "prose",
+          body: [
+            "The Job Qualifier reads a role and a candidate corpus and decides whether the match is real — grounding every judgement in retrieved evidence rather than plausible-sounding generation.",
+            "The interesting part is not the retrieval. It is what happens when the evidence is not there."
+          ]
+        },
+        {
+          h: "The anti-fabrication guardrail",
+          type: "prose",
+          body: [
+            "Language models are fluent by default and truthful only by construction. Left alone, the agent will produce a confident sentence about a qualification the candidate never claimed, because that sentence is statistically reasonable.",
+            "So the guardrail flags any claim not backed by verified evidence. Not a soft instruction in the prompt — a check the output has to pass. An agent that says <em>I don't know</em> is more useful than one that is fluently wrong."
+          ]
+        },
+        {
+          h: "Two evaluation layers",
+          type: "list",
+          body: [
+            "<strong>Deterministic citation-existence check</strong> — Does the cited source actually exist in the corpus, at that location, saying that thing? This is code, not a model. It cannot be talked out of its answer.",
+            "<strong>Scoped LLM faithfulness judge</strong> — Given the retrieved evidence and the generated claim, is the claim faithful to the evidence? Deliberately scoped narrow, because a broad judge is a plausibility detector, not a truth detector."
+          ]
+        },
+        {
+          h: "Why the order matters",
+          type: "note",
+          body: [
+            "The deterministic check runs first. A fabricated citation never reaches the judge, because a judge scoring on plausibility will happily pass a citation that reads correctly and does not exist. Cheap and certain before expensive and probabilistic — that ordering is the whole design.",
+            "Rubric scoring is in place; eval calibration is ongoing. Saying otherwise would be the kind of unbacked claim this agent exists to catch."
+          ]
+        }
+      ],
+      related: ["eval-framework", "investor-agent", "nestle-nesgpt"]
+    },
+
+    /* ============ 7. INVESTOR AGENT ============ */
+    {
+      id: "investor-agent",
+      title: "Investor Research & Outreach Agent",
+      org: "Built on Hermes",
+      category: "agents",
+      industry: "Multi-agent · Autonomy design",
+      year: "2026",
+      status: "Pre-deployment",
+      effortDays: 0,
+      effortLabel: "Built, pre-deployment",
+      tagline: "Human-in-the-loop by design, not by patch.",
+      summary:
+        "A two-agent pipeline that turns a pitch deck into qualified, personalised investor outreach. " +
+        "The product judgement is not in the drafting. It is in the routing: the fit score decides how " +
+        "much autonomy the system gets.",
+      tags: ["Multi-agent", "Autonomy tiers", "Approval gates", "Idempotency", "Irreversible actions"],
+      stats: [
+        { v: "≥ 80",  l: "auto-queues a draft" },
+        { v: "60 days", l: "duplicate-contact suppression" },
+        { v: "2",     l: "tokens required to send" }
+      ],
+      gate: {
+        rule: "Investor fit score, out of 100",
+        pass: "≥ 80 auto-queues a draft · 70–79 escalates to a human on Telegram",
+        fail: "Below 70 never surfaces at all"
+      },
+      sections: [
+        {
+          h: "What it does",
+          type: "prose",
+          body: [
+            "Agent 1 parses the pitch deck, derives investment themes, sources matched investors with verified professional emails, and scores fit out of 100. Agent 2 drafts, previews and sends.",
+            "Two agents rather than one because sourcing and sending have different failure modes, and different consequences when they fail."
+          ]
+        },
+        {
+          h: "Autonomy is earned, not granted",
+          type: "list",
+          body: [
+            "<strong>Score ≥ 80</strong> — Strong match. The system auto-queues a draft.",
+            "<strong>Score 70–79</strong> — Genuinely uncertain, which is exactly when a human should look. Escalates via Telegram approval.",
+            "<strong>Below 70</strong> — Never surfaces. Not queued for later, not shown as a maybe. A weak match that reaches a human is still a cost."
+          ]
+        },
+        {
+          h: "Sending is irreversible, so it is gated deterministically",
+          type: "prose",
+          body: [
+            "You cannot un-email an investor. So the send path does not rely on the model behaving well. Preview issues a one-time token. A second, separate confirm command carrying that token is required before the send gate fires.",
+            "Two tokens, two steps, one direction. The model can be wrong and the email still does not go out."
+          ]
+        },
+        {
+          h: "Duplicate-contact suppression",
+          type: "prose",
+          body: [
+            "A 60-day suppression window per product prevents the same investor being contacted twice. This is the unglamorous half of agent design: agents run repeatedly, and a system with no memory of what it already did will cheerfully embarrass you at scale."
+          ]
+        },
+        {
+          h: "What I'd do differently",
+          type: "note",
+          body: [
+            "The fit score is the load-bearing component and it is the least tested one. Before this goes live, the scoring needs a golden set with human-labelled matches — the same discipline applied in the eval framework — otherwise the autonomy tiers are gating on a number nobody has validated."
+          ]
+        }
+      ],
+      related: ["job-qualifier", "eval-framework", "zomato-ops"]
+    },
+
+    /* ============ 8. EVAL FRAMEWORK ============ */
+    {
+      id: "eval-framework",
+      title: "AI Evaluation Framework",
+      org: "Methodology",
+      category: "agents",
+      industry: "Evaluation · LLMOps",
+      year: "2026",
+      status: "In build",
+      effortDays: 0,
+      effortLabel: "Write-up in progress",
+      tagline: "A plausible citation and a real one look identical to a judge.",
+      summary:
+        "Standalone eval methodology built for The Job Qualifier: golden-set construction, LLM-as-judge " +
+        "design with its failure modes mapped, and a deterministic guard against fabricated citations " +
+        "that a rubric-judge would pass on plausibility alone.",
+      tags: ["Golden sets", "LLM-as-judge", "Failure modes", "Deterministic checks", "In build"],
+      stats: [
+        { v: "3",  l: "components" },
+        { v: "1",  l: "failure mode that matters most" },
+        { v: "WIP", l: "write-up status" }
+      ],
+      gate: {
+        rule: "Does the cited source exist in the corpus?",
+        pass: "Passes to the faithfulness judge",
+        fail: "Deterministic fail — the judge never sees it"
+      },
+      sections: [
+        {
+          h: "Why this exists as its own artefact",
+          type: "prose",
+          body: [
+            "Building the Job Qualifier surfaced a problem that generalises: most eval suites measure whether output looks right. Very few measure whether it is true. Those are different questions and the gap between them is where AI products lose trust.",
+            "So the methodology got pulled out of the agent and written up on its own."
+          ]
+        },
+        {
+          h: "Golden-set construction",
+          type: "prose",
+          body: [
+            "A golden set is only as honest as its hardest cases. Sets built from typical inputs measure typical performance, which is the number least likely to hurt you. The construction method deliberately over-weights the edges — ambiguous evidence, partial matches, and cases where the correct answer is <em>insufficient information</em>."
+          ]
+        },
+        {
+          h: "LLM-as-judge, and its failure modes",
+          type: "list",
+          body: [
+            "<strong>Plausibility bias</strong> — Judges reward fluent, well-formed answers. A confident fabrication outscores a hedged truth.",
+            "<strong>Scope creep</strong> — A judge asked to assess everything assesses nothing reliably. Narrow the question and the signal improves.",
+            "<strong>Self-preference</strong> — A judge from the same model family tends to favour its own generation patterns.",
+            "<strong>No ground truth</strong> — A judge with no access to source evidence is scoring style. This is the failure the deterministic layer exists to close."
+          ]
+        },
+        {
+          h: "The deterministic guard",
+          type: "note",
+          body: [
+            "Before any model judges anything, code checks that each cited source exists in the corpus and says what the claim says it says. A fabricated citation fails here and never reaches the judge.",
+            "This is the whole argument in one line: <strong>a plausible citation and a real one look identical to a judge, and completely different to a lookup.</strong> Use the lookup first."
+          ]
+        }
+      ],
+      related: ["job-qualifier", "investor-agent", "swiggy-instamart"]
+    },
+
+    /* ============ 9. AAYO APP ============ */
+    {
+      id: "aayo-app",
+      title: "Aayo App — Revenue Model & Roadmap Scope",
+      org: "Pre-seed event discovery platform",
+      category: "advisory",
+      industry: "Consumer Marketplace · Pre-seed",
+      year: "2025–26",
+      status: "Ongoing",
+      effortDays: 0,
+      effortLabel: "Ongoing, pro bono",
+      tagline: "Protecting velocity by reducing build surface, not adding to it.",
+      summary:
+        "Advising a pre-seed founder on monetisation, pitch narrative and roadmap scope. 1,100+ organic " +
+        "users and 90+ events at zero marketing spend — the constraint is not demand, it is three " +
+        "engineers and nine months of runway.",
+      tags: ["Revenue model", "TAM-SAM-SOM", "Roadmap scope", "Positioning", "Pre-seed"],
+      stats: [
+        { v: "1,100+", l: "organic users, zero spend" },
+        { v: "90+",    l: "events hosted" },
+        { v: "₹1 Cr",  l: "pre-seed ask supported" }
+      ],
+      gate: {
+        rule: "Does this feature survive MVP focus, 3 engineers, and 9 months of runway?",
+        pass: "Stays in the build queue",
+        fail: "Cut — velocity is the only real asset pre-revenue"
+      },
+      sections: [
+        {
+          h: "Monetisation design",
+          type: "prose",
+          body: [
+            "A 10% transaction-commission core with five supporting sub-streams: promoted listings, organiser plans, top placement, brand advertising, and venue listings.",
+            "The commission carries the model; the sub-streams exist so that a single pricing change cannot take the whole business down."
+          ]
+        },
+        {
+          h: "Pitch narrative",
+          type: "prose",
+          body: [
+            "Co-designed the pre-seed narrative — sharpened the problem framing for India's fragmented event-discovery market, mapped competitive positioning against Luma, Meetup, AllEvents, Eventbrite and BookMyShow, and sized the opportunity through TAM-SAM-SOM. Those decisions are reflected in the investor deck supporting the ₹1 Cr ask."
+          ]
+        },
+        {
+          h: "Roadmap simplification",
+          type: "prose",
+          body: [
+            "Stress-tested the build queue against three constraints — MVP focus, a three-engineer team, and nine months of runway — and identified what to remove. The output of the exercise was a shorter list, not a longer one.",
+            "Pre-revenue, product velocity is the only compounding asset. Every feature added is velocity spent."
+          ]
+        },
+        {
+          h: "Current work",
+          type: "prose",
+          body: [
+            "Scoping business strategy for an upcoming Aayo-hosted event — marketing ideation and revenue model (sponsor mix, ticket tiering, on-event monetisation) while the founder runs operations. Alongside that, advising on a referral-led growth approach for a platform that reached 1,100+ users and 90+ events without spending on marketing."
+          ]
+        }
+      ],
+      related: ["mckinsey-lilli", "goldman-analysts", "investor-agent"]
+    }
+  ],
+
+  /* ---------------------------------------------------------------
+     Experience — for the About page.
+     --------------------------------------------------------------- */
+  experience: [
+    {
+      role: "Advisor & Mentor (pro bono)",
+      org: "Aayo App — pre-seed event discovery",
+      place: "Delhi NCR",
+      when: "Dec 2025 – present",
+      points: [
+        "Designed the monetisation plan: a 10% transaction-commission core with five supporting sub-streams.",
+        "Co-designed the pre-seed pitch narrative and TAM-SAM-SOM sizing behind the ₹1 Cr ask.",
+        "Cut the build queue against MVP focus, three engineers and nine months of runway — protecting velocity by removing features, not adding them."
+      ]
+    },
+    {
+      role: "Sales Manager — Industrial Automation",
+      org: "VINCI Energies (Actemium)",
+      place: "Bengaluru",
+      when: "Jul 2024 – Nov 2025",
+      points: [
+        "Revived a pan-South-India book of 10+ dormant cement and steel accounts with a three-step playbook: technical refresh, opportunity discovery, tailored techno-commercial proposal.",
+        "Mapped three new market segments by triangulating customer pain, competitor gaps and field adjacency.",
+        "Ran the end-to-end revenue cycle, translating downtime, energy and compliance requirements into deployable automation scope.",
+        "Sequenced GTM using a deal-size × conversion-readiness matrix rather than activity volume."
+      ]
+    },
+    {
+      role: "Senior Sales Engineer & Key Account Manager — Export",
+      org: "TD Power Systems",
+      place: "Bengaluru · USA + Europe markets",
+      when: "Feb 2022 – Jul 2024",
+      points: [
+        "Grew Fincantieri revenue 70% by sustaining weekly progress reviews and full spec-change traceability — a compliance bar that had disqualified most alternator suppliers.",
+        "Owned seven US and European key accounts including Solar Turbines, Siemens, Fincantieri and Turboden.",
+        "Ran offer-to-close-to-cash across engineering, design, production, quality and logistics for multi-time-zone deliveries.",
+        "Closed the feedback loop from the field — surfaced failure patterns and competitive intel back to engineering."
+      ]
+    },
+    {
+      role: "Sales & Estimation Engineer — Control Panels",
+      org: "JC Industries",
+      place: "Bengaluru",
+      when: "Feb 2018 – Feb 2022",
+      points: [
+        "Doubled control-panel revenue in one year by building a government-tender pipeline into a new PSU revenue stream.",
+        "Won a breakthrough NTPC Bijapur order — four draw-out control stations for an 8-star delta motor starter.",
+        "Built a PSU portfolio across NTPC, UCIL and Midhani, translating tender specs into compliant bids."
+      ]
+    },
+    {
+      role: "Co-Founder",
+      org: "Siddhi Vinayak Infra-Ventures",
+      place: "Prayagraj",
+      when: "Apr 2017 – Feb 2018",
+      points: [
+        "Co-founded a concrete-block manufacturing startup — project financing, business development and operations end to end. Secured municipal corporation and private housing-society contracts."
+      ]
+    },
+    {
+      role: "Operations Engineer Trainee",
+      org: "Jay Bharat Maruti",
+      place: "Gurgaon",
+      when: "Oct 2016 – Apr 2017",
+      points: [
+        "Plant operations, cross-functional coordination and customer bid intake at a major Maruti-Suzuki auto-ancillary. First exposure to industrial B2B execution."
+      ]
+    }
+  ],
+
+  skills: [
+    {
+      group: "AI product — built and shipped",
+      items: ["Agent design & agentic workflows", "RAG architecture & retrieval design", "LLM fundamentals & foundation models", "Prompt engineering for production", "Build-vs-buy reasoning"]
+    },
+    {
+      group: "AI product — actively building",
+      items: ["Evaluation frameworks (golden sets, LLM-as-judge)", "Deterministic citation checks", "Post-launch monitoring & observability", "LLMOps"]
+    },
+    {
+      group: "Core PM craft",
+      items: ["Problem discovery", "Requirement definition", "Prioritisation logic", "Trade-off decision making", "Metrics ownership"]
+    },
+    {
+      group: "B2B & commercial",
+      items: ["Revenue ownership", "Enterprise & key account management", "Pricing strategy & techno-commercial offers", "Bid management & RFP response", "Revenue cycle & order-to-cash"]
+    },
+    {
+      group: "Tools",
+      items: ["Jira / Linear", "Figma", "SQL", "Mixpanel / Amplitude", "Claude API / OpenAI Playground", "Vector DBs"]
+    }
+  ],
+
+  education: [
+    {
+      title: "Global PGP in Startup Leadership",
+      org: "LaunchPilot School of Business / Mentogram College (affiliate, Woolf University)",
+      when: "Completed January 2026 · EQF (ECTS)",
+      note: "Design thinking, lean startup, agile & MVP development, rapid prototyping, UI/UX, A/B testing, user research, growth & positioning, financial modelling, valuation, investor pitching."
+    },
+    {
+      title: "IBM AI Product Manager Professional Certificate",
+      org: "Coursera",
+      when: "Completed 2026",
+      note: "Product strategy and planning, stakeholder collaboration, new-product development, lifecycle management. Foundation models, prompt engineering, and building AI-powered products."
+    },
+    {
+      title: "B.E. Electrical & Electronics",
+      org: "Visvesvaraya Technological University, Belgaum",
+      when: "2012 – 2016 · 76%",
+      note: ""
+    }
+  ],
+
+  reading: [
+    "The AI Product Manager's Handbook — Irene Bratsis",
+    "Agentic Architectural Patterns for Building Multi-Agent Systems — Arsanjani & Bustos",
+    "Beyond Algorithms: Delivering AI for Business",
+    "Inspired: How to Create Tech Products Customers Love",
+    "Agentic AI For Dummies"
+  ]
+};

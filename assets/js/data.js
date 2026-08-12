@@ -321,7 +321,7 @@ window.PORTFOLIO = {
           h: "Where it is",
           type: "prose",
           body: [
-            "The MVP is built and the waitlist is live at <a href=\"https://my-immersion-project-psi.vercel.app\" target=\"_blank\" rel=\"noopener\">my-immersion-project-psi.vercel.app</a>, with real signups. Answers persist to Convex so nothing is lost; the model is reached through a single pinned config rather than an auto-router, because an unpinned router is how a side project quietly becomes a bill.",
+            "The MVP is built and the waitlist is live at <a href=\"https://alars.vercel.app\" target=\"_blank\" rel=\"noopener\">alars.vercel.app</a>, with real signups. Answers persist to Convex so nothing is lost; the model is reached through a single pinned config rather than an auto-router, because an unpinned router is how a side project quietly becomes a bill.",
             "Not built on purpose: integrations, login, history, export, RICE scoring, and the second mode. Each was cut to protect the thirty minutes."
           ]
         }

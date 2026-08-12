@@ -509,11 +509,34 @@
   }
 
   /* =============================================================
+     FEATURED ORDER
+
+     Category first, in the order the categories are declared in
+     data.js — today that is Tools I've Built, then Agents I've Built,
+     then AI Product Breakdowns. Position within data.js only breaks
+     ties inside a category.
+
+     This is deliberately derived rather than hand-maintained: add a
+     new tool anywhere in `items` and it lands in the top band on its
+     own. Reordering the bands is a matter of reordering `categories`.
+     ============================================================= */
+  function featuredSorted(list) {
+    var catOrder = P.categories.map(function (c) { return c.slug; });
+    var dataOrder = P.items.map(function (i) { return i.id; });
+    var rank = function (it) {
+      var i = catOrder.indexOf(it.category);
+      return i < 0 ? catOrder.length : i;   // unknown category sorts last
+    };
+    return list.slice().sort(function (a, b) {
+      return (rank(a) - rank(b)) || (dataOrder.indexOf(a.id) - dataOrder.indexOf(b.id));
+    });
+  }
+
+  /* =============================================================
      PAGE: WORK — filter + sort
      ============================================================= */
   function renderWork() {
     var state = { cat: param("cat") || "all", sort: "featured" };
-    var order = P.items.map(function (i) { return i.id; });
 
     var toolbar = '<div class="toolbar">' +
       '<div class="filters" role="group" aria-label="Filter by category">' +
@@ -545,7 +568,7 @@
       if (state.sort === "org")    list.sort(function (a, b) { return a.org.localeCompare(b.org); });
       if (state.sort === "status") list.sort(function (a, b) { return a.status.localeCompare(b.status); });
       if (state.sort === "effort") list.sort(function (a, b) { return a.effortDays - b.effortDays; });
-      if (state.sort === "featured") list.sort(function (a, b) { return order.indexOf(a.id) - order.indexOf(b.id); });
+      if (state.sort === "featured") list = featuredSorted(list);
 
       $("#results").innerHTML = list.length
         ? list.map(cardHTML).join("")

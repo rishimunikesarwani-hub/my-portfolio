@@ -49,7 +49,9 @@
     li:     '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M5.4 17H2.5V7.4h2.9V17ZM3.9 6.1a1.7 1.7 0 1 1 0-3.4 1.7 1.7 0 0 1 0 3.4ZM17.5 17h-2.9v-4.7c0-1.1 0-2.6-1.6-2.6s-1.8 1.2-1.8 2.5V17H8.3V7.4h2.8v1.3h.1a3.1 3.1 0 0 1 2.8-1.5c3 0 3.5 2 3.5 4.5V17Z"/></svg>',
     gh:     '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/></svg>',
     loc:    '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16.2 8.5c0 4.4-6.2 9.4-6.2 9.4s-6.2-5-6.2-9.4a6.2 6.2 0 1 1 12.4 0Z"/><circle cx="10" cy="8.4" r="2.2"/></svg>',
-    logo:   '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M14 4 24.5 23H3.5z" stroke="#2EC5D3"/><path d="M9.2 17.6h9.6" stroke="#2EC5D3" opacity=".55"/></svg>'
+    /* Not rendered anywhere today — kept in sync with the favicon so it
+       does not come back as the old triangle if it is ever used. */
+    logo:   '<svg viewBox="0 0 28 28" fill="none" stroke="#2EC5D3" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M9 23V5h7l4 4v3l-4 4H9m5 0 6 7"/></svg>'
   };
 
   /* =============================================================
@@ -386,7 +388,7 @@
 
   function ctaBand() {
     return '<section class="cta-band"><div class="wrap">' +
-      '<p class="eyebrow plain" style="justify-content:center">Open to AI Product Manager roles</p>' +
+      '<p class="eyebrow plain" style="justify-content:center">Open to Agentic AI Product Manager roles</p>' +
       '<h2>Want the decision log behind one of these?</h2>' +
       '<div class="hero-cta">' +
         '<a class="btn btn-primary" href="contact.html">Let\'s talk' + ICON.arrow + '</a>' +
@@ -422,7 +424,7 @@
     $("#hero").innerHTML =
       '<div class="wrap"><div class="hero-grid">' +
         '<div class="hero-copy stagger">' +
-          '<p class="avail"><span class="dot" aria-hidden="true"></span>Open to AI Product Manager roles</p>' +
+          '<p class="avail"><span class="dot" aria-hidden="true"></span>Open to Agentic AI Product Manager roles</p>' +
           '<p class="hello">Hello <span class="wave">👋</span></p>' +
           '<p class="iam">I am ' + esc(p.name) + '</p>' +
           '<h1 class="role-line"><span id="typed"></span><span class="caret" aria-hidden="true"></span></h1>' +
@@ -985,24 +987,9 @@
           '<section style="margin-bottom:3rem">' +
             '<p class="eyebrow">The short version</p>' +
             '<p style="font-size:1.12rem;color:#c3d2e4">' + esc(p.pitch) + '</p>' +
-            '<p>' + esc(p.thesis) + '</p>' +
-            '<p>The AI work is deliberately hands-on. I build the agents, choose the retrieval strategy, write the evaluation suites, and find out where they break before a user does. That means I can defend a model choice, a cost and latency budget, a failure taxonomy and an escalation rule — not just describe them.</p>' +
-            '<p>The nine years before that were spent between an engineering team and a buyer who each thought the other was being unreasonable — NTPC, Siemens, Fincantieri, Solar Turbines. Translation under constraint, with revenue attached to getting it right. It turns out to be most of product management, and it is why I care more about what a wrong answer costs than about how impressive the demo looked.</p>' +
             '<div class="hero-cta" style="margin-top:1.5rem">' +
               '<a class="btn btn-primary" href="work.html">See the work' + ICON.arrow + '</a>' +
             '</div>' +
-          '</section>' +
-
-          '<section id="experience" style="margin-bottom:3rem">' +
-            '<p class="eyebrow">Experience</p><h2>Where the judgement came from</h2>' +
-            '<div class="timeline">' + P.experience.map(function (e) {
-              return '<div class="tl-item">' +
-                '<p class="tl-when">' + esc(e.when) + '</p>' +
-                '<h3>' + esc(e.role) + '</h3>' +
-                '<p class="tl-org">' + esc(e.org) + ' · ' + esc(e.place) + '</p>' +
-                '<ul>' + e.points.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + '</ul>' +
-              '</div>';
-            }).join("") + '</div>' +
           '</section>' +
 
           '<section id="skills" style="margin-bottom:3rem">' +
@@ -1014,18 +1001,36 @@
           '</section>' +
 
           '<section id="education">' +
-            '<p class="eyebrow">Education & learning</p><h2>Still reading</h2>' +
-            '<div class="timeline">' + P.education.map(function (e) {
-              return '<div class="tl-item">' +
+            '<p class="eyebrow">Education & learning</p><h2>Certificates and the reading list</h2>' +
+            '<div class="timeline timeline-edu">' + P.education.map(function (e) {
+              return '<div class="tl-item' + (e.inProgress ? ' in-progress' : '') + '">' +
                 '<p class="tl-when">' + esc(e.when) + '</p>' +
                 '<h3>' + esc(e.title) + '</h3>' +
                 '<p class="tl-org">' + esc(e.org) + '</p>' +
                 (e.note ? '<p style="font-size:.93rem">' + esc(e.note) + '</p>' : '') +
               '</div>';
             }).join("") + '</div>' +
-            '<div class="side-box" style="margin-top:1.5rem"><h4>On the desk right now</h4>' +
-              '<ul style="margin:0;padding-left:1.1em">' + P.reading.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") + '</ul>' +
-            '</div>' +
+            P.reading.map(function (g) {
+              return '<div class="side-box" style="margin-top:1.5rem"><h4>' + esc(g.group) + '</h4>' +
+                '<ul style="margin:0;padding-left:1.1em">' +
+                  g.items.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") +
+                '</ul></div>';
+            }).join("") +
+          '</section>' +
+
+          /* Work history sits last on purpose: the AI proof and the current
+             learning lead, and the nine years support them rather than
+             introduce them. Moved below skills and education 2026-08-12. */
+          '<section id="experience" style="margin-top:3rem">' +
+            '<p class="eyebrow">Experience</p><h2>Where the judgement came from</h2>' +
+            '<div class="timeline">' + P.experience.map(function (e) {
+              return '<div class="tl-item">' +
+                '<p class="tl-when">' + esc(e.when) + '</p>' +
+                '<h3>' + esc(e.role) + '</h3>' +
+                '<p class="tl-org">' + esc(e.org) + ' · ' + esc(e.place) + '</p>' +
+                '<ul>' + e.points.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + '</ul>' +
+              '</div>';
+            }).join("") + '</div>' +
           '</section>' +
         '</div>' +
       '</div></div>';
@@ -1040,8 +1045,7 @@
       '<div>' +
         '<p class="eyebrow">Get in touch</p>' +
         '<h2 style="max-width:16ch">The fastest route is email</h2>' +
-        '<p>I read everything. If you are hiring an AI product manager, or you want a second pair of eyes on an agent design, an eval suite or an autonomy boundary, say what the problem is and I will tell you honestly whether I am the right person for it.</p>' +
-        '<p>Based in Greater Noida, working remote-first across time zones — the export years were all US and Europe hours, so that part is not new.</p>' +
+        '<p>I read everything. If you are hiring an agentic AI product manager, or you want a second pair of eyes on an agent design, an eval suite or an autonomy boundary, say what the problem is and I will tell you honestly whether I am the right person for it.</p>' +
       '</div>' +
       '<div>' +
         '<ul class="contact-list">' +

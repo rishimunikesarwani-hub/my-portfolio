@@ -10,7 +10,7 @@ window.PORTFOLIO = {
   person: {
     name: "Rishi Muni Kesarwani",
     short: "Rishi",
-    role: "AI Product Manager",
+    role: "Agentic AI Product Manager",
     location: "Greater Noida, India · Open to Remote",
     email: "rishi.rte@gmail.com",
     phone: "+91 87078 92507",
@@ -1332,69 +1332,84 @@ window.PORTFOLIO = {
   /* ---------------------------------------------------------------
      Experience — for the About page.
      --------------------------------------------------------------- */
+  /* -----------------------------------------------------------------
+     EXPERIENCE
+
+     Reworked 2026-08-12 against the master resume
+     (07_Resume_JD_Job_Tracker\Master Resume\…_Master.md) and the live
+     LinkedIn profile. Job titles and dates follow LinkedIn, because that
+     is the record a recruiter cross-checks this page against. Nothing
+     here is invented — it is reframed toward the product decision in
+     each role rather than the sales activity.
+     ----------------------------------------------------------------- */
   experience: [
     {
-      role: "Advisor & Mentor (pro bono)",
-      org: "Aayo App — pre-seed event discovery",
-      place: "Delhi NCR",
+      role: "Founding Advisor & Business Consultant (pro bono)",
+      org: "AayoApp — pre-seed event-discovery platform",
+      place: "New Delhi",
       when: "Dec 2025 – present",
       points: [
-        "Designed the monetisation plan: a 10% transaction-commission core with five supporting sub-streams.",
-        "Co-designed the pre-seed pitch narrative and TAM-SAM-SOM sizing behind the ₹1 Cr ask.",
-        "Cut the build queue against MVP focus, three engineers and nine months of runway — protecting velocity by removing features, not adding them."
+        "Designed the revenue architecture — a 10% commission core plus five sub-streams (promoted listings, organiser plans, top placement, brand ads, venue partnerships). Adopted as the basis of the ₹1 Cr pre-seed ask.",
+        "Sized the market through TAM-SAM-SOM against Luma, Meetup, Eventbrite and BookMyShow, and built the projections and valuation framework behind the raise.",
+        "Cut MVP scope against real constraints — three engineers, nine months of runway. Protected velocity by removing features, not adding them.",
+        "Platform reached 1,100+ organic users and 90+ events on zero paid spend."
       ]
     },
     {
-      role: "Sales Manager — Industrial Automation",
+      role: "Sales & GTM Manager",
       org: "VINCI Energies (Actemium)",
       place: "Bengaluru",
       when: "Jul 2024 – Nov 2025",
       points: [
-        "Revived a pan-South-India book of 10+ dormant cement and steel accounts with a three-step playbook: technical refresh, opportunity discovery, tailored techno-commercial proposal.",
-        "Mapped three new market segments by triangulating customer pain, competitor gaps and field adjacency.",
-        "Ran the end-to-end revenue cycle, translating downtime, energy and compliance requirements into deployable automation scope.",
-        "Sequenced GTM using a deal-size × conversion-readiness matrix rather than activity volume."
+        "Owned pan-South-India go-to-market for industrial automation across cement and steel.",
+        "Ran end-to-end discovery cycles — interviewed buyers, synthesised requirements, translated pain into technical-commercial proposals.",
+        "Revived 10+ dormant accounts into qualified pipeline through a re-engagement playbook built from win/loss analysis.",
+        "Led across engineering, design, supply chain and operations with no line authority — influence without authority, which is most of the job."
       ]
     },
     {
-      role: "Senior Sales Engineer & Key Account Manager — Export",
+      role: "Key Account Manager — Export Markets (US & Europe)",
       org: "TD Power Systems",
       place: "Bengaluru · USA + Europe markets",
       when: "Feb 2022 – Jul 2024",
       points: [
-        "Grew Fincantieri revenue 70% by sustaining weekly progress reviews and full spec-change traceability — a compliance bar that had disqualified most alternator suppliers.",
-        "Owned seven US and European key accounts including Solar Turbines, Siemens, Fincantieri and Turboden.",
-        "Ran offer-to-close-to-cash across engineering, design, production, quality and logistics for multi-time-zone deliveries.",
-        "Closed the feedback loop from the field — surfaced failure patterns and competitive intel back to engineering."
+        "Grew Fincantieri revenue 70% year on year through structured requirements management and full spec-change traceability — a compliance bar that had disqualified most competing suppliers.",
+        "Owned seven US and European key accounts including Solar Turbines, Siemens, Fincantieri, Turboden and Exergy.",
+        "Acted as customer advocate: translated international requirements into product specifications and engineering roadmap inputs across time zones.",
+        "Ran deals end to end across currencies, banking instruments and compliance regimes, in a matrixed org without explicit authority."
       ]
     },
     {
-      role: "Sales & Estimation Engineer — Control Panels",
+      role: "Sales & Estimation Head — new revenue stream launch",
       org: "JC Industries",
       place: "Bengaluru",
       when: "Feb 2018 – Feb 2022",
       points: [
-        "Doubled control-panel revenue in one year by building a government-tender pipeline into a new PSU revenue stream.",
-        "Won a breakthrough NTPC Bijapur order — four draw-out control stations for an 8-star delta motor starter.",
-        "Built a PSU portfolio across NTPC, UCIL and Midhani, translating tender specs into compliant bids."
+        "Doubled company revenue in twelve months by identifying and launching an untapped government-tender segment.",
+        "Owned the full product-market-fit loop — market discovery, requirement definition, pricing, delivery.",
+        "Built the pricing, bidding and win/loss review system from scratch using competitor benchmarking; won and retained NTPC, UCIL and Midhani.",
+        "Won a breakthrough NTPC Bijapur order — four draw-out control stations for an 8-star delta motor starter."
       ]
     },
     {
       role: "Co-Founder",
-      org: "Siddhi Vinayak Infra-Ventures",
-      place: "Prayagraj",
-      when: "Apr 2017 – Feb 2018",
+      org: "Siddhi Vinayak Infra-Ventures — concrete blocks, tiles, pavers",
+      place: "Prayagraj, Uttar Pradesh",
+      when: "Jul 2017 – May 2018",
       points: [
-        "Co-founded a concrete-block manufacturing startup — project financing, business development and operations end to end. Secured municipal corporation and private housing-society contracts."
+        "Ran the whole business loop before knowing what it was called: found the market, built the product, acquired the customers, managed the cash. Full P&L ownership. Won municipal-corporation and housing-society contracts.",
+        "It ended badly — a critical project stalled on financial miscalculation, co-founder misalignment and customer payment delays, and I exited when funds were withheld.",
+        "What it taught: financial control is not optional, founder alignment has to exist before execution starts, and risk mitigation is a product decision. That is why I now design where a system stops deciding on its own."
       ]
     },
     {
-      role: "Operations Engineer Trainee",
-      org: "Jay Bharat Maruti",
-      place: "Gurgaon",
-      when: "Oct 2016 – Apr 2017",
+      role: "Graduate Engineer Trainee — automation & systems",
+      org: "JBM Group — Maruti Suzuki tier-1 supplier",
+      place: "Gurugram",
+      when: "Oct 2016 – Jul 2017",
       points: [
-        "Plant operations, cross-functional coordination and customer bid intake at a major Maruti-Suzuki auto-ancillary. First exposure to industrial B2B execution."
+        "Electrical automation systems, plant operations and cross-functional engineering coordination — the technical foundation the rest of the career sits on.",
+        "Developed an intuition for how manufacturing systems fail and why, which maps directly onto reasoning about AI failure modes and production reliability."
       ]
     }
   ],
@@ -1402,11 +1417,11 @@ window.PORTFOLIO = {
   skills: [
     {
       group: "AI product — built and shipped",
-      items: ["Agent design & agentic workflows", "RAG architecture & retrieval design", "LLM fundamentals & foundation models", "Prompt engineering for production", "Build-vs-buy reasoning"]
+      items: ["Agent design & agentic workflows", "RAG architecture & retrieval design", "Evaluation frameworks (golden sets, LLM-as-judge)", "LLM fundamentals & foundation models", "Prompt engineering for production", "Build-vs-buy reasoning"]
     },
     {
       group: "AI product — actively building",
-      items: ["Evaluation frameworks (golden sets, LLM-as-judge)", "Deterministic citation checks", "Post-launch monitoring & observability", "LLMOps"]
+      items: ["Deterministic citation checks", "Post-launch monitoring & observability", "LLMOps"]
     },
     {
       group: "Core PM craft",
@@ -1422,18 +1437,32 @@ window.PORTFOLIO = {
     }
   ],
 
+  /* -----------------------------------------------------------------
+     EDUCATION & CERTIFICATIONS
+
+     Order here is the order rendered — this is not sorted by date.
+     `inProgress: true` renders a hollow timeline marker instead of the
+     filled cyan one, so an unfinished course does not read as complete.
+     ----------------------------------------------------------------- */
   education: [
     {
-      title: "Global PGP in Startup Leadership",
-      org: "LaunchPilot School of Business / Mentogram College (affiliate, Woolf University)",
-      when: "Completed January 2026 · EQF (ECTS)",
-      note: "Design thinking, lean startup, agile & MVP development, rapid prototyping, UI/UX, A/B testing, user research, growth & positioning, financial modelling, valuation, investor pitching."
+      title: "IBM RAG and Agentic AI",
+      org: "Coursera",
+      when: "Still studying · 2026",
+      inProgress: true,
+      note: "Retrieval-augmented generation, vector stores and agentic orchestration — the formal grounding under the retrieval and agent work already shipped."
     },
     {
       title: "IBM AI Product Manager Professional Certificate",
       org: "Coursera",
       when: "Completed 2026",
       note: "Product strategy and planning, stakeholder collaboration, new-product development, lifecycle management. Foundation models, prompt engineering, and building AI-powered products."
+    },
+    {
+      title: "Global PGP in Startup Leadership",
+      org: "LaunchPilot School of Business / Mentogram College (affiliate, Woolf University)",
+      when: "Completed January 2026 · EQF (ECTS)",
+      note: "Design thinking, lean startup, agile & MVP development, rapid prototyping, UI/UX, A/B testing, user research, growth & positioning, financial modelling, valuation, investor pitching."
     },
     {
       title: "B.E. Electrical & Electronics",
@@ -1443,12 +1472,36 @@ window.PORTFOLIO = {
     }
   ],
 
+  /* -----------------------------------------------------------------
+     READING
+
+     Three groups, rendered in this order. Move a title between groups
+     as it progresses — that movement is the point of showing it.
+     ----------------------------------------------------------------- */
   reading: [
-    "The AI Product Manager's Handbook — Irene Bratsis",
-    "Agentic Architectural Patterns for Building Multi-Agent Systems — Arsanjani & Bustos",
-    "Beyond Algorithms: Delivering AI for Business",
-    "Inspired: How to Create Tech Products Customers Love",
-    "Agentic AI For Dummies"
+    {
+      group: "Books read to acquire AI skills",
+      items: [
+        "Generative AI and LLMs for Dummies",
+        "The AI Product Manager's Handbook — 2nd edition, Irene Bratsis",
+        "Agentic AI For Dummies"
+      ]
+    },
+    {
+      group: "Actively reading",
+      items: [
+        "Agentic Architectural Patterns for Building Multi-Agent Systems — Ali Arsanjani & Juan Pablo Bustos, Packt, 2026",
+        "Building AI-Powered Financial Products: Use Responsible AI",
+        "30 Agents Every AI Engineer Must Build"
+      ]
+    },
+    {
+      group: "Lined up for reading",
+      items: [
+        "Evals for Engineers",
+        "RAG with Python Cookbook: Practical Recipes — Dominik Polzer, 2026"
+      ]
+    }
   ],
 
   /* -----------------------------------------------------------------

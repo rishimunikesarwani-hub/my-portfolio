@@ -1036,31 +1036,6 @@ window.PORTFOLIO = {
   ],
 
   /* -----------------------------------------------------------------
-     COMMENTS — giscus, backed by GitHub Discussions
-
-     Comments are stored as Discussions on the portfolio repo itself, in
-     the Announcements category, so only you can start a thread and
-     anyone can reply. Nothing is stored here and there is no server to
-     run. Readers need a GitHub account to post; reading is open to all.
-
-     Each post gets its own thread keyed by the post `id` (mapping is
-     "specific"), NOT by URL — so the thread survives a URL change and
-     two posts can never share one thread.
-
-     Requires the giscus GitHub App to be installed on the repo:
-       https://github.com/apps/giscus
-
-     Set repo to "" and the comments block disappears from every post.
-     ----------------------------------------------------------------- */
-  comments: {
-    repo:       "rishimunikesarwani-hub/my-portfolio",
-    repoId:     "R_kgDOTzbOEw",
-    category:   "Announcements",
-    categoryId: "DIC_kwDOTzbOE84DDNpb",
-    theme:      "transparent_dark"
-  },
-
-  /* -----------------------------------------------------------------
      BLOG
 
      Newest first is handled in code — order here does not matter.

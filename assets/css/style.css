@@ -1452,23 +1452,6 @@ td:first-child { color: #b8c8dc; }
 .share-btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
 .share-btn.copied { color: var(--cyan); border-color: var(--cyan-dim); }
 
-/* ---------- comments ---------- */
-.post-comments {
-  margin-top: 3.2rem;
-  padding-top: 1.8rem;
-  border-top: 1px solid var(--line);
-  max-width: 68ch;
-}
-.comments-note {
-  font-size: .85rem;
-  color: var(--muted-2);
-  max-width: 58ch;
-  margin: 0 0 1.4rem;
-}
-/* giscus injects its own iframe; give it room and stop it overflowing */
-#giscus-host { min-height: 8rem; }
-#giscus-host iframe { width: 100%; max-width: 100%; color-scheme: dark; }
-
 /* ---------- prev / next ---------- */
 .post-nav {
   display: grid;

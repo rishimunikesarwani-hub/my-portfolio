@@ -767,49 +767,6 @@
   }
 
   /* =============================================================
-     COMMENTS — giscus
-
-     The widget is injected rather than hardcoded into post.html so the
-     thread can be keyed to the post id. Config lives in data.js; blank
-     repo means no comments block at all.
-     ============================================================= */
-  function commentsHTML() {
-    var c = P.comments;
-    if (!c || !c.repo) return "";
-    return '<section class="post-comments">' +
-      '<p class="share-label">Comments</p>' +
-      '<p class="comments-note">Anyone can read these. Posting one needs a GitHub account — ' +
-        'they are stored as discussions on this site’s own repository, so there is no tracking and no ads.</p>' +
-      '<div id="giscus-host"></div>' +
-    '</section>';
-  }
-
-  function mountComments(p) {
-    var c = P.comments, host = $("#giscus-host");
-    if (!c || !c.repo || !host) return;
-    var s = document.createElement("script");
-    s.src = "https://giscus.app/client.js";
-    s.setAttribute("data-repo", c.repo);
-    s.setAttribute("data-repo-id", c.repoId);
-    s.setAttribute("data-category", c.category);
-    s.setAttribute("data-category-id", c.categoryId);
-    /* Keyed to the post id, not the URL — post.html is one path for
-       every post, so a URL mapping would merge all threads into one. */
-    s.setAttribute("data-mapping", "specific");
-    s.setAttribute("data-term", p.id);
-    s.setAttribute("data-strict", "1");
-    s.setAttribute("data-reactions-enabled", "1");
-    s.setAttribute("data-emit-metadata", "0");
-    s.setAttribute("data-input-position", "top");
-    s.setAttribute("data-theme", c.theme || "transparent_dark");
-    s.setAttribute("data-lang", "en");
-    s.setAttribute("data-loading", "lazy");
-    s.crossOrigin = "anonymous";
-    s.async = true;
-    host.appendChild(s);
-  }
-
-  /* =============================================================
      PAGE: BLOG post
      ============================================================= */
   function renderPost() {
@@ -869,11 +826,9 @@
 
         '<p style="margin-top:2.4rem"><a class="btn" href="blog.html">All posts' + ICON.arrow + '</a></p>' +
 
-        commentsHTML() +
       '</div></section>';
 
     wireShare();
-    mountComments(p);
   }
 
   /* =============================================================

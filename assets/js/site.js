@@ -460,25 +460,36 @@
 
     typeLoop($("#typed"), p.rotating);
 
-    /* featured work */
-    var featured = ["mission-control-hq", "investor-agent", "swiggy-instamart", "mckinsey-lilli", "zomato-ops", "job-qualifier"];
+    /* work — the three category cards sit directly under the heading,
+       replacing the hand-picked six that used to live here */
     $("#featured").innerHTML = '<div class="wrap">' +
       '<div class="section-head reveal">' +
-        '<p class="eyebrow">Selected work</p>' +
-        '<h2>Shipped, torn down, or advised</h2>' +
-        '<p>Six AI products taken apart, three agents built and evaluated, one company advised. Each one opens its own page with the decision, the trade-off, and the number it turned on.</p>' +
+        '<p class="eyebrow">Work</p>' +
+        '<h2>Tools, agents, product</h2>' +
       '</div>' +
-      '<div class="card-grid reveal">' + featured.map(function (id) { return cardHTML(itemById(id)); }).join("") + '</div>' +
-      '<p style="margin-top:1.8rem"><a class="btn" href="work.html">All work, filterable' + ICON.arrow + '</a></p>' +
+      '<div class="card-grid reveal">' + P.categories.map(catCardHTML).join("") + '</div>' +
+      '<p style="margin-top:1.8rem"><a class="btn" href="work.html">All work' + ICON.arrow + '</a></p>' +
     '</div>';
 
-    /* categories */
-    $("#cats").innerHTML = '<div class="wrap">' +
-      '<div class="section-head reveal"><p class="eyebrow">Browse by type</p><h2>Three kinds of evidence</h2></div>' +
-      '<div class="card-grid reveal">' + P.categories.map(catCardHTML).join("") + '</div>' +
-    '</div>';
+    /* blog — newest three, below the work block */
+    $("#homeblog").innerHTML = homeBlogHTML();
 
     $("#cta").innerHTML = ctaBand();
+  }
+
+  /* Latest posts on the home page. Disappears entirely when there are
+     none, rather than leaving an empty shelf. */
+  function homeBlogHTML() {
+    var posts = allPosts().slice(0, 3);
+    if (!posts.length) return "";
+    return '<div class="wrap">' +
+      '<div class="section-head reveal">' +
+        '<p class="eyebrow">Writing</p>' +
+        '<h2>From the blog</h2>' +
+      '</div>' +
+      '<ul class="post-list reveal">' + posts.map(postCard).join("") + '</ul>' +
+      '<p style="margin-top:1.8rem"><a class="btn" href="blog.html">All posts' + ICON.arrow + '</a></p>' +
+    '</div>';
   }
 
   function catCardHTML(c) {
@@ -487,7 +498,6 @@
       '<div class="count">' + n + '</div>' +
       '<h3><a href="' + catHref(c.slug) + '">' + esc(c.name) + '</a></h3>' +
       '<p class="card-sum">' + esc(c.blurb) + '</p>' +
-      '<p class="lens">' + esc(c.lens) + '</p>' +
       '<a class="card-link" href="' + catHref(c.slug) + '">See these' + ICON.arrow + '</a>' +
     '</article>';
   }
@@ -989,7 +999,7 @@
 
     P.categories.forEach(function (c) {
       idx.push({ kind: "Category", title: c.name, blurb: c.blurb,
-                 href: catHref(c.slug), text: c.name + " " + c.blurb + " " + c.lens });
+                 href: catHref(c.slug), text: c.name + " " + c.blurb });
     });
 
     P.experience.forEach(function (e) {

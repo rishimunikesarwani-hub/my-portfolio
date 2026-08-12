@@ -656,15 +656,9 @@ code {
   line-height: 1; letter-spacing: -.04em;
   margin-bottom: .7rem;
 }
-.cat-card .lens {
-  font-family: var(--mono);
-  font-size: .74rem;
-  color: var(--muted-2);
-  border-left: 2px solid var(--line);
-  padding-left: .8rem;
-  margin: 1rem 0 0;
-  line-height: 1.6;
-}
+/* .cat-card .lens removed 2026-08-12 — the mono question box came off
+   the category cards; the question now lives inside the blurb where it
+   is still wanted. */
 
 /* =============================================================
    FILTER / SORT TOOLBAR

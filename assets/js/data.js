@@ -68,28 +68,25 @@ window.PORTFOLIO = {
       slug: "builds",
       name: "Tools I've Built",
       blurb:
-        "Small pieces of working software I built for my own use, then kept. Not demos and not " +
-        "tutorials — each one exists because I wanted the thing to exist and nothing off the shelf " +
-        "did it the way I wanted. The interesting part of each is the same: what got deliberately " +
-        "left out, and what that cost.",
-      lens: "What did I refuse to build, and what did refusing it buy me?"
+        "Software I built to make my own work better — the RAG AI Bookshelf for reading across a " +
+        "whole library at once, Strategy Room for understanding a business situation, and ALARS for " +
+        "roadmapping product ideas."
     },
     {
       slug: "agents",
       name: "Agents I've Built",
       blurb:
-        "Working software, not slideware. Grounded retrieval, anti-fabrication guardrails, " +
-        "evaluation suites, and human-approval gates that fire on a threshold rather than on vibes.",
-      lens: "Where does this system earn autonomy, and where does it hand control back?"
+        "Grounded retrieval, anti-fabrication guardrails, evaluation suites, and human-approval gates " +
+        "that fire on a threshold rather than on vibes. Where does this system earn autonomy, and " +
+        "where does it hand control back?"
     },
     {
       slug: "breakdowns",
-      name: "AI Product Breakdowns",
+      name: "Product cases",
       blurb:
-        "Six shipped AI products, taken apart the way I would take apart my own. Five are constrained " +
-        "to a 10% budget cut, so the answer has to be a config or policy change rather than a new " +
-        "system. The sixth is an architecture teardown read from a live product's own code.",
-      lens: "What actually broke — and what would I put in the next sprint?"
+        "Real AI products worked as cases, each under a constraint that is enforced rather than " +
+        "assumed — a fixed budget, a safety limit, a delivery window. The constraint is the point: " +
+        "it forces the answer to be a decision someone could actually take on Monday."
     }
   ],
 
@@ -850,7 +847,7 @@ window.PORTFOLIO = {
           h: "Where it is",
           type: "prose",
           body: [
-            "The MVP is built and the waitlist is live with real signups. Answers persist to Convex so nothing is lost; the model is reached through a single pinned config rather than an auto-router, because an unpinned router is how a side project quietly becomes a bill.",
+            "The MVP is built and the waitlist is live at <a href=\"https://my-immersion-project-psi.vercel.app\" target=\"_blank\" rel=\"noopener\">my-immersion-project-psi.vercel.app</a>, with real signups. Answers persist to Convex so nothing is lost; the model is reached through a single pinned config rather than an auto-router, because an unpinned router is how a side project quietly becomes a bill.",
             "Not built on purpose: integrations, login, history, export, RICE scoring, and the second mode. Each was cut to protect the thirty minutes."
           ]
         }

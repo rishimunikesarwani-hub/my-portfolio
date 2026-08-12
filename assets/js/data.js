@@ -68,9 +68,9 @@ window.PORTFOLIO = {
       slug: "builds",
       name: "Tools I've Built",
       blurb:
-        "Software I built to make my own work better — the RAG AI Bookshelf for reading across a " +
-        "whole library at once, Strategy Room for understanding a business situation, and ALARS for " +
-        "roadmapping product ideas."
+        "Software I build to make my own work better, and kept. Each entry says plainly whether it " +
+        "is shipped or still on paper — the Strategy Room is a locked design with no code in it yet, " +
+        "and it says so."
     },
     {
       slug: "agents",
@@ -828,6 +828,104 @@ window.PORTFOLIO = {
         }
       ],
       related: ["what-is-hot", "tablink", "mission-control-hq"]
+    },
+
+    /* ============ THE STRATEGY ROOM ============
+       Written 2026-08-12 from the project's own LOG.md decision log.
+       Status is deliberately "Designed, not built" — zero code exists
+       and it is not yet a git repo. Do not soften that wording. */
+    {
+      id: "strategy-room",
+      title: "A six-role firm that argues, then stops",
+      org: "The Strategy Room",
+      category: "builds",
+      industry: "Multi-agent · Strategy",
+      year: "2026",
+      status: "Designed, not built",
+      effortDays: 0,
+      effortLabel: "Decisions locked, zero code",
+      tagline: "Seven decisions, one reversal, and a room that stops talking when it runs out of things to say.",
+      summary:
+        "An agentic co-strategy team: six specialist roles plus an Engagement Lead, running as a " +
+        "group-chat boardroom rather than a pipeline. Every architectural decision is locked and " +
+        "logged, including the one that was made and reversed on the same day. No code yet.",
+      tags: ["Multi-agent", "Boardroom", "Decision log", "Claude Agent SDK", "Designed"],
+      stats: [
+        { v: "6",  l: "specialist roles" },
+        { v: "4",  l: "round hard cap" },
+        { v: "0",  l: "lines of code so far" }
+      ],
+      gate: {
+        rule: "Has this agent got something genuinely new to add this round?",
+        pass: "It speaks, and the discussion continues",
+        fail: "It says PASS — and when all five pass, the meeting is over"
+      },
+      sections: [
+        {
+          type: "prose",
+          body: [
+            "Most multi-agent demos are pipelines wearing a costume: each agent runs once, in order, and the output is a stack of monologues. The Strategy Room is built the other way round — a shared meeting transcript that every agent reads, and a rule that decides when the meeting ends.",
+            "This entry is the design, not the product. Seven decisions are locked and the build sequence is agreed; nothing has been written yet. It is here because the decisions are the interesting part."
+          ]
+        },
+        {
+          h: "The firm",
+          type: "list",
+          body: [
+            "<strong>Engagement Lead</strong> — orchestrates, assigns, synthesises. Chairs the room.",
+            "<strong>Diagnostician</strong> — works out what is actually wrong.",
+            "<strong>Market Analyst</strong> — maps the terrain.",
+            "<strong>Strategist</strong> — chooses.",
+            "<strong>Operator</strong> — makes it executable.",
+            "<strong>Risk Officer</strong> — governs, and doubles as the Red Team.",
+            "<strong>Communicator</strong> — writes the minutes and the action plan."
+          ]
+        },
+        {
+          h: "The boardroom rule",
+          type: "note",
+          body: [
+            "Round one, all five specialists give their opening take <em>in parallel</em>, so nobody anchors on anybody. From round two it goes sequential, and each agent must add something new or say PASS. The meeting ends when all five pass in a single round, at a hard four-round cap, or when the chair calls it. The user can interject at any point."
+          ]
+        },
+        {
+          h: "Three modes, chosen by the user",
+          type: "table",
+          head: ["Mode", "What runs", "When"],
+          body: [
+            ["Full engagement", "All six roles in the boardroom", "The problem is not yet understood"],
+            ["Sprint", "Diagnostician → Strategist → Risk Officer → one-pager", "A fast recommendation is needed"],
+            ["Red team", "Risk Officer attacking a pasted plan", "A decision already exists and needs breaking"]
+          ]
+        },
+        {
+          h: "The decision I reversed the same day",
+          type: "prose",
+          body: [
+            "Decision 6a chose a provider-agnostic engine: drop the Claude Agent SDK, build a custom agent loop on a LiteLLM router, pin every model in one registry. Freedom over ship-speed.",
+            "Decision 6a-rev reversed it hours later. Once the plumbing cost was concrete rather than theoretical, it outweighed the flexibility it bought. The hedge moved to the boundary instead — the Agent SDK is engine v1, model IDs stay pinned in one registry file, and the API layer talks to an engine interface so a provider-agnostic engine can replace it later without touching the UI, the skills or the pipelines.",
+            "The reversal is in the log with its reason, which is the point of keeping one."
+          ]
+        },
+        {
+          h: "Decided against, on purpose",
+          type: "list",
+          body: [
+            "<strong>Self-learning prompts.</strong> No auto-updating instructions in v1 — file-based memory instead, so what the system remembers can be read and corrected by a human.",
+            "<strong>A separate supervisor agent.</strong> The Lead orchestrates and the Risk Officer is the quality gate. Adding a supervisor over both buys process, not judgement.",
+            "<strong>Full collaborative decomposition.</strong> Debate is embedded at exactly one point — the Strategist and Risk Officer challenge-and-revise loop. Everywhere else it is orchestrator-led delegation, on cost and control grounds.",
+            "<strong>Folding in ALARS.</strong> Product teardown work belongs to ALARS; this stays general business strategy. The split is a decision, not an oversight."
+          ]
+        },
+        {
+          h: "What it costs",
+          type: "note",
+          body: [
+            "The boardroom runs roughly two to four times a straight pipeline. That was accepted, not discovered — softened by prompt caching and by the PASS rule, which ends the meeting the moment the room stops adding anything."
+          ]
+        }
+      ],
+      related: ["alars", "investor-agent", "what-is-hot"]
     }
   ],
 

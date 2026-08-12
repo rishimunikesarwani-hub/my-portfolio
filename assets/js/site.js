@@ -20,6 +20,12 @@
     var m = new RegExp("[?&]" + name + "=([^&]*)").exec(window.location.search);
     return m ? decodeURIComponent(m[1].replace(/\+/g, " ")) : "";
   }
+  /* "https://x.com/foo" -> "@foo", for display next to the icon */
+  function xHandle(url) {
+    var m = /x\.com\/([^\/?#]+)/i.exec(url || "");
+    return m ? "@" + m[1] : "X";
+  }
+
   /* "https://github.com/foo" -> "foo", for display next to the icon */
   function ghHandle(url) {
     var m = /github\.com\/([^\/?#]+)/i.exec(url || "");
@@ -49,6 +55,7 @@
     li:     '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M5.4 17H2.5V7.4h2.9V17ZM3.9 6.1a1.7 1.7 0 1 1 0-3.4 1.7 1.7 0 0 1 0 3.4ZM17.5 17h-2.9v-4.7c0-1.1 0-2.6-1.6-2.6s-1.8 1.2-1.8 2.5V17H8.3V7.4h2.8v1.3h.1a3.1 3.1 0 0 1 2.8-1.5c3 0 3.5 2 3.5 4.5V17Z"/></svg>',
     gh:     '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/></svg>',
     loc:    '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16.2 8.5c0 4.4-6.2 9.4-6.2 9.4s-6.2-5-6.2-9.4a6.2 6.2 0 1 1 12.4 0Z"/><circle cx="10" cy="8.4" r="2.2"/></svg>',
+    x:      '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z"/></svg>',
     /* Not rendered anywhere today — kept in sync with the favicon so it
        does not come back as the old triangle if it is ever used. */
     logo:   '<svg viewBox="0 0 28 28" fill="none" stroke="#2EC5D3" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M9 23V5h7l4 4v3l-4 4H9m5 0 6 7"/></svg>'
@@ -367,6 +374,7 @@
             P.categories.map(function (c) {
               return '<li><a href="' + catHref(c.slug) + '">' + esc(c.name) + '</a></li>';
             }).join("") +
+            (P.person.x ? '<li><a href="' + P.person.x + '" target="_blank" rel="noopener">X</a></li>' : '') +
             (P.person.github ? '<li><a href="' + P.person.github + '" target="_blank" rel="noopener">GitHub</a></li>' : '') +
           '</ul></div>' +
         '</div>' +
@@ -431,6 +439,7 @@
           '<p class="hero-pitch">' + esc(p.pitch) + '</p>' +
           '<ul class="socials">' +
             '<li><a href="' + p.linkedin + '" target="_blank" rel="noopener" aria-label="LinkedIn">' + ICON.li + '</a></li>' +
+            (p.x ? '<li><a href="' + p.x + '" target="_blank" rel="noopener" aria-label="X">' + ICON.x + '</a></li>' : '') +
             (p.github ? '<li><a href="' + p.github + '" target="_blank" rel="noopener" aria-label="GitHub">' + ICON.gh + '</a></li>' : '') +
           '</ul>' +
           '<div class="hero-cta">' +
@@ -1052,6 +1061,7 @@
           '<li><a href="mailto:' + p.email + '">' + ICON.mail + '<span><span class="k">Email</span><span class="v">' + esc(p.email) + '</span></span></a></li>' +
           '<li><a href="tel:' + p.phone.replace(/\s/g, "") + '">' + ICON.phone + '<span><span class="k">Phone</span><span class="v">' + esc(p.phone) + '</span></span></a></li>' +
           '<li><a href="' + p.linkedin + '" target="_blank" rel="noopener">' + ICON.li + '<span><span class="k">LinkedIn</span><span class="v">imrishirich93</span></span></a></li>' +
+          (p.x ? '<li><a href="' + p.x + '" target="_blank" rel="noopener">' + ICON.x + '<span><span class="k">X</span><span class="v">' + esc(xHandle(p.x)) + '</span></span></a></li>' : '') +
           (p.github ? '<li><a href="' + p.github + '" target="_blank" rel="noopener">' + ICON.gh + '<span><span class="k">GitHub</span><span class="v">' + esc(ghHandle(p.github)) + '</span></span></a></li>' : '') +
           '<li><div class="row">' + ICON.loc + '<span><span class="k">Location</span><span class="v">' + esc(p.location) + '</span></span></div></li>' +
         '</ul>' +

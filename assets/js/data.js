@@ -23,6 +23,8 @@ window.PORTFOLIO = {
     linkedinEmbed: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7493221021253058560?collapsed=1",
     /* Set to "" to hide the GitHub link everywhere it appears. */
     github: "https://github.com/rishimunikesarwani-hub",
+    /* Same — set to "" and X vanishes from the hero, Contact and footer. */
+    x: "https://x.com/rishimuni_k",
     resume: "assets/files/Rishi_Muni_Kesarwani_Resume.pdf",
     photo: "assets/img/rishi.jpg",
     photoCaption: "Networking Mixer, Delhi — “The AI was agentic, the vibe was organic.”",

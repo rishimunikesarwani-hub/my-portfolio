@@ -265,6 +265,7 @@
   var NAV = [
     { href: "index.html",      label: "Home",         page: "home" },
     { href: "work.html",       label: "Work",         page: "work" },
+    { href: "blog.html",       label: "Blog",         page: "blog" },
     { href: "about.html",      label: "About",        page: "about" },
     { href: "contact.html",    label: "Contact",      page: "contact" }
   ];
@@ -367,6 +368,14 @@
             (P.person.github ? '<li><a href="' + P.person.github + '" target="_blank" rel="noopener">GitHub</a></li>' : '') +
           '</ul></div>' +
         '</div>' +
+        '<p class="build-pill">' +
+          '<span class="dot" aria-hidden="true"></span>' +
+          'Under active build' +
+          '<span class="sep" aria-hidden="true">·</span>' +
+          'Generated with Claude Code' +
+          '<span class="sep" aria-hidden="true">·</span>' +
+          'Content under review' +
+        '</p>' +
         '<div class="foot-bot">' +
           '<span>© 2026 ' + esc(P.person.name) + '</span>' +
           '<span>' + esc(P.person.location) + '</span>' +
@@ -552,6 +561,181 @@
   }
 
   /* =============================================================
+     SECTION RENDERER — shared by breakdowns and blog posts
+
+     `h` is optional. Work items always carry one, so their output is
+     unchanged; posts use headless sections to open with plain prose.
+     ============================================================= */
+  function sectionsHTML(sections) {
+    if (!sections || !sections.length) return "";
+    return sections.map(function (s) {
+      var inner = "";
+      if (s.type === "prose") inner = s.body.map(function (t) { return "<p>" + t + "</p>"; }).join("");
+      else if (s.type === "list") inner = "<ul>" + s.body.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>";
+      else if (s.type === "note") inner = '<div class="note-block">' + s.body.map(function (t) { return "<p>" + t + "</p>"; }).join("") + "</div>";
+      else if (s.type === "figure") {
+        inner = s.body.map(function (f) {
+          var draw = FIGURE[f.key];
+          if (!draw) return "";
+          var alt = f.name + ". " + String(f.cap).replace(/<[^>]+>/g, "");
+          return '<figure class="figure">' +
+            '<div class="figure-head">' +
+              '<span class="figure-tag">' + esc(f.tag) + '</span>' +
+              '<span class="figure-name">' + esc(f.name) + '</span>' +
+            '</div>' +
+            '<div class="figure-canvas">' + draw(alt) + '</div>' +
+            (f.cap ? '<figcaption class="figure-cap">' + f.cap + '</figcaption>' : '') +
+          '</figure>';
+        }).join("");
+      }
+      else if (s.type === "table") {
+        inner = '<div class="tbl-scroll"><table><thead><tr>' +
+          s.head.map(function (h) { return "<th>" + esc(h) + "</th>"; }).join("") +
+          '</tr></thead><tbody>' +
+          s.body.map(function (row) {
+            return "<tr>" + row.map(function (cell) { return "<td>" + esc(cell) + "</td>"; }).join("") + "</tr>";
+          }).join("") +
+          "</tbody></table></div>";
+      }
+      return "<section>" + (s.h ? "<h2>" + esc(s.h) + "</h2>" : "") + inner + "</section>";
+    }).join("");
+  }
+
+  /* =============================================================
+     BLOG helpers
+     ============================================================= */
+
+  /* Published posts, newest first. Drafts never leave data.js. */
+  function allPosts() {
+    return (P.posts || [])
+      .filter(function (p) { return p.draft !== true; })
+      .slice()
+      .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+  }
+
+  function postById(id) {
+    return allPosts().filter(function (p) { return p.id === id; })[0] || null;
+  }
+
+  /* "12 August 2026". Returns "" rather than "Invalid Date" on a bad date. */
+  function postDate(iso) {
+    if (!iso) return "";
+    var d = new Date(iso + "T00:00:00Z");
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleDateString("en-GB", {
+      day: "numeric", month: "long", year: "numeric", timeZone: "UTC"
+    });
+  }
+
+  /* Rough reading time from the words actually rendered. */
+  function postMinutes(p) {
+    var words = (p.sections || []).reduce(function (n, s) {
+      var text;
+      if (s.type === "table")       text = s.head.join(" ") + " " + s.body.map(function (r) { return r.join(" "); }).join(" ");
+      else if (s.type === "figure") text = s.body.map(function (f) { return f.name + " " + f.cap; }).join(" ");
+      else                          text = s.body.join(" ");
+      return n + String(text).replace(/<[^>]+>/g, " ").split(/\s+/).length;
+    }, 0);
+    return Math.max(1, Math.round(words / 200));
+  }
+
+  function postCard(p) {
+    return '<li class="post-item reveal">' +
+      '<a class="post-link" href="post.html?id=' + encodeURIComponent(p.id) + '">' +
+        '<div class="post-meta">' +
+          '<span>' + esc(postDate(p.date)) + '</span>' +
+          '<span class="sep" aria-hidden="true">/</span>' +
+          '<span>' + postMinutes(p) + ' min read</span>' +
+        '</div>' +
+        '<h3 class="post-title">' + esc(p.title) + '</h3>' +
+        '<p class="post-sum">' + esc(p.summary) + '</p>' +
+        (p.tags && p.tags.length
+          ? '<div class="post-tags">' + p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("") + '</div>'
+          : '') +
+      '</a>' +
+    '</li>';
+  }
+
+  /* =============================================================
+     PAGE: BLOG index
+     ============================================================= */
+  function renderBlog() {
+    var posts = allPosts();
+    document.title = "Blog — " + P.person.name;
+
+    $("#blogBody").innerHTML =
+      '<section class="section tight"><div class="wrap">' +
+        '<p class="eyebrow">Working notes</p>' +
+        '<h1 class="page-h1">Blog</h1>' +
+        '<p class="page-lede">The case studies are conclusions. This is the thinking before it settled — build notes, decision logs, and the things I got wrong.</p>' +
+        (posts.length
+          ? '<ul class="post-list">' + posts.map(postCard).join("") + '</ul>'
+          : '<div class="empty"><h3>Nothing published yet</h3>' +
+            '<p>Posts live in <code>posts</code> in <code>assets/js/data.js</code>. Add one and it appears here.</p></div>') +
+      '</div></section>';
+  }
+
+  /* =============================================================
+     PAGE: BLOG post
+     ============================================================= */
+  function renderPost() {
+    var p = postById(param("id"));
+
+    if (!p) {
+      document.title = "Not found — " + P.person.name;
+      buildCrumbs([{ label: "Blog", href: "blog.html" }, { label: "Not found" }]);
+      $("#postBody").innerHTML = '<div class="wrap"><div class="empty">' +
+        '<h3>That post does not exist</h3>' +
+        '<p>The link may be out of date, or the post is still a draft. Browse <a href="blog.html">all posts</a> or start from the <a href="index.html">home page</a>.</p>' +
+        '</div></div>';
+      return;
+    }
+
+    document.title = p.title + " — Blog — " + P.person.name;
+    buildCrumbs([{ label: "Blog", href: "blog.html" }, { label: p.title }]);
+
+    var posts = allPosts();
+    var idx   = posts.findIndex(function (x) { return x.id === p.id; });
+    var newer = idx > 0 ? posts[idx - 1] : null;
+    var older = idx < posts.length - 1 ? posts[idx + 1] : null;
+
+    $("#postBody").innerHTML =
+      '<section class="post-hero"><div class="wrap">' +
+        '<div class="post-meta">' +
+          '<span>' + esc(postDate(p.date)) + '</span>' +
+          '<span class="sep" aria-hidden="true">/</span>' +
+          '<span>' + postMinutes(p) + ' min read</span>' +
+        '</div>' +
+        '<h1>' + esc(p.title) + '</h1>' +
+        '<p class="post-hero-sum">' + esc(p.summary) + '</p>' +
+        (p.tags && p.tags.length
+          ? '<div class="post-tags">' + p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("") + '</div>'
+          : '') +
+      '</div></section>' +
+
+      '<section class="section tight"><div class="wrap">' +
+        '<article class="post-prose">' + sectionsHTML(p.sections) + '</article>' +
+
+        ((newer || older)
+          ? '<nav class="post-nav" aria-label="More posts">' +
+              (older
+                ? '<a class="post-nav-link" href="post.html?id=' + encodeURIComponent(older.id) + '">' +
+                    '<span class="post-nav-dir">Older</span>' +
+                    '<span class="post-nav-title">' + esc(older.title) + '</span></a>'
+                : '<span></span>') +
+              (newer
+                ? '<a class="post-nav-link align-right" href="post.html?id=' + encodeURIComponent(newer.id) + '">' +
+                    '<span class="post-nav-dir">Newer</span>' +
+                    '<span class="post-nav-title">' + esc(newer.title) + '</span></a>'
+                : '<span></span>') +
+            '</nav>'
+          : '') +
+
+        '<p style="margin-top:2.4rem"><a class="btn" href="blog.html">All posts' + ICON.arrow + '</a></p>' +
+      '</div></section>';
+  }
+
+  /* =============================================================
      PAGE: BREAKDOWN detail
      ============================================================= */
   function renderDetail() {
@@ -581,37 +765,7 @@
     var prev = idx > 0 ? sibs[idx - 1] : null;
     var next = idx < sibs.length - 1 ? sibs[idx + 1] : null;
 
-    var sections = it.sections.map(function (s) {
-      var inner = "";
-      if (s.type === "prose") inner = s.body.map(function (t) { return "<p>" + t + "</p>"; }).join("");
-      else if (s.type === "list") inner = "<ul>" + s.body.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>";
-      else if (s.type === "note") inner = '<div class="note-block">' + s.body.map(function (t) { return "<p>" + t + "</p>"; }).join("") + "</div>";
-      else if (s.type === "figure") {
-        inner = s.body.map(function (f) {
-          var draw = FIGURE[f.key];
-          if (!draw) return "";
-          var alt = f.name + ". " + String(f.cap).replace(/<[^>]+>/g, "");
-          return '<figure class="figure">' +
-            '<div class="figure-head">' +
-              '<span class="figure-tag">' + esc(f.tag) + '</span>' +
-              '<span class="figure-name">' + esc(f.name) + '</span>' +
-            '</div>' +
-            '<div class="figure-canvas">' + draw(alt) + '</div>' +
-            (f.cap ? '<figcaption class="figure-cap">' + f.cap + '</figcaption>' : '') +
-          '</figure>';
-        }).join("");
-      }
-      else if (s.type === "table") {
-        inner = '<div class="tbl-scroll"><table><thead><tr>' +
-          s.head.map(function (h) { return "<th>" + esc(h) + "</th>"; }).join("") +
-          '</tr></thead><tbody>' +
-          s.body.map(function (row) {
-            return "<tr>" + row.map(function (cell) { return "<td>" + esc(cell) + "</td>"; }).join("") + "</tr>";
-          }).join("") +
-          "</tbody></table></div>";
-      }
-      return "<section><h2>" + esc(s.h) + "</h2>" + inner + "</section>";
-    }).join("");
+    var sections = sectionsHTML(it.sections);
 
     $("#detailBody").innerHTML =
       '<section class="detail-hero"><div class="wrap">' +
@@ -721,6 +875,22 @@
       idx.push({ kind: "Education", title: e.title, blurb: e.org,
                  href: "about.html#education", text: [e.title, e.org, e.when, e.note].join(" ") });
     });
+
+    allPosts().forEach(function (p) {
+      var body = (p.sections || []).map(function (s) {
+        var b;
+        if (s.type === "table")       b = s.head.join(" ") + " " + s.body.map(function (r) { return r.join(" "); }).join(" ");
+        else if (s.type === "figure") b = s.body.map(function (f) { return f.name + " " + f.cap; }).join(" ");
+        else                          b = s.body.join(" ");
+        return (s.h || "") + " " + b;
+      }).join(" ");
+      idx.push({ kind: "Blog", title: p.title, blurb: p.summary,
+                 href: "post.html?id=" + encodeURIComponent(p.id),
+                 text: [p.title, p.summary, (p.tags || []).join(" "), body].join(" ").replace(/<[^>]+>/g, " ") });
+    });
+
+    idx.push({ kind: "Page", title: "Blog", blurb: "Build notes, decision logs and corrections.",
+               href: "blog.html", text: "blog writing notes posts articles journal" });
 
     idx.push({ kind: "Page", title: "Contact", blurb: "Email, phone, LinkedIn and résumé.",
                href: "contact.html", text: "contact email phone linkedin resume hire available remote" });
@@ -886,7 +1056,23 @@
           '<a class="btn" href="work.html">Browse the work</a>' +
         '</div>' +
       '</div>' +
-    '</div></div>';
+    '</div>' +
+
+    /* Featured post. Omitted entirely when linkedinEmbed is empty. */
+    (p.linkedinEmbed
+      ? '<section class="social-embed">' +
+          '<p class="eyebrow">On LinkedIn</p>' +
+          '<h2 class="social-embed-h">Most recent post</h2>' +
+          '<div class="embed-frame">' +
+            '<iframe src="' + esc(p.linkedinEmbed) + '" ' +
+              'title="Recent LinkedIn post by ' + esc(p.name) + '" ' +
+              'loading="lazy" allowfullscreen></iframe>' +
+          '</div>' +
+          '<p class="embed-note">Loaded directly from LinkedIn, so it needs a connection and follows their cookie rules. ' +
+            '<a href="' + p.linkedin + '" target="_blank" rel="noopener">See the full profile</a>.</p>' +
+        '</section>'
+      : '') +
+    '</div>';
   }
 
   /* =============================================================
@@ -917,6 +1103,7 @@
 
     var crumbs = {
       work:       [{ label: "Work" }],
+      blog:       [{ label: "Blog" }],
       about:      [{ label: "About" }],
       contact:    [{ label: "Contact" }],
       search:     [{ label: "Search" }]
@@ -926,6 +1113,8 @@
     if (page === "home")       renderHome();
     if (page === "work")       renderWork();
     if (page === "breakdown")  renderDetail();       // builds its own crumbs
+    if (page === "blog")       renderBlog();
+    if (page === "post")       renderPost();         // builds its own crumbs
     if (page === "search")     renderSearch();
     if (page === "about")      renderAbout();
     if (page === "contact")    renderContact();

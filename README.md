@@ -35,6 +35,7 @@ Inside `data.js`:
 | Your name, pitch, stats, the rotating hero lines | `person` |
 | The three categories and their descriptions | `categories` |
 | The ten breakdowns / agents / advisory pieces | `items` |
+| Blog posts | `posts` |
 | Work history on the About page | `experience` |
 | Skills, education, reading list | `skills`, `education`, `reading` |
 
@@ -55,6 +56,38 @@ Section `type` can be:
 - `table` — needs `head: [...]` and `body: [[...], [...]]`
 - `note` — a paragraph block with a cyan left rule, for the punchline
 - `figure` — one or more architecture diagrams
+
+### Adding a blog post
+
+Posts live in `posts` in `data.js`, next to `items`. Copy an entry, change the
+`id` — it becomes the URL, `post.html?id=your-id` — and write the `sections`.
+
+```js
+{
+  id: "what-i-got-wrong-about-evals",
+  title: "What I got wrong about evals",
+  date: "2026-08-12",          // YYYY-MM-DD, or it sorts wrongly
+  summary: "One line. Shown on the blog index, not on the post itself.",
+  tags: ["Evals"],             // optional
+  draft: false,                // true = hidden from index, search and URL
+  sections: [ … ]
+}
+```
+
+Sections use the same vocabulary as `items` — `prose`, `list`, `note`, `table`,
+`figure` — with one difference: **`h` is optional on a post**, so a post can open
+with plain paragraphs before its first heading. Work items always carry an `h`,
+so their rendering is unchanged.
+
+Ordering is by `date`, newest first, so the order inside the array does not
+matter. A post appears on the blog index, in search, and in prev/next
+automatically. There is nothing to register.
+
+`draft: true` is a real gate, not just a hide — a draft is unreachable by URL,
+so you can push an unfinished post without it leaking.
+
+There is a fully worked example kept as a draft: `how-to-add-a-post`. It never
+shows publicly. Read it in `data.js` rather than publishing it.
 
 ## Diagrams
 
@@ -87,6 +120,8 @@ spot, so check any new one in the browser before calling it done.
 | `work.html` | All ten, with category filters and five sort options |
 | `work.html?cat=…` | The same page, filtered to one category |
 | `breakdown.html?id=…` | One piece, in full. Breadcrumbs, related, prev/next |
+| `blog.html` | Blog index, newest first. Drafts excluded |
+| `post.html?id=…` | One post. Breadcrumbs, prev/next by date |
 | `search.html?q=…` | Full-text search across every page |
 | `about.html` | Bio, experience timeline, skills, education |
 | `contact.html` | Email, phone, LinkedIn, résumé |
@@ -118,6 +153,37 @@ Current file is the one-page AI PM résumé exported 2 Aug 2026, copied from
 `Documents\Work\AI_Product_Manager_Preparation\07_Resume_JD_Job_Tracker\Master Resume\`.
 
 ## Contact links
+
+### Featured LinkedIn post
+
+The Contact page embeds one LinkedIn post below the contact list. The URL is
+`person.linkedinEmbed` in `data.js`. To swap it, open the post on LinkedIn →
+`⋯` → **Embed this post**, and copy only the `src="…"` URL, not the whole
+`<iframe>` tag.
+
+Set `linkedinEmbed: ""` and the entire block disappears, the same way `github`
+does.
+
+It is a real third-party iframe, so it needs a connection and sets LinkedIn's
+cookies for whoever visits. The height is LinkedIn's own fixed 594px — if a
+shorter post leaves dead space inside the frame, change `height` on
+`.embed-frame iframe` in `style.css`.
+
+### The build notice
+
+The amber pill in the footer — "under active build · generated with Claude Code ·
+content under review" — is `.build-pill`, written in `buildFooter()` in
+`site.js`, so it shows on every page.
+
+It is deliberately the same pill as `.avail` in the hero — same size, mono type,
+letterspacing and pulsing dot — recoloured amber so it reads as a caution rather
+than an offer. If you restyle one, restyle both or they will drift apart.
+
+**Delete the markup in `buildFooter()` and the `.build-pill` block in
+`style.css` once the content has been reviewed.** It is meant to come down, not
+to live there.
+
+### Contact links
 
 Email, phone, LinkedIn, GitHub and location all come from `person` in `data.js`.
 GitHub is optional — set `github: ""` and it vanishes from the hero icons, the

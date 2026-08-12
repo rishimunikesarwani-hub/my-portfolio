@@ -15,6 +15,12 @@ window.PORTFOLIO = {
     email: "rishi.rte@gmail.com",
     phone: "+91 87078 92507",
     linkedin: "https://linkedin.com/in/imrishirich93",
+
+    /* Featured LinkedIn post, embedded on the Contact page.
+       Get this from the post's ⋯ menu → Embed this post, and paste only the
+       src="…" URL — not the whole <iframe> tag.
+       Set to "" and the whole block disappears, the same way github does. */
+    linkedinEmbed: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7493221021253058560?collapsed=1",
     /* Set to "" to hide the GitHub link everywhere it appears. */
     github: "https://github.com/rishimunikesarwani-hub",
     resume: "assets/files/Rishi_Muni_Kesarwani_Resume.pdf",
@@ -1443,5 +1449,97 @@ window.PORTFOLIO = {
     "Beyond Algorithms: Delivering AI for Business",
     "Inspired: How to Create Tech Products Customers Love",
     "Agentic AI For Dummies"
+  ],
+
+  /* -----------------------------------------------------------------
+     BLOG
+
+     Newest first is handled in code — order here does not matter.
+
+     id      becomes the URL: post.html?id=<id>
+     date    must be YYYY-MM-DD, or sorting and the printed date break
+     draft   true hides it from the blog index, home and search
+     tags    optional, shown as small labels under the title
+
+     sections use the same vocabulary as items above — prose, list,
+     note, table, figure — except `h` is optional here, so a post can
+     open with plain paragraphs before its first heading.
+     ----------------------------------------------------------------- */
+  posts: [
+    {
+      id: "why-this-blog-exists",
+      title: "Why this blog exists",
+      date: "2026-08-12",
+      summary: "The case studies show the finished thing. This is where the unfinished thinking goes.",
+      tags: ["Working notes"],
+      draft: false,
+      sections: [
+        { type: "prose", body: [
+          "Everything else on this site is a conclusion. Ten pieces of work, each with a clean problem statement, a decision gate and an outcome. That is the right format for a case study and the wrong format for learning, because it hides the part that was actually difficult.",
+          "The difficult part is rarely the architecture. It is the week you spent retrieving the wrong chunks and blamed the model. It is the evaluation you skipped because it felt like overhead, and the two months you then spent guessing whether a prompt change helped."
+        ]},
+        { h: "What goes here", type: "list", body: [
+          "<strong>Build notes.</strong> What I made, what broke, and what I would do differently.",
+          "<strong>Decision logs.</strong> The choice, the alternatives I rejected, and the reason — written before I know whether it worked.",
+          "<strong>Corrections.</strong> Things I said confidently on this site and later found out were wrong."
+        ]},
+        { h: "The rule", type: "note", body: [
+          "A post goes up when the thinking is honest, not when it is finished. If I only publish settled opinions, the only thing this blog will prove is that I am good at editing."
+        ]}
+      ]
+    },
+
+    {
+      id: "the-decision-gate",
+      title: "Every AI product needs a line it will not cross",
+      date: "2026-08-10",
+      summary: "The threshold where the system stops deciding and a person takes over — and why naming it early makes the rest of the design easier.",
+      tags: ["Agent design", "Thesis"],
+      draft: false,
+      sections: [
+        { type: "prose", body: [
+          "If you look through the work on this site, the same device keeps appearing: a stated threshold where the system stops acting on its own and hands the decision to a person. Heat index above 42°C. Fit score below 80. Shelf life under five days.",
+          "It is not a safety feature bolted on at the end. It is the first thing worth deciding, because everything downstream — what you log, what you evaluate, what you show the user — falls out of it."
+        ]},
+        { h: "Why it comes first", type: "list", body: [
+          "It converts a vague fear (<em>what if the AI gets it wrong?</em>) into a number somebody can argue with.",
+          "It tells you what to measure. The gate is the metric — how often it fires, and how often it fires correctly.",
+          "It decides the interface. A system with a gate needs a review queue; a system without one needs an undo button and a lot more nerve."
+        ]},
+        { h: "The uncomfortable version", type: "note", body: [
+          "A product with no gate is not more autonomous. It is a product whose owner has not yet decided who is accountable when it is wrong."
+        ]}
+      ]
+    },
+
+    {
+      id: "how-to-add-a-post",
+      title: "How to add a post (internal note)",
+      date: "2026-08-12",
+      summary: "Kept as a draft so it never shows publicly. Flip draft to false only if you want the world to read your own cheat sheet.",
+      tags: ["Internal"],
+      draft: true,
+      sections: [
+        { h: "Three steps", type: "list", body: [
+          "Copy one of the entries in <code>posts</code> in <code>assets/js/data.js</code>.",
+          "Change <code>id</code> — it becomes the URL, <code>post.html?id=your-id</code>. Lowercase, hyphens, no spaces.",
+          "Write the <code>sections</code>. Save, refresh the browser. There is no build step."
+        ]},
+        { h: "Section types", type: "table",
+          head: ["type", "What it renders", "body shape"],
+          body: [
+            ["prose", "Paragraphs", "array of strings"],
+            ["list", "Bulleted list", "array of strings, HTML allowed"],
+            ["note", "Cyan-ruled callout, for the punchline", "array of strings"],
+            ["table", "A table", "needs head: [] and body: [[]]"],
+            ["figure", "SVG diagram from the FIGURE map in site.js", "array of { key, tag, name, cap }"]
+          ]
+        },
+        { h: "Two things that will catch you out", type: "list", body: [
+          "<strong>Quotes.</strong> The text is JavaScript, so an apostrophe inside a double-quoted string is fine, but a double quote needs escaping as <code>\\\"</code>.",
+          "<strong>The date.</strong> Must be <code>YYYY-MM-DD</code>. Any other format sorts wrongly and prints as <em>Invalid Date</em>."
+        ]}
+      ]
+    }
   ]
 };

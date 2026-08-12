@@ -171,8 +171,8 @@ shorter post leaves dead space inside the frame, change `height` on
 
 ### The build notice
 
-The amber pill in the footer — "under active build · generated with Claude Code ·
-content under review" — is `.build-pill`, written in `buildFooter()` in
+The amber pill in the footer — "content of this website is under active review ·
+generated with Claude Code" — is `.build-pill`, written in `buildFooter()` in
 `site.js`, so it shows on every page.
 
 It is deliberately the same pill as `.avail` in the hero — same size, mono type,

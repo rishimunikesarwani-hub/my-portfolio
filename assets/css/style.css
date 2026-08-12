@@ -944,7 +944,15 @@ td:first-child { color: #b8c8dc; }
   overflow: hidden; background: var(--ink-2);
   position: sticky; top: calc(var(--nav-h) + 1.2rem);
 }
-.about-photo img { aspect-ratio: 4/4.6; object-fit: cover; object-position: 22% 40%; }
+/* Scaled up inside the clipped frame to crop closer to the face —
+   the wide original left too much room around him. */
+.about-photo img {
+  aspect-ratio: 4/4.6;
+  object-fit: cover;
+  object-position: 22% 40%;
+  transform: scale(1.34);
+  transform-origin: 24% 34%;
+}
 .about-photo .cap {
   padding: .9rem 1.1rem;
   font-family: var(--mono); font-size: .68rem; line-height: 1.55; color: var(--muted-2);
@@ -986,6 +994,110 @@ td:first-child { color: #b8c8dc; }
 .skill-block h4 {
   font-family: var(--mono); font-size: .68rem; letter-spacing: .14em;
   text-transform: uppercase; color: var(--cyan); margin-bottom: .7rem;
+}
+
+/* =============================================================
+   SKILLS — hire-for cards, tool split, learning rail
+   ============================================================= */
+
+/* Band 1: what someone is actually hiring for. Same treatment as the
+   decision gate, because it carries the same weight on the page. */
+.skill-cards {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2.2rem;
+}
+.skill-card {
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--cyan);
+  border-radius: 0 var(--r) var(--r) 0;
+  background:
+    linear-gradient(180deg, rgba(46,197,211,.05), transparent 65%),
+    var(--ink-2);
+  padding: 1.15rem 1.3rem .5rem;
+}
+.skill-card h4 {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--cyan); margin-bottom: .8rem;
+}
+/* Brighter chips here — these are the claims, not the footnotes. */
+.tags-bright li {
+  color: var(--paper);
+  background: var(--ink-3);
+  border-color: #26344f;
+}
+
+/* Band 2 */
+.skill-craft { margin-bottom: .6rem; }
+
+/* Band 3: use beside learning, so the difference is impossible to miss */
+.tool-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.6rem;
+  margin-bottom: 2.2rem;
+}
+.skill-block h4.k-learn { color: var(--amber); }
+/* Dashed = not claimed yet. */
+.tags-learn li {
+  border-style: dashed;
+  border-color: #3d3323;
+  color: #b99a72;
+}
+
+/* Progress rail on an in-progress education entry. Sits inside the
+   timeline item, so the course appears once on the page rather than
+   twice — merged 2026-08-12. */
+.learn-progress {
+  margin-top: 1rem;
+  max-width: 30rem;
+}
+.learn-rail {
+  position: relative;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--line);
+  margin: 0 0 1.1rem;
+}
+.learn-rail-fill {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--cyan);
+}
+/* A live marker, not a static one. Same pulse as the availability dot
+   and the build pill: solid head, expanding ring, 2.4s. The dot itself
+   must not fade — that reads as a different animation. */
+.learn-rail-marker {
+  position: absolute;
+  top: 50%;
+  width: 9px; height: 9px;
+  transform: translate(-50%, -50%);
+  background: var(--cyan);
+  border-radius: 50%;
+  animation: learnPulse 2.4s var(--ease) infinite;
+}
+@keyframes learnPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(46,197,211,.55); }
+  70%  { box-shadow: 0 0 0 8px rgba(46,197,211,0); }
+  100% { box-shadow: 0 0 0 0 rgba(46,197,211,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .learn-rail-marker { animation: none; }
+}
+.learn-pct {
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin: 0;
+}
+.learn-pct strong { color: var(--cyan); font-weight: 500; }
+
+@media (max-width: 620px) {
+  .tool-split { grid-template-columns: 1fr; gap: .4rem; }
 }
 
 /* =============================================================
@@ -1305,6 +1417,63 @@ td:first-child { color: #b8c8dc; }
   border-radius: var(--r-sm);
   padding: .1em .38em;
 }
+
+/* ---------- share row ---------- */
+.post-share {
+  margin-top: 3rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line);
+  max-width: 68ch;
+}
+.share-label {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin: 0 0 .8rem;
+}
+.share-row { display: flex; flex-wrap: wrap; gap: .55rem; }
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: var(--body);
+  font-size: .82rem;
+  color: var(--muted);
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .45rem .95rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease);
+}
+.share-btn svg { width: 15px; height: 15px; flex: none; }
+.share-btn:hover {
+  color: var(--paper);
+  border-color: var(--cyan-dim);
+  transform: translateY(-2px);
+}
+.share-btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+.share-btn.copied { color: var(--cyan); border-color: var(--cyan-dim); }
+
+/* ---------- comments ---------- */
+.post-comments {
+  margin-top: 3.2rem;
+  padding-top: 1.8rem;
+  border-top: 1px solid var(--line);
+  max-width: 68ch;
+}
+.comments-note {
+  font-size: .85rem;
+  color: var(--muted-2);
+  max-width: 58ch;
+  margin: 0 0 1.4rem;
+}
+/* giscus injects its own iframe; give it room and stop it overflowing */
+#giscus-host { min-height: 8rem; }
+#giscus-host iframe { width: 100%; max-width: 100%; color-scheme: dark; }
 
 /* ---------- prev / next ---------- */
 .post-nav {

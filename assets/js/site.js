@@ -56,6 +56,8 @@
     gh:     '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/></svg>',
     loc:    '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16.2 8.5c0 4.4-6.2 9.4-6.2 9.4s-6.2-5-6.2-9.4a6.2 6.2 0 1 1 12.4 0Z"/><circle cx="10" cy="8.4" r="2.2"/></svg>',
     x:      '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644Z"/></svg>',
+    link:   '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8.3 11.7a3.3 3.3 0 0 0 5 .4l2-2a3.3 3.3 0 0 0-4.7-4.7l-1.2 1.1"/><path d="M11.7 8.3a3.3 3.3 0 0 0-5-.4l-2 2a3.3 3.3 0 0 0 4.7 4.7l1.1-1.1"/></svg>',
+    check:  '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 10.5 3.5 3.5 7.5-8"/></svg>',
     /* Not rendered anywhere today — kept in sync with the favicon so it
        does not come back as the old triangle if it is ever used. */
     logo:   '<svg viewBox="0 0 28 28" fill="none" stroke="#2EC5D3" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M9 23V5h7l4 4v3l-4 4H9m5 0 6 7"/></svg>'
@@ -380,11 +382,9 @@
         '</div>' +
         '<p class="build-pill">' +
           '<span class="dot" aria-hidden="true"></span>' +
-          'Under active build' +
+          'Content of this website is under active review' +
           '<span class="sep" aria-hidden="true">·</span>' +
           'Generated with Claude Code' +
-          '<span class="sep" aria-hidden="true">·</span>' +
-          'Content under review' +
         '</p>' +
         '<div class="foot-bot">' +
           '<span>© 2026 ' + esc(P.person.name) + '</span>' +
@@ -687,6 +687,96 @@
   }
 
   /* =============================================================
+     SHARE ROW — one per post
+
+     Plain intent links, no third-party scripts and no tracking
+     pixels: nothing here phones home before the reader clicks.
+     ============================================================= */
+  function shareHTML(p) {
+    var url  = window.location.href;
+    var text = p.title + " — " + P.person.name;
+    return '<div class="post-share">' +
+      '<p class="share-label">Share this post</p>' +
+      '<div class="share-row">' +
+        '<a class="share-btn" target="_blank" rel="noopener" href="https://x.com/intent/post?text=' +
+          encodeURIComponent(text) + '&url=' + encodeURIComponent(url) + '">' + ICON.x + '<span>X</span></a>' +
+        '<a class="share-btn" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=' +
+          encodeURIComponent(url) + '">' + ICON.li + '<span>LinkedIn</span></a>' +
+        '<button class="share-btn" type="button" id="copyLink">' + ICON.link + '<span>Copy link</span></button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  /* Clipboard needs a secure context — fine on https and on localhost,
+     not on a file:// open. Fall back to selecting the URL so the reader
+     can still copy it by hand rather than getting a dead button. */
+  function wireShare() {
+    var btn = $("#copyLink");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var label = btn.querySelector("span");
+      var done  = function (msg) {
+        btn.classList.add("copied");
+        label.textContent = msg;
+        setTimeout(function () {
+          btn.classList.remove("copied");
+          label.textContent = "Copy link";
+        }, 2000);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(window.location.href)
+          .then(function () { done("Copied"); })
+          .catch(function () { done("Press Ctrl+C"); });
+      } else {
+        done("Press Ctrl+C");
+      }
+    });
+  }
+
+  /* =============================================================
+     COMMENTS — giscus
+
+     The widget is injected rather than hardcoded into post.html so the
+     thread can be keyed to the post id. Config lives in data.js; blank
+     repo means no comments block at all.
+     ============================================================= */
+  function commentsHTML() {
+    var c = P.comments;
+    if (!c || !c.repo) return "";
+    return '<section class="post-comments">' +
+      '<p class="share-label">Comments</p>' +
+      '<p class="comments-note">Anyone can read these. Posting one needs a GitHub account — ' +
+        'they are stored as discussions on this site’s own repository, so there is no tracking and no ads.</p>' +
+      '<div id="giscus-host"></div>' +
+    '</section>';
+  }
+
+  function mountComments(p) {
+    var c = P.comments, host = $("#giscus-host");
+    if (!c || !c.repo || !host) return;
+    var s = document.createElement("script");
+    s.src = "https://giscus.app/client.js";
+    s.setAttribute("data-repo", c.repo);
+    s.setAttribute("data-repo-id", c.repoId);
+    s.setAttribute("data-category", c.category);
+    s.setAttribute("data-category-id", c.categoryId);
+    /* Keyed to the post id, not the URL — post.html is one path for
+       every post, so a URL mapping would merge all threads into one. */
+    s.setAttribute("data-mapping", "specific");
+    s.setAttribute("data-term", p.id);
+    s.setAttribute("data-strict", "1");
+    s.setAttribute("data-reactions-enabled", "1");
+    s.setAttribute("data-emit-metadata", "0");
+    s.setAttribute("data-input-position", "top");
+    s.setAttribute("data-theme", c.theme || "transparent_dark");
+    s.setAttribute("data-lang", "en");
+    s.setAttribute("data-loading", "lazy");
+    s.crossOrigin = "anonymous";
+    s.async = true;
+    host.appendChild(s);
+  }
+
+  /* =============================================================
      PAGE: BLOG post
      ============================================================= */
   function renderPost() {
@@ -727,6 +817,8 @@
       '<section class="section tight"><div class="wrap">' +
         '<article class="post-prose">' + sectionsHTML(p.sections) + '</article>' +
 
+        shareHTML(p) +
+
         ((newer || older)
           ? '<nav class="post-nav" aria-label="More posts">' +
               (older
@@ -743,7 +835,12 @@
           : '') +
 
         '<p style="margin-top:2.4rem"><a class="btn" href="blog.html">All posts' + ICON.arrow + '</a></p>' +
+
+        commentsHTML() +
       '</div></section>';
+
+    wireShare();
+    mountComments(p);
   }
 
   /* =============================================================
@@ -1002,11 +1099,8 @@
           '</section>' +
 
           '<section id="skills" style="margin-bottom:3rem">' +
-            '<p class="eyebrow">Skills</p><h2>What I actually do</h2>' +
-            P.skills.map(function (s) {
-              return '<div class="skill-block"><h4>' + esc(s.group) + '</h4>' +
-                '<ul class="tags">' + s.items.map(function (i) { return "<li>" + esc(i) + "</li>"; }).join("") + '</ul></div>';
-            }).join("") +
+            '<p class="eyebrow">Skills</p><h2>What I am hired for</h2>' +
+            skillsHTML() +
           '</section>' +
 
           '<section id="education">' +
@@ -1017,6 +1111,7 @@
                 '<h3>' + esc(e.title) + '</h3>' +
                 '<p class="tl-org">' + esc(e.org) + '</p>' +
                 (e.note ? '<p style="font-size:.93rem">' + esc(e.note) + '</p>' : '') +
+                progressRailHTML(e) +
               '</div>';
             }).join("") + '</div>' +
             P.reading.map(function (g) {
@@ -1043,6 +1138,72 @@
           '</section>' +
         '</div>' +
       '</div></div>';
+  }
+
+  /* =============================================================
+     SKILLS BLOCK
+
+     Three bands, in the order a hiring manager reads them:
+       1. what he is hired for      — cyan-ruled cards
+       2. supporting craft          — plain chips
+       3. tools, split use / learn  — side by side, dashed for learning
+     Then the current course, on the site's own rail device.
+     ============================================================= */
+  function chips(items, cls) {
+    return '<ul class="tags' + (cls ? " " + cls : "") + '">' +
+      items.map(function (i) { return "<li>" + esc(i) + "</li>"; }).join("") + "</ul>";
+  }
+
+  function groupsIn(tier) {
+    return P.skills.filter(function (s) { return s.tier === tier; });
+  }
+
+  /* Progress rail for a course in progress. Lives on the education
+     timeline entry — the course is shown once, in the record, not
+     duplicated as its own card. */
+  function progressRailHTML(e) {
+    if (typeof e.progress !== "number") return "";
+    var pct = Math.max(0, Math.min(100, e.progress));
+    return '<div class="learn-progress">' +
+      '<div class="learn-rail" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100" ' +
+           'aria-label="' + esc(e.title) + ' progress">' +
+        '<span class="learn-rail-fill" style="width:' + pct + '%"></span>' +
+        '<span class="learn-rail-marker" style="left:' + pct + '%"></span>' +
+      '</div>' +
+      '<p class="learn-pct"><strong>' + pct + '%</strong> complete · in progress</p>' +
+    '</div>';
+  }
+
+  function skillsHTML() {
+    var out = "";
+
+    /* 1 — the hire-for band */
+    out += '<div class="skill-cards">' +
+      groupsIn("hire").map(function (s) {
+        return '<div class="skill-card">' +
+          '<h4>' + esc(s.group) + '</h4>' +
+          chips(s.items, "tags-bright") +
+        '</div>';
+      }).join("") +
+    '</div>';
+
+    /* 2 — supporting craft */
+    out += '<div class="skill-craft">' +
+      groupsIn("craft").map(function (s) {
+        return '<div class="skill-block"><h4>' + esc(s.group) + '</h4>' + chips(s.items) + '</div>';
+      }).join("") +
+    '</div>';
+
+    /* 3 — tools, use beside learning */
+    var use = groupsIn("use")[0], learn = groupsIn("learn")[0];
+    if (use || learn) {
+      out += '<div class="tool-split">' +
+        (use   ? '<div class="skill-block"><h4>' + esc(use.group) + '</h4>' + chips(use.items) + '</div>' : '') +
+        (learn ? '<div class="skill-block"><h4 class="k-learn">' + esc(learn.group) + '</h4>' + chips(learn.items, "tags-learn") + '</div>' : '') +
+      '</div>';
+    }
+
+    return out;
   }
 
   /* =============================================================

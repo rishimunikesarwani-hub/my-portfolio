@@ -57,25 +57,13 @@ window.PORTFOLIO = {
   /* ---------------------------------------------------------------
      Categories — every item belongs to exactly one.
      --------------------------------------------------------------- */
+  /* Order here is the order everywhere: the home page cards, the Work
+     filter chips and the footer. Built things lead, analysis follows.
+
+     Advisory was removed on 2026-08-12 — the Aayo App work it held is
+     covered by the experience timeline on the About page, and having it
+     in both places said the same thing twice. */
   categories: [
-    {
-      slug: "breakdowns",
-      name: "AI Product Breakdowns",
-      blurb:
-        "Six shipped AI products, taken apart the way I would take apart my own. Five are constrained " +
-        "to a 10% budget cut, so the answer has to be a config or policy change rather than a new " +
-        "system. The sixth is an architecture teardown read from a live product's own code.",
-      lens: "What actually broke — and what would I put in the next sprint?"
-    },
-    {
-      slug: "agents",
-      name: "Agents I've Built",
-      blurb:
-        "Working software, not slideware. Built on the Hermes platform — grounded retrieval, " +
-        "anti-fabrication guardrails, evaluation suites, and human-approval gates that fire on a " +
-        "threshold rather than on vibes.",
-      lens: "Where does this system earn autonomy, and where does it hand control back?"
-    },
     {
       slug: "builds",
       name: "Tools I've Built",
@@ -87,12 +75,21 @@ window.PORTFOLIO = {
       lens: "What did I refuse to build, and what did refusing it buy me?"
     },
     {
-      slug: "advisory",
-      name: "Advisory",
+      slug: "agents",
+      name: "Agents I've Built",
       blurb:
-        "Product work for a pre-seed founder on the decisions that determine whether anything " +
-        "survives contact with a market: revenue model, positioning, and what comes off the roadmap.",
-      lens: "What does this team have to stop building in order to ship?"
+        "Working software, not slideware. Grounded retrieval, anti-fabrication guardrails, " +
+        "evaluation suites, and human-approval gates that fire on a threshold rather than on vibes.",
+      lens: "Where does this system earn autonomy, and where does it hand control back?"
+    },
+    {
+      slug: "breakdowns",
+      name: "AI Product Breakdowns",
+      blurb:
+        "Six shipped AI products, taken apart the way I would take apart my own. Five are constrained " +
+        "to a 10% budget cut, so the answer has to be a config or policy change rather than a new " +
+        "system. The sixth is an architecture teardown read from a live product's own code.",
+      lens: "What actually broke — and what would I put in the next sprint?"
     }
   ],
 
@@ -327,7 +324,7 @@ window.PORTFOLIO = {
           ]
         }
       ],
-      related: ["goldman-analysts", "nestle-nesgpt", "aayo-app"]
+      related: ["goldman-analysts", "nestle-nesgpt", "alars"]
     },
 
     /* ============ 3. ZOMATO ============ */
@@ -767,6 +764,100 @@ window.PORTFOLIO = {
       related: ["investor-agent", "swiggy-instamart", "eval-framework"]
     },
 
+    /* ============ ALARS ============
+       Written 2026-08-12 from the project's own SCRATCHPAD.md decision
+       log. Every claim below traces to that file — nothing inferred. */
+    {
+      id: "alars",
+      title: "Five agents, one page, thirty minutes",
+      org: "ALARS",
+      category: "agents",
+      industry: "Multi-agent · Product discovery",
+      year: "2026",
+      status: "Pre-deployment",
+      effortDays: 2,
+      effortLabel: "Built over a weekend",
+      tagline: "A product team for a founder who does not have one.",
+      summary:
+        "Five agents — head of product, PM, designer, data analyst, user researcher — run in sequence " +
+        "and turn one messy sentence about a product into a ranked, traceable backlog. The analyst is " +
+        "forbidden from inventing a number, and the system asks questions rather than guessing.",
+      tags: ["Multi-agent", "Sequential handoff", "Anti-fabrication", "Convex", "Pre-deployment"],
+      stats: [
+        { v: "5",   l: "agents in sequence" },
+        { v: "30",  l: "minutes to a backlog" },
+        { v: "0",   l: "invented numbers" }
+      ],
+      gate: {
+        rule: "Would answering require guessing what he sells or where the problem happens?",
+        pass: "Produces the backlog, every item traced to a hypothesis",
+        fail: "Returns three to five questions instead — never a hedge followed by a guess anyway"
+      },
+      repo: { name: "my-immersion-project", url: "" },
+      sections: [
+        {
+          h: "What it does",
+          type: "prose",
+          body: [
+            "The user is Jerry: a solo founder of an early-stage D2C company with no internal product team. He types one messy sentence about what is going wrong. He gets back one page he can act on today — what might be broken, where to find the data, three directions, the stories, and what to build first.",
+            "The user considered and rejected was the PM at a larger company. The stack reads as built for a PM, but a PM already <em>is</em> the product team — for them this is as much threat as tool. Jerry has no team and wants one."
+          ]
+        },
+        {
+          h: "The five, in order",
+          type: "list",
+          body: [
+            "<strong>Head of product</strong> — frames what could actually be broken.",
+            "<strong>Data analyst</strong> — names the numbers needed, and labels every assumption as one.",
+            "<strong>User researcher</strong> — separates what people are doing from why they are doing it.",
+            "<strong>Designer</strong> — turns the directions into stories.",
+            "<strong>PM</strong> — decides what gets built first, and what does not."
+          ]
+        },
+        {
+          h: "The rule that makes it a product",
+          type: "note",
+          body: [
+            "The analyst never invents a number. It names the numbers the founder needs and labels every assumption. That single constraint is the whole difference between a product and a party trick — and it is the opposite of every UX-researcher prompt in the wild, which assumes analytics tooling and a thousand sessions."
+          ]
+        },
+        {
+          h: "Two things I built, then reversed",
+          type: "list",
+          body: [
+            "<strong>One call with five personas became five separate calls.</strong> In one call the voices blurred into a single voice, and the founder stared at a blank page for 45 seconds waiting for it. Each agent is now its own call, handed everything said before it.",
+            "<strong>A list of all five agents became one agent on screen at a time.</strong> The first version showed the other four greyed out, waiting their turn. It tested badly and the objection was right — nothing moves now until the founder reads the current one and clicks Continue."
+          ]
+        },
+        {
+          h: "What it refuses to do",
+          type: "list",
+          body: [
+            "<strong>Guess.</strong> If it would have to assume what he sells or where the problem happens, it returns questions instead of a backlog. A speculative backlog is worse than no backlog.",
+            "<strong>Run to twelve pages.</strong> It fits on one. The PRD nobody reads is a known failure mode, so short is the feature, not the compromise.",
+            "<strong>Produce untraceable work.</strong> Every backlog item points back to a hypothesis. Nothing appears from nowhere.",
+            "<strong>Write like a report.</strong> A banned-word list is enforced in the prompts — leverage, seamless, streamline, actionable, pain point and a dozen others. It says <em>people leave</em>, not <em>user drop-off is observed</em>."
+          ]
+        },
+        {
+          h: "The lesson worth keeping",
+          type: "note",
+          body: [
+            "A rule stating that headings must be under twelve words produced 27-word headings. Adding one worked before-and-after example to the prompt took them to eight. If a writing rule is not being followed, show it rather than tell it."
+          ]
+        },
+        {
+          h: "Where it is",
+          type: "prose",
+          body: [
+            "The MVP is built and the waitlist is live with real signups. Answers persist to Convex so nothing is lost; the model is reached through a single pinned config rather than an auto-router, because an unpinned router is how a side project quietly becomes a bill.",
+            "Not built on purpose: integrations, login, history, export, RICE scoring, and the second mode. Each was cut to protect the thirty minutes."
+          ]
+        }
+      ],
+      related: ["investor-agent", "job-qualifier", "mission-control-hq"]
+    },
+
     /* ============ 7. JOB QUALIFIER AGENT ============ */
     {
       id: "job-qualifier",
@@ -827,7 +918,7 @@ window.PORTFOLIO = {
           ]
         }
       ],
-      related: ["eval-framework", "investor-agent", "nestle-nesgpt"]
+      related: ["eval-framework", "investor-agent", "alars"]
     },
 
     /* ============ 7. INVESTOR AGENT ============ */
@@ -898,7 +989,7 @@ window.PORTFOLIO = {
           ]
         }
       ],
-      related: ["job-qualifier", "eval-framework", "zomato-ops"]
+      related: ["job-qualifier", "alars", "zomato-ops"]
     },
 
     /* ============ 8. EVAL FRAMEWORK ============ */
@@ -1266,68 +1357,6 @@ window.PORTFOLIO = {
         }
       ],
       related: ["what-is-hot", "tablink", "mission-control-hq"]
-    },
-
-    /* ============ 12. AAYO APP ============ */
-    {
-      id: "aayo-app",
-      title: "Aayo App — Revenue Model & Roadmap Scope",
-      org: "Pre-seed event discovery platform",
-      category: "advisory",
-      industry: "Consumer Marketplace · Pre-seed",
-      year: "2025–26",
-      status: "Ongoing",
-      effortDays: 0,
-      effortLabel: "Ongoing, pro bono",
-      tagline: "Protecting velocity by reducing build surface, not adding to it.",
-      summary:
-        "Advising a pre-seed founder on monetisation, pitch narrative and roadmap scope. 1,100+ organic " +
-        "users and 90+ events at zero marketing spend — the constraint is not demand, it is three " +
-        "engineers and nine months of runway.",
-      tags: ["Revenue model", "TAM-SAM-SOM", "Roadmap scope", "Positioning", "Pre-seed"],
-      stats: [
-        { v: "1,100+", l: "organic users, zero spend" },
-        { v: "90+",    l: "events hosted" },
-        { v: "₹1 Cr",  l: "pre-seed ask supported" }
-      ],
-      gate: {
-        rule: "Does this feature survive MVP focus, 3 engineers, and 9 months of runway?",
-        pass: "Stays in the build queue",
-        fail: "Cut — velocity is the only real asset pre-revenue"
-      },
-      sections: [
-        {
-          h: "Monetisation design",
-          type: "prose",
-          body: [
-            "A 10% transaction-commission core with five supporting sub-streams: promoted listings, organiser plans, top placement, brand advertising, and venue listings.",
-            "The commission carries the model; the sub-streams exist so that a single pricing change cannot take the whole business down."
-          ]
-        },
-        {
-          h: "Pitch narrative",
-          type: "prose",
-          body: [
-            "Co-designed the pre-seed narrative — sharpened the problem framing for India's fragmented event-discovery market, mapped competitive positioning against Luma, Meetup, AllEvents, Eventbrite and BookMyShow, and sized the opportunity through TAM-SAM-SOM. Those decisions are reflected in the investor deck supporting the ₹1 Cr ask."
-          ]
-        },
-        {
-          h: "Roadmap simplification",
-          type: "prose",
-          body: [
-            "Stress-tested the build queue against three constraints — MVP focus, a three-engineer team, and nine months of runway — and identified what to remove. The output of the exercise was a shorter list, not a longer one.",
-            "Pre-revenue, product velocity is the only compounding asset. Every feature added is velocity spent."
-          ]
-        },
-        {
-          h: "Current work",
-          type: "prose",
-          body: [
-            "Scoping business strategy for an upcoming Aayo-hosted event — marketing ideation and revenue model (sponsor mix, ticket tiering, on-event monetisation) while the founder runs operations. Alongside that, advising on a referral-led growth approach for a platform that reached 1,100+ users and 90+ events without spending on marketing."
-          ]
-        }
-      ],
-      related: ["mckinsey-lilli", "goldman-analysts", "investor-agent"]
     }
   ],
 
@@ -1397,7 +1426,10 @@ window.PORTFOLIO = {
       role: "Co-Founder",
       org: "Siddhi Vinayak Infra-Ventures — concrete blocks, tiles, pavers",
       place: "Prayagraj, Uttar Pradesh",
-      when: "Jul 2017 – May 2018",
+      /* End date confirmed by Rishi 2026-08-12 as Feb 2018 (LinkedIn says
+         May 2018 — LinkedIn is the one that needs fixing). Start date is
+         still LinkedIn's Jul 2017, unconfirmed. */
+      when: "Jul 2017 – Feb 2018",
       points: [
         "Ran the whole business loop before knowing what it was called: found the market, built the product, acquired the customers, managed the cash. Full P&L ownership. Won municipal-corporation and housing-society contracts.",
         "It ended badly — a critical project stalled on financial miscalculation, co-founder misalignment and customer payment delays, and I exited when funds were withheld.",
@@ -1416,26 +1448,49 @@ window.PORTFOLIO = {
     }
   ],
 
+  /* -----------------------------------------------------------------
+     SKILLS
+
+     `tier` decides how a group renders, and the order below is the
+     order on the page:
+
+       hire   — what someone is actually hiring for. Rendered as a
+                cyan-ruled card, brighter chips, given the most weight.
+       craft  — supporting depth. Plain chips.
+       use    — tools in daily use. Solid chips.
+       learn  — tools being learned. Dashed chips, so "learning" is
+                visible at a glance and never overstates itself.
+     ----------------------------------------------------------------- */
   skills: [
     {
       group: "AI product — built and shipped",
+      tier: "hire",
       items: ["Agent design & agentic workflows", "RAG architecture & retrieval design", "Evaluation frameworks (golden sets, LLM-as-judge)", "LLM fundamentals & foundation models", "Prompt engineering for production", "Build-vs-buy reasoning"]
     },
     {
       group: "AI product — actively building",
+      tier: "hire",
       items: ["Deterministic citation checks", "Post-launch monitoring & observability", "LLMOps"]
     },
     {
       group: "Core PM craft",
+      tier: "craft",
       items: ["Problem discovery", "Requirement definition", "Prioritisation logic", "Trade-off decision making", "Metrics ownership"]
     },
     {
       group: "B2B & commercial",
+      tier: "craft",
       items: ["Revenue ownership", "Enterprise & key account management", "Pricing strategy & techno-commercial offers", "Bid management & RFP response", "Revenue cycle & order-to-cash"]
     },
     {
-      group: "Tools",
-      items: ["Jira / Linear", "Figma", "SQL", "Mixpanel / Amplitude", "Claude API / OpenAI Playground", "Vector DBs"]
+      group: "Tools I use",
+      tier: "use",
+      items: ["Claude Code", "Codex CLI", "LangChain", "Vector DBs", "Gradio", "Claude API / OpenAI Playground"]
+    },
+    {
+      group: "Tools I'm learning",
+      tier: "learn",
+      items: ["Jira / Linear", "Figma", "SQL", "Mixpanel / Amplitude"]
     }
   ],
 
@@ -1452,6 +1507,9 @@ window.PORTFOLIO = {
       org: "Coursera",
       when: "Still studying · 2026",
       inProgress: true,
+      /* Drives the progress rail in the Skills section too — one number,
+         one place. Update it here and both move together. */
+      progress: 30,
       note: "Retrieval-augmented generation, vector stores and agentic orchestration — the formal grounding under the retrieval and agent work already shipped."
     },
     {
@@ -1507,6 +1565,31 @@ window.PORTFOLIO = {
   ],
 
   /* -----------------------------------------------------------------
+     COMMENTS — giscus, backed by GitHub Discussions
+
+     Comments are stored as Discussions on the portfolio repo itself, in
+     the Announcements category, so only you can start a thread and
+     anyone can reply. Nothing is stored here and there is no server to
+     run. Readers need a GitHub account to post; reading is open to all.
+
+     Each post gets its own thread keyed by the post `id` (mapping is
+     "specific"), NOT by URL — so the thread survives a URL change and
+     two posts can never share one thread.
+
+     Requires the giscus GitHub App to be installed on the repo:
+       https://github.com/apps/giscus
+
+     Set repo to "" and the comments block disappears from every post.
+     ----------------------------------------------------------------- */
+  comments: {
+    repo:       "rishimunikesarwani-hub/my-portfolio",
+    repoId:     "R_kgDOTzbOEw",
+    category:   "Announcements",
+    categoryId: "DIC_kwDOTzbOE84DDNpb",
+    theme:      "transparent_dark"
+  },
+
+  /* -----------------------------------------------------------------
      BLOG
 
      Newest first is handled in code — order here does not matter.
@@ -1525,7 +1608,7 @@ window.PORTFOLIO = {
       id: "why-this-blog-exists",
       title: "Why this blog exists",
       date: "2026-08-12",
-      summary: "The case studies show the finished thing. This is where the unfinished thinking goes.",
+      summary: "This blog exists because I am opinionated. I need a digital scratchpad to pen down my worldview about AI, economics and product. Readers are welcome to give feedback or contribute.",
       tags: ["Working notes"],
       draft: false,
       sections: [
@@ -1540,29 +1623,6 @@ window.PORTFOLIO = {
         ]},
         { h: "The rule", type: "note", body: [
           "A post goes up when the thinking is honest, not when it is finished. If I only publish settled opinions, the only thing this blog will prove is that I am good at editing."
-        ]}
-      ]
-    },
-
-    {
-      id: "the-decision-gate",
-      title: "Every AI product needs a line it will not cross",
-      date: "2026-08-10",
-      summary: "The threshold where the system stops deciding and a person takes over — and why naming it early makes the rest of the design easier.",
-      tags: ["Agent design", "Thesis"],
-      draft: false,
-      sections: [
-        { type: "prose", body: [
-          "If you look through the work on this site, the same device keeps appearing: a stated threshold where the system stops acting on its own and hands the decision to a person. Heat index above 42°C. Fit score below 80. Shelf life under five days.",
-          "It is not a safety feature bolted on at the end. It is the first thing worth deciding, because everything downstream — what you log, what you evaluate, what you show the user — falls out of it."
-        ]},
-        { h: "Why it comes first", type: "list", body: [
-          "It converts a vague fear (<em>what if the AI gets it wrong?</em>) into a number somebody can argue with.",
-          "It tells you what to measure. The gate is the metric — how often it fires, and how often it fires correctly.",
-          "It decides the interface. A system with a gate needs a review queue; a system without one needs an undo button and a lot more nerve."
-        ]},
-        { h: "The uncomfortable version", type: "note", body: [
-          "A product with no gate is not more autonomous. It is a product whose owner has not yet decided who is accountable when it is wrong."
         ]}
       ]
     },

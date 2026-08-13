@@ -1079,11 +1079,10 @@
         '</div>' +
         '<div>' +
           '<section style="margin-bottom:3rem">' +
-            '<p class="eyebrow">The short version</p>' +
-            '<p style="font-size:1.12rem;color:#c3d2e4">' + esc(p.pitch) + '</p>' +
-            '<div class="hero-cta" style="margin-top:1.5rem">' +
-              '<a class="btn btn-primary" href="work.html">See the work' + ICON.arrow + '</a>' +
-            '</div>' +
+            '<p class="eyebrow">Personal</p>' +
+            p.tribute.map(function (t) {
+              return '<p style="font-size:1.12rem;color:#c3d2e4;margin-bottom:1em">' + esc(t) + '</p>';
+            }).join("") +
           '</section>' +
 
           '<section id="skills" style="margin-bottom:3rem">' +

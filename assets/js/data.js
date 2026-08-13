@@ -40,6 +40,14 @@ window.PORTFOLIO = {
       "products other teams already put in front of users. Nine years owning B2B revenue at NTPC, " +
       "Siemens and Fincantieri taught me the part most AI teams skip: what it actually costs when the " +
       "system is wrong.",
+    /* Replaces "The short version" on the About page. */
+    tribute: [
+      "They say a father's role in a life is the one thing that cannot be replaced. God, they got that right.",
+      "Everything I am — and everything I will be, when I look back on it — carries the imprint of my dad's teaching. He was a man measured in his words. He used fewer of them than anyone else in the room and was still the one people leaned in to hear. An excellent public speaker. Always hungry for knowledge. He taught me never to claim what I cannot prove.",
+      "I have long ground to cover to be like you, dad. I still turn to you when I have to write my speeches.",
+      "Since you left us I have become self-critical, adaptable to change. But I inherited your measure and not your voice.",
+      "That's the part I'm still building."
+    ],
     thesis:
       "Every AI system worth trusting has a line drawn through it: the point where the machine stops " +
       "and a person takes over. Most teams draw that line by accident, after something breaks. " +

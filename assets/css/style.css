@@ -1506,6 +1506,16 @@ td:first-child { color: #b8c8dc; }
   margin: 0 0 1.6rem;
 }
 
+/* Posts sit side by side while two 504px columns still fit, then stack.
+   auto-fit + minmax does the switch on its own — no breakpoint to keep
+   in sync if a third post is ever added to the list. */
+.embed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 504px));
+  gap: clamp(1.2rem, 3vw, 2rem);
+  justify-content: start;
+}
+
 /* The iframe is a fixed 504×594 from LinkedIn. Cap the width and let it
    shrink on narrow screens rather than pushing the page sideways. */
 .embed-frame {
@@ -1574,4 +1584,225 @@ td:first-child { color: #b8c8dc; }
 @media (max-width: 620px) {
   .build-pill { border-radius: var(--r); }
   .build-pill .sep { display: none; }
+}
+
+/* =============================================================
+   CERTIFICATE RAIL
+
+   A horizontal conveyor of the Coursera certificates. The geometry
+   is driven from one place:
+
+     --cert-w     card width
+     --cert-gap   space between cards
+     --cert-run   how long one full pass takes
+
+   Each card carries one more, set inline by the renderer:
+
+     --cert-a     its tilt on the rail
+
+   That tilt is used twice and must cancel exactly, or a hovered
+   certificate reads off-square:
+
+     .cert-node     rotate(+a)   — lays the card down at its angle
+     .cert-upright  rotate(-a)   — on hover, undoes it back to level
+
+   The gap lives on the card as a right margin rather than on the
+   track as `gap`. With `gap`, one set of nine is 9w + 8g while the
+   loop needs to travel 9w + 9g, and the half-width translate leaves
+   a visible half-gap jump every pass. Folding the gap into the card
+   makes one set exactly 9(w + g), which is exactly 50% of the
+   doubled track.
+   ============================================================= */
+.cert-rail {
+  --cert-w: clamp(190px, 19vw, 250px);
+  --cert-gap: clamp(1rem, 2vw, 1.9rem);
+  --cert-run: 64s;
+
+  position: relative;
+  overflow: hidden;
+  /* Room above and below for the hover zoom to grow into. */
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+
+/* The edge fade, so the rail reads as continuing past the screen
+   instead of stopping at it.
+
+   Two painted gradients rather than a mask-image on .cert-rail: a
+   mask re-composites the whole moving strip offscreen every frame,
+   which is enough to stall the renderer at this width. These are
+   static overlays the compositor never has to redraw. */
+.cert-rail::before,
+.cert-rail::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(40px, 8vw, 130px);
+  z-index: 2;
+  pointer-events: none;
+}
+.cert-rail::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--ink), rgba(11, 17, 32, 0));
+}
+.cert-rail::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--ink), rgba(11, 17, 32, 0));
+}
+
+.cert-track {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: max-content;
+  animation: certRun var(--cert-run) linear infinite;
+}
+
+/* The duplicate set. `display: contents` drops this wrapper out of
+   the layout so its nine cards sit directly on the track — without
+   it the copy would collapse into a single flex item. */
+.cert-loop { display: contents; }
+
+@keyframes certRun {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* PAUSE ON HOVER — the rail stops so a card can be read at rest.
+   focus-within covers keyboard users tabbing through the links. */
+.cert-rail:hover .cert-track,
+.cert-rail:focus-within .cert-track { animation-play-state: paused; }
+
+/* Laid down at its tilt. */
+.cert-node {
+  flex: none;
+  width: var(--cert-w);
+  margin-right: var(--cert-gap);
+  z-index: 1;
+}
+
+/* Z-INDEX ELEVATION — the hovered card is lifted out of the strip so
+   the zoomed view sits over its neighbours instead of being clipped
+   by the ones drawn after it. */
+.cert-node:hover,
+.cert-node:focus-within { z-index: 30; }
+
+/* COUNTER-ROTATION — at rest the card carries its tilt; on hover the
+   inner layer rotates backward by the same angle, so the two cancel
+   and the certificate sits level while it is being read. */
+.cert-upright {
+  transform: rotate(var(--cert-a));
+  transition: transform .5s var(--ease);
+}
+.cert-node:hover .cert-upright,
+.cert-node:focus-within .cert-upright { transform: rotate(0deg); }
+
+/* ---------- the card ---------- */
+.cert-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--ink-2);
+  overflow: hidden;
+  transition:
+    transform .5s var(--ease),
+    border-color .3s var(--ease),
+    box-shadow .5s var(--ease);
+}
+.cert-node:hover .cert-card,
+.cert-node:focus-within .cert-card {
+  transform: scale(1.28);
+  border-color: var(--cyan-dim);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, .62), 0 0 0 1px var(--cyan-glow);
+}
+
+.cert-shot { display: block; background: #fff; }
+.cert-shot img {
+  width: 100%;
+  /* The width/height attributes on the tag reserve the space before
+     the image loads, but they also set a presentational height that
+     would beat aspect-ratio and stretch the certificate. `height:
+     auto` hands the height back to the ratio. */
+  height: auto;
+  /* Matches the thumb render, so the certificate is never cropped. */
+  aspect-ratio: 560 / 433;
+  object-fit: cover;
+}
+
+.cert-meta {
+  padding: .75rem .85rem .85rem;
+  border-top: 1px solid var(--line);
+}
+.cert-track-label {
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin: 0 0 .35rem;
+}
+.cert-meta h3 {
+  font-size: .82rem;
+  line-height: 1.32;
+  letter-spacing: -.01em;
+  margin: 0 0 .3rem;
+}
+.cert-issuer {
+  font-size: .7rem;
+  line-height: 1.45;
+  color: var(--muted-2);
+  margin: 0 0 .45rem;
+}
+.cert-verify {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: .07em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+.cert-verify:hover { color: var(--cyan); border-bottom-color: var(--cyan-dim); }
+
+.cert-hint {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin: 0;
+}
+
+/* ---------- reduced motion ---------- */
+/* The rail keeps its shape, it just stops travelling. Everything is
+   still reachable — the strip scrolls by hand instead. */
+@media (prefers-reduced-motion: reduce) {
+  .cert-rail { overflow-x: auto; }
+  .cert-track { animation: none; }
+  .cert-node:hover .cert-card,
+  .cert-node:focus-within .cert-card { transform: scale(1.06); }
+}
+
+/* ---------- touch and small screens ---------- */
+/* Hover does not exist on a phone, so an animation that can only be
+   stopped by hovering is a trap. Below this width the rail becomes a
+   swipeable strip: no travel, no tilt, snap to each card. */
+@media (hover: none), (max-width: 720px) {
+  .cert-rail {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-inline: 1rem;
+  }
+  /* No edge fade when the strip is swiped by hand — it would sit over
+     the card the reader is dragging into view. */
+  .cert-rail::before,
+  .cert-rail::after { display: none; }
+  .cert-track { animation: none; }
+  .cert-loop { display: none; }
+  .cert-node { scroll-snap-align: center; }
+  .cert-upright { transform: none; }
+  .cert-node:hover .cert-card,
+  .cert-node:focus-within .cert-card {
+    transform: none;
+    box-shadow: none;
+  }
 }

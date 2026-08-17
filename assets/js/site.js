@@ -1128,6 +1128,92 @@
   }
 
   /* =============================================================
+     CERTIFICATE RAIL
+
+     A horizontal conveyor of the Coursera certificates. Three things
+     make it readable rather than just decorative:
+
+       1. Pause on hover — hovering (or tabbing into) the rail stops
+          the travel, so a card can be read without chasing it.
+       2. Counter-rotation — every card is laid on the rail at a
+          slight tilt, so a certificate would sit off-square. On
+          hover the inner layer rotates backward by exactly the same
+          angle, cancelling the tilt so the certificate reads level.
+       3. Z-index elevation — the hovered card is lifted above its
+          neighbours so the zoom is not clipped by them.
+
+     The tilt is the only per-card value, passed in as --cert-a and
+     used twice: once to lay the card down, once to undo it.
+
+     The list is emitted twice. The track travels exactly half its
+     own width, so the second copy is sitting where the first began
+     when the animation restarts and the loop has no seam. The copy
+     is aria-hidden, or a screen reader would read all nine twice.
+     ============================================================= */
+
+  /* Fixed tilts rather than random ones: the pattern repeats every
+     five cards, so the rail looks scattered but renders identically
+     on every load. */
+  var CERT_TILT = [-2.6, 1.8, -1.2, 2.4, -2];
+
+  function certCardHTML(c, i) {
+    var url = "https://coursera.org/verify/" + c.verify;
+
+    return '<div class="cert-node" style="--cert-a:' + CERT_TILT[i % CERT_TILT.length] + 'deg">' +
+      '<div class="cert-upright">' +
+        '<article class="cert-card">' +
+          '<a class="cert-shot" href="' + esc(c.img) + '" target="_blank" rel="noopener" ' +
+             'aria-label="Open the full certificate for ' + esc(c.title) + '">' +
+            '<img src="' + esc(c.thumb || c.img) + '" width="560" height="433" ' +
+                 'loading="lazy" decoding="async" ' +
+                 'alt="Coursera certificate: ' + esc(c.title) + ', issued by ' + esc(c.org) + '">' +
+          '</a>' +
+          '<div class="cert-meta">' +
+            '<p class="cert-track-label">' + esc(c.track) + '</p>' +
+            '<h3>' + esc(c.title) + '</h3>' +
+            '<p class="cert-issuer">' + esc(c.org) + ' · ' + esc(c.when) + '</p>' +
+            '<a class="cert-verify" href="' + url + '" target="_blank" rel="noopener">' +
+              'Verify ' + esc(c.verify) +
+            '</a>' +
+          '</div>' +
+        '</article>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function renderCertificates() {
+    var host = $("#certificates");
+    if (!host || !P.certificates || !P.certificates.length) return;
+
+    var list = P.certificates;
+    var cards = list.map(certCardHTML).join("");
+
+    host.innerHTML = '<div class="wrap">' +
+      '<div class="section-head">' +
+        '<p class="eyebrow">Certificates</p>' +
+        '<h2>' + list.length + ' course certificates, earned in the open</h2>' +
+        '<p>Every certificate behind the two Coursera tracks above. Hover to stop the ' +
+          'rail, click a certificate to open it full size, or verify any of them ' +
+          'directly with Coursera.</p>' +
+      '</div>' +
+    '</div>' +
+
+    /* Outside the wrap: the rail runs the full width of the viewport
+       and fades out at both edges, so it reads as continuing rather
+       than starting and stopping at the column. */
+    '<div class="cert-rail">' +
+      '<div class="cert-track">' +
+        cards +
+        '<div class="cert-loop" aria-hidden="true">' + cards + '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="wrap">' +
+      '<p class="cert-hint">Hover the rail to stop it · click a certificate to open it full size</p>' +
+    '</div>';
+  }
+
+  /* =============================================================
      SKILLS BLOCK
 
      Three bands, in the order a hiring manager reads them:
@@ -1198,6 +1284,12 @@
      ============================================================= */
   function renderContact() {
     var p = P.person;
+
+    /* Accepts the list, or a bare string from the older single-post field.
+       Blank entries are dropped so a commented-out line cannot leave a gap. */
+    var embeds = (p.linkedinEmbeds || (p.linkedinEmbed ? [p.linkedinEmbed] : []))
+      .filter(function (s) { return s; });
+
     $("#contactBody").innerHTML = '<div class="wrap"><div class="contact-grid">' +
       '<div>' +
         '<p class="eyebrow">Get in touch</p>' +
@@ -1220,17 +1312,26 @@
       '</div>' +
     '</div>' +
 
-    /* Featured post. Omitted entirely when linkedinEmbed is empty. */
-    (p.linkedinEmbed
+    /* Featured posts. Omitted entirely when linkedinEmbeds is empty. */
+    (embeds.length
       ? '<section class="social-embed">' +
           '<p class="eyebrow">On LinkedIn</p>' +
-          '<h2 class="social-embed-h">Most recent post</h2>' +
-          '<div class="embed-frame">' +
-            '<iframe src="' + esc(p.linkedinEmbed) + '" ' +
-              'title="Recent LinkedIn post by ' + esc(p.name) + '" ' +
-              'loading="lazy" allowfullscreen></iframe>' +
+          '<h2 class="social-embed-h">' +
+            (embeds.length > 1 ? "Recent posts" : "Most recent post") +
+          '</h2>' +
+          '<div class="embed-grid">' +
+            embeds.map(function (src, i) {
+              return '<div class="embed-frame">' +
+                '<iframe src="' + esc(src) + '" ' +
+                  'title="Recent LinkedIn post ' + (i + 1) + ' by ' + esc(p.name) + '" ' +
+                  'loading="lazy" allowfullscreen></iframe>' +
+              '</div>';
+            }).join("") +
           '</div>' +
-          '<p class="embed-note">Loaded directly from LinkedIn, so it needs a connection and follows their cookie rules. ' +
+          '<p class="embed-note">Loaded directly from LinkedIn, so ' +
+            (embeds.length > 1
+              ? "they need a connection and follow their cookie rules. "
+              : "it needs a connection and follows their cookie rules. ") +
             '<a href="' + p.linkedin + '" target="_blank" rel="noopener">See the full profile</a>.</p>' +
         '</section>'
       : '') +
@@ -1278,7 +1379,7 @@
     if (page === "blog")       renderBlog();
     if (page === "post")       renderPost();         // builds its own crumbs
     if (page === "search")     renderSearch();
-    if (page === "about")      renderAbout();
+    if (page === "about")    { renderAbout(); renderCertificates(); }
     if (page === "contact")    renderContact();
 
     buildFooter();

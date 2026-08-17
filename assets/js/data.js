@@ -16,11 +16,17 @@ window.PORTFOLIO = {
     phone: "+91 87078 92507",
     linkedin: "https://linkedin.com/in/imrishirich93",
 
-    /* Featured LinkedIn post, embedded on the Contact page.
-       Get this from the post's ⋯ menu → Embed this post, and paste only the
-       src="…" URL — not the whole <iframe> tag.
-       Set to "" and the whole block disappears, the same way github does. */
-    linkedinEmbed: "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7493221021253058560?collapsed=1",
+    /* Featured LinkedIn posts, embedded on the Contact page. Newest first —
+       they render left to right in this order.
+       Get each one from the post's ⋯ menu → Embed this post, and paste only
+       the src="…" URL, not the whole <iframe> tag. Keep the ?collapsed=1 on
+       the end: it makes long posts open short with a "…more" link.
+       Add or remove lines freely. Empty the list and the whole block
+       disappears, the same way github does. */
+    linkedinEmbeds: [
+      "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7494456792471642112?collapsed=1",
+      "https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7493221021253058560?collapsed=1"
+    ],
     /* Set to "" to hide the GitHub link everywhere it appears. */
     github: "https://github.com/rishimunikesarwani-hub",
     /* Same — set to "" and X vanishes from the hero, Contact and footer. */
@@ -1106,6 +1112,105 @@ window.PORTFOLIO = {
       org: "Visvesvaraya Technological University, Belgaum",
       when: "2012 – 2016 · 76%",
       note: ""
+    }
+  ],
+
+  /* -----------------------------------------------------------------
+     CERTIFICATES
+
+     The individual course certificates behind the two Coursera tracks
+     listed in `education` above. Rendered as the rotating ring on the
+     About page — order here is the order around the circle, so keep it
+     chronological and the ring reads as a timeline.
+
+     thumb   the 560px render shown on the card. The rail draws each
+             certificate twice, so the full-size one here would be
+             ~67 MB of decoded bitmap and stalls the renderer.
+     img     the 1100px render, opened when a card is clicked
+     verify  the Coursera verification code; the URL is built from it
+     track   groups the card by programme, and colours its tag
+     ----------------------------------------------------------------- */
+  certificates: [
+    {
+      title: "Product Management: An Introduction",
+      org: "IBM",
+      when: "Mar 2026",
+      verify: "EC80ALCUVV19",
+      track: "AI Product Manager",
+      thumb: "assets/img/certs/thumb/cert-pm-introduction.jpg",
+      img:   "assets/img/certs/cert-pm-introduction.jpg"
+    },
+    {
+      title: "Product Management: Foundations & Stakeholder Collaboration",
+      org: "SkillUp",
+      when: "May 2026",
+      verify: "5YAVBSINLDLE",
+      track: "AI Product Manager",
+      thumb: "assets/img/certs/thumb/cert-pm-foundations.jpg",
+      img:   "assets/img/certs/cert-pm-foundations.jpg"
+    },
+    {
+      title: "Product Management: Initial Product Strategy and Plan",
+      org: "SkillUp",
+      when: "Jun 2026",
+      verify: "K5VNYXZPNITS",
+      track: "AI Product Manager",
+      thumb: "assets/img/certs/thumb/cert-pm-strategy-plan.jpg",
+      img:   "assets/img/certs/cert-pm-strategy-plan.jpg"
+    },
+    {
+      title: "Introduction to Artificial Intelligence (AI)",
+      org: "IBM",
+      when: "Jun 2026",
+      verify: "GOWWXWXVYERF",
+      track: "AI Product Manager",
+      thumb: "assets/img/certs/thumb/cert-intro-to-ai.jpg",
+      img:   "assets/img/certs/cert-intro-to-ai.jpg"
+    },
+    {
+      title: "Generative AI: Introduction and Applications",
+      org: "IBM",
+      when: "Jul 2026",
+      verify: "M9WWUMVN597R",
+      track: "AI Product Manager",
+      thumb: "assets/img/certs/thumb/cert-genai-applications.jpg",
+      img:   "assets/img/certs/cert-genai-applications.jpg"
+    },
+    {
+      title: "Generative AI: Prompt Engineering Basics",
+      org: "IBM",
+      when: "Jul 2026",
+      verify: "WQXO5P0DG6MP",
+      track: "AI Product Manager",
+      thumb: "assets/img/certs/thumb/cert-prompt-engineering.jpg",
+      img:   "assets/img/certs/cert-prompt-engineering.jpg"
+    },
+    {
+      title: "Generative AI: Foundation Models and Platforms",
+      org: "IBM",
+      when: "Jul 2026",
+      verify: "1KTE3RO0UMHC",
+      track: "AI Product Manager",
+      thumb: "assets/img/certs/thumb/cert-foundation-models.jpg",
+      img:   "assets/img/certs/cert-foundation-models.jpg"
+    },
+    {
+      title: "Develop Generative AI Applications: Get Started",
+      org: "IBM",
+      when: "Aug 2026",
+      verify: "MWCNARU1JN3K",
+      track: "RAG & Agentic AI",
+      thumb: "assets/img/certs/thumb/cert-develop-genai-apps.jpg",
+      img:   "assets/img/certs/cert-develop-genai-apps.jpg"
+    },
+    {
+      title: "Build RAG Applications: Get Started",
+      org: "IBM",
+      when: "Aug 2026",
+      verify: "EPJJSWUL974F",
+      track: "RAG & Agentic AI",
+      thumb: "assets/img/certs/thumb/cert-build-rag-apps.jpg",
+      img:   "assets/img/certs/cert-build-rag-apps.jpg"
     }
   ],
 

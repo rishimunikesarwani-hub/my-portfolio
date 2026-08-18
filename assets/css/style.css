@@ -368,8 +368,6 @@ code {
 }
 @keyframes blink { to { visibility: hidden; } }
 
-.hero-pitch { max-width: 46ch; margin-bottom: 1.3rem; font-size: .98rem; }
-
 .socials { display: flex; gap: .55rem; margin: 0 0 1.4rem; padding: 0; list-style: none; }
 .socials a {
   width: 40px; height: 40px;
@@ -1814,33 +1812,53 @@ td:first-child { color: #b8c8dc; }
    ============================================================= */
 
 /* -------------------------------------------------------------
-   STAT BAR
+   HERO TAGLINE + STAT BAR
 
-   The thirty-second hook. A recruiter scans numbers before they
-   read sentences, so this sits directly under the hero grid and
-   spans the full column rather than hiding in the portrait gutter.
-   Five tiles is the ceiling: past six the eye stops counting and
-   starts skimming, and the first number loses its weight.
+   The pitch paragraph came out of the hero on 18 Aug 2026 and these
+   two took its place: one line saying what the job is, then the
+   numbers backing it. A recruiter scans numbers before they read
+   sentences, and five short tiles survive a thirty-second scan in a
+   way that five lines of prose never did.
+
+   Three across rather than five, because the bar now lives inside the
+   copy column instead of spanning the page. Five tiles over three
+   columns leaves the last cell empty; the row rule makes that read as
+   a deliberate second row rather than as a missing tile.
    ------------------------------------------------------------- */
+.hero-tagline {
+  font-family: var(--display);
+  font-size: clamp(1.12rem, 1.7vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: -.015em;
+  color: var(--paper);
+  max-width: 32ch;
+  margin: .1rem 0 1.6rem;
+}
+
 .stat-bar {
   list-style: none;
-  margin: clamp(2rem, 4vw, 3.2rem) 0 0;
-  padding: clamp(1.2rem, 2.4vw, 1.7rem) 0 0;
+  margin: 1.9rem 0 0;
+  padding: 1.3rem 0 0;
   border-top: 1px solid var(--line);
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: clamp(.9rem, 2vw, 2rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.15rem 1.2rem;
 }
 .stat-bar li {
   margin: 0;
-  display: flex; flex-direction: column; gap: .35rem;
-  padding-left: 1rem;
+  display: flex; flex-direction: column; gap: .3rem;
+  padding-left: .95rem;
   border-left: 1px solid var(--line);
 }
-.stat-bar li:first-child { padding-left: 0; border-left: 0; }
+/* first cell of each row opens the row, so it carries no rule */
+.stat-bar li:nth-child(3n + 1) { padding-left: 0; border-left: 0; }
+/* the second row gets a rule above it, so the empty third cell reads
+   as the end of a row rather than as a hole */
+.stat-bar li:nth-child(n + 4) { padding-top: 1.15rem; border-top: 1px solid var(--line); }
+
 .stat-bar b {
   font-family: var(--display);
-  font-size: clamp(1.5rem, 2.7vw, 2.15rem);
+  font-size: clamp(1.2rem, 1.75vw, 1.65rem);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -.035em;
@@ -1849,22 +1867,27 @@ td:first-child { color: #b8c8dc; }
 }
 .stat-bar span {
   font-family: var(--mono);
-  font-size: .68rem;
+  font-size: .625rem;
   line-height: 1.5;
-  letter-spacing: .04em;
+  letter-spacing: .03em;
   color: var(--muted-2);
 }
 
-/* Two rows of tiles beats five squeezed columns on a narrow screen —
-   a number that wraps mid-digit is worse than no number. */
+/* Below 900px the hero stacks and the copy column becomes the full
+   width, so the bar can breathe again — but two columns keeps the
+   labels off a third line. */
 @media (max-width: 900px) {
-  .stat-bar { grid-template-columns: repeat(2, 1fr); gap: 1.3rem 1.1rem; }
-  .stat-bar li { padding-left: .9rem; border-left: 1px solid var(--line); }
+  .stat-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-bar li:nth-child(3n + 1) { padding-left: .95rem; border-left: 1px solid var(--line); }
   .stat-bar li:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .stat-bar li:nth-child(n + 3) { padding-top: 1.15rem; border-top: 1px solid var(--line); }
+  .stat-bar li:nth-child(n + 4):nth-child(-n + 3) { padding-top: 0; border-top: 0; }
 }
-@media (max-width: 480px) {
+@media (max-width: 420px) {
   .stat-bar { grid-template-columns: 1fr; }
-  .stat-bar li, .stat-bar li:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .stat-bar li,
+  .stat-bar li:nth-child(3n + 1),
+  .stat-bar li:nth-child(odd) { padding-left: 0; border-left: 0; }
   .stat-bar li + li { padding-top: 1rem; border-top: 1px solid var(--line); }
 }
 

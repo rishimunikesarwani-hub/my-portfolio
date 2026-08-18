@@ -436,7 +436,7 @@
           '<p class="hello">Hello <span class="wave">👋</span></p>' +
           '<p class="iam">I am ' + esc(p.name) + '</p>' +
           '<h1 class="role-line"><span id="typed"></span><span class="caret" aria-hidden="true"></span></h1>' +
-          '<p class="hero-pitch">' + esc(p.pitch) + '</p>' +
+          '<p class="hero-tagline">' + esc(p.tagline) + '</p>' +
           '<ul class="socials">' +
             '<li><a href="' + p.linkedin + '" target="_blank" rel="noopener" aria-label="LinkedIn">' + ICON.li + '</a></li>' +
             (p.x ? '<li><a href="' + p.x + '" target="_blank" rel="noopener" aria-label="X">' + ICON.x + '</a></li>' : '') +
@@ -447,6 +447,14 @@
             '<a class="btn" href="' + p.resume + '" target="_blank" rel="noopener">' + ICON.doc + 'Résumé</a>' +
             '<a class="btn btn-primary" href="contact.html">Let\'s talk' + ICON.arrow + '</a>' +
           '</div>' +
+          /* The stat bar closes the copy column rather than spanning the
+             page. Last thing in the hero on purpose: headline, who I am,
+             then the receipts. */
+          '<ul class="stat-bar">' +
+            p.stats.map(function (st) {
+              return '<li><b>' + esc(st.v) + '</b><span>' + esc(st.l) + '</span></li>';
+            }).join("") +
+          '</ul>' +
         '</div>' +
         '<div class="portrait">' +
           '<div class="portrait-frame">' +
@@ -454,15 +462,6 @@
           '</div>' +
         '</div>' +
       '</div>' +
-      /* The stat bar. Full width under the hero grid on purpose: it is the
-         first thing that should survive a thirty-second scan, and it cannot
-         do that squeezed into the portrait column. Chips removed 18 Aug 2026
-         — they carried older numbers and disagreed with these. */
-      '<ul class="stat-bar reveal">' +
-        p.stats.map(function (st) {
-          return '<li><b>' + esc(st.v) + '</b><span>' + esc(st.l) + '</span></li>';
-        }).join("") +
-      '</ul>' +
       '</div>';
 
     typeLoop($("#typed"), p.rotating);

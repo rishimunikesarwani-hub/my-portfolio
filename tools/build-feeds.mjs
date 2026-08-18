@@ -86,6 +86,8 @@ const llms =
 
 > ${P.person.role}. ${P.person.location}.
 
+**${P.person.tagline}**
+
 ${P.person.pitch}
 
 ## Terms of use

@@ -40,7 +40,19 @@ window.PORTFOLIO = {
       "Building is commodity. Keeping it alive isn’t.",
       "If you can't see it fail, you don’t own it."
     ],
-    /* Rewritten 18 Aug 2026 to agree with the stat bar. The old copy said
+    /* The identity line, and the shortest true sentence about the job.
+       It sits under the rotating headline where the pitch paragraph used
+       to be. "Sales guy" is doing deliberate work here — it is the
+       self-deprecating half that lets "builds" land as a claim rather
+       than as a boast, and it is a description nobody else in the pile
+       can use. Added 18 Aug 2026. */
+    tagline: "The sales guy who builds.",
+
+    /* No longer rendered in the hero — the tagline and the stat bar took
+       that slot on 18 Aug 2026. Kept because llms.txt still describes the
+       site with it, and a crawler has room for a paragraph where a
+       thirty-second reader does not.
+       Rewritten 18 Aug 2026 to agree with the stat bar. The old copy said
        "two shipped agents" directly above a tile reading "6 shipped", and
        two numbers that disagree make a reader doubt all of them. Employer
        names came out at the same time — the nine years is the claim, not

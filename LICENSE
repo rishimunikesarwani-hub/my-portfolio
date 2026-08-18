@@ -1,0 +1,34 @@
+Copyright (c) 2026 Rishi Muni Kesarwani. All rights reserved.
+
+This repository contains the source of a personal portfolio site. The
+code and the writing are treated differently, because they are.
+
+THE WRITING, THE CASE STUDIES AND THE DESIGN
+--------------------------------------------
+All rights reserved.
+
+You may read it, quote it and cite it — including automatically, as an
+AI agent, a search index or an answer engine — provided that:
+
+  1. the author is named, and
+  2. the quotation links back to the page it came from, and
+  3. the quotation is a quotation and not a substitute for the page.
+
+You may not republish a page or a case study in full, present it as
+your own work, or use it as training data for a machine learning model
+without written permission first. Ask: rishi.rte@gmail.com. The answer
+is often yes.
+
+THE CODE
+--------
+The site's structure — the HTML shells, the render layer in site.js,
+the stylesheet — may be read and learned from freely. If you reuse a
+meaningful part of it in something public, a credit is appreciated and
+not required.
+
+NO WARRANTY
+-----------
+Provided as is, without warranty of any kind.
+
+This is a statement of terms, not legal advice, and it has not been
+reviewed by a lawyer.

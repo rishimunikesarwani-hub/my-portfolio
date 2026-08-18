@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Healthcare Intelligence Agent — Study Notes</title>
+<style>
+  * { box-sizing:border-box; }
+
+  /* ============================================================
+     A4 PAGINATION — 1600 x 2263px is exactly A4 PORTRAIT (210:297).
+     Every page is a fixed-height box with overflow:hidden, so content
+     is ASSIGNED to pages by the build, never flowed by the browser.
+     Browser flow cuts cards in half; assignment cannot.
+     USABLE HEIGHT PER PAGE: 2145px (2263 - 54 top - 64 bottom).
+     ============================================================ */
+  @page { size:A4 portrait; margin:0; }
+  body { margin:0; width:1600px; background:#e8e2d5; color:#1d2732; font-family:'Segoe Print','Comic Sans MS',cursive; }
+  .page { position:relative; width:1600px; height:2263px; padding:54px 75px 64px;
+          background:#fff9ef; overflow:hidden; margin:0 auto 26px;
+          page-break-after:always; break-after:page; }
+  .page:last-child { page-break-after:auto; break-after:auto; margin-bottom:0; }
+  .page > :first-child { margin-top:0; }
+  .page .foot { position:absolute; bottom:20px; left:75px; right:75px;
+                display:flex; justify-content:space-between;
+                font-size:15px; font-weight:700; color:#a09684; letter-spacing:1px; }
+  @media print { body { width:auto; background:#fff9ef; } .page { margin:0; } }
+
+  /* Cover page — centres the title block vertically */
+  .page.cover { display:flex; flex-direction:column; justify-content:center; }
+  h1 { margin:0; color:#102c72; text-align:center; font-size:66px; line-height:1.05; letter-spacing:1px; }
+  .kicker { margin:20px 0 26px; text-align:center; color:#8b393b; font-size:22px; font-weight:700; letter-spacing:2px; }
+  .intro { border:3px dashed #4f6c91; border-radius:20px; padding:17px 28px; text-align:center; font-size:23px; line-height:1.45; background:#fffdf7; }
+  h2 { margin:44px 0 16px; color:#173b66; font-size:29px; line-height:1.15; }
+  h2 .num { display:inline-block; background:#173b66; color:#fff9ef; border-radius:50%; width:38px; height:38px; line-height:38px; text-align:center; font-size:20px; margin-right:12px; }
+  h2 .dur { display:inline-block; margin-left:14px; vertical-align:2px; background:#f6ddd1; border:2px solid #a85a50; color:#8b393b; font-weight:700; font-size:16px; border-radius:12px; padding:2px 14px; letter-spacing:1px; }
+
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  .card { border:3px dashed #4f6c91; border-radius:20px; background:#fffdf7; padding:20px 24px; }
+  .card-head { display:flex; align-items:center; gap:14px; margin-bottom:10px; border-bottom:2px solid #d5d8d4; padding-bottom:10px; }
+  .card-head .art { flex:0 0 56px; width:56px; height:56px; }
+  .card-head.big .art { flex:0 0 72px; width:72px; height:72px; }
+  h3 { margin:0; color:#173b66; font-size:22px; line-height:1.15; }
+  .card-head.big h3 { font-size:26px; }
+  .cap { margin:8px 0; font-size:18px; line-height:1.4; }
+  .cap b { color:#173b66; }
+  .example { margin-top:10px; padding-top:9px; border-top:2px dashed #d5d8d4; color:#7b3437; font-size:17px; font-weight:700; line-height:1.35; }
+
+  ul.list { margin:8px 0 0; padding-left:24px; }
+  ul.list li { font-size:18px; line-height:1.42; margin-bottom:7px; }
+  ul.list li b { color:#173b66; }
+  ul.list.q li { color:#7b3437; font-weight:700; }
+
+  .shift { margin-top:10px; padding-top:10px; border-top:2px dashed #d5d8d4; font-size:17px; line-height:1.45; }
+  .shift p { margin:0 0 7px; }
+  .lab { display:inline-block; font-weight:700; font-size:13px; border-radius:10px; padding:1px 10px; border:2px solid #4f6c91; background:#dbe7f5; color:#173b66; margin-right:8px; letter-spacing:1px; }
+  .lab.now { border-color:#a85a50; background:#f6ddd1; color:#8b393b; }
+
+  .flow { display:flex; align-items:stretch; gap:0; }
+  .flow-step { border:3px dashed #4f6c91; border-radius:20px; background:#fffdf7; padding:18px 14px; flex:1; text-align:center; }
+  .flow-step .art { width:56px; height:56px; margin:0 auto 8px; }
+  .flow-step h3 { font-size:18px; margin-bottom:6px; }
+  .flow-step p { font-size:15px; line-height:1.34; margin:0; }
+  .flow-step .tag { display:inline-block; margin-bottom:6px; background:#f6ddd1; border:2px solid #a85a50; color:#8b393b; font-weight:700; font-size:13px; border-radius:10px; padding:1px 10px; }
+  .flow-step .tag.blue { background:#dbe7f5; border-color:#4f6c91; color:#173b66; }
+  .arrow { flex:0 0 46px; display:flex; align-items:center; justify-content:center; font-size:32px; color:#a85a50; }
+  .arrow.par { font-size:26px; color:#4f6c91; flex-direction:column; line-height:1; }
+  .arrow.par span { font-size:12px; font-weight:700; letter-spacing:1px; }
+  .flow.wide .flow-step { padding:18px 22px; }
+  .flow.wide .flow-step h3 { font-size:20px; }
+  .flow.wide .flow-step p { font-size:17px; }
+
+  .badge-row { display:flex; flex-wrap:wrap; gap:12px; }
+  .badge { border:2px solid #4f6c91; border-radius:14px; background:#dbe7f5; color:#173b66; font-weight:700; font-size:17px; padding:8px 18px; }
+  .badge.red { border-color:#a85a50; background:#f6ddd1; color:#8b393b; }
+  .badge.green { border-color:#4f8a63; background:#dcecd8; color:#2f6b45; }
+
+  .note { margin-top:16px; border:2px dashed #a85a50; border-radius:16px; background:#fdf3ec; color:#7b3437; font-size:18px; font-weight:700; padding:12px 20px; text-align:center; }
+  .note.blue { border-color:#4f6c91; background:#eef4fb; color:#173b66; }
+  .note.green { border-color:#4f8a63; background:#eaf5e6; color:#2f6b45; }
+
+  .remember { margin-top:36px; padding-top:14px; border-top:3px solid #a85a50; color:#8b393b; text-align:center; font-size:22px; font-weight:700; }
+
+  /* Code — VERBATIM, never paraphrased, and excluded from the density metric */
+  pre { margin:12px 0 0; background:#1d2732; color:#e8e2d5; border-radius:12px;
+        padding:16px 20px; overflow-x:auto; font-family:'Consolas','Courier New',monospace;
+        font-size:16px; line-height:1.45; }
+  pre code { font-family:inherit; }
+  code { font-family:'Consolas','Courier New',monospace; font-size:0.94em;
+         background:#efe9dc; border-radius:5px; padding:1px 6px; }
+  pre code { background:none; padding:0; }
+
+  /* Plain-language restatement, per section */
+  .eli { margin-top:12px; border-left:6px solid #4f8a63; background:#f4faf1;
+         border-radius:0 12px 12px 0; padding:12px 18px; font-size:17px; line-height:1.45; color:#2f6b45; }
+  .eli b { color:#245537; }
+
+  /* Inline gloss beside a marked term */
+  .gloss { font-size:0.9em; color:#7b3437; font-weight:700; }
+  .gloss::before { content:"— "; }
+
+  /* Jargon highlighter. <mark> = a TERM OF ART on FIRST USE ONLY.
+     <b> = emphasis. Never mix the two, or the page stops being skimmable. */
+  mark { background:#fceeaa; color:#4a3c08; padding:1px 6px; border-radius:5px; font-weight:700;
+         -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+
+  /* Cross-link chips — the connective layer at the foot of a card */
+  .xlink { margin-top:10px; padding-top:8px; border-top:2px dotted #c8cfd8; font-size:15px; color:#4f6c91; font-weight:700; }
+  .xlink a { color:#4f6c91; text-decoration:none; border-bottom:2px dotted #4f6c91; }
+
+  /* Thread trails — one recurring idea and every place it surfaces */
+  .threads { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .thread { border:3px dashed #a85a50; border-radius:20px; background:#fdf3ec; padding:18px 22px; }
+  .thread h3 { color:#8b393b; font-size:21px; }
+  .thread p { margin:8px 0 0; font-size:17px; line-height:1.4; }
+  .thread .stops { margin-top:12px; display:flex; flex-wrap:wrap; gap:8px; }
+  .thread .stops a { background:#fffdf7; border:2px solid #a85a50; border-radius:12px; padding:4px 12px; font-size:15px; font-weight:700; color:#8b393b; text-decoration:none; }
+
+  /* Coverage report + build stamp — printed in the artefact, not just claimed in chat */
+  .coverage { margin-top:40px; border:3px dashed #4f8a63; border-radius:20px; background:#f4faf1; padding:24px 30px; }
+  .coverage h3 { color:#2f6b45; font-size:26px; margin-bottom:10px; }
+  .coverage table { width:100%; border-collapse:collapse; margin-top:10px; font-size:17px; }
+  .coverage td, .coverage th { text-align:left; padding:7px 10px; border-bottom:2px dotted #b9d3ba; }
+  .coverage th { color:#2f6b45; }
+  .coverage .drop { color:#8b393b; font-weight:700; }
+  .stamp { margin-top:18px; display:flex; flex-wrap:wrap; gap:12px; }
+  .stamp span { background:#dcecd8; border:2px solid #4f8a63; border-radius:12px; padding:6px 14px; font-size:16px; font-weight:700; color:#2f6b45; }
+
+  h2[id] { scroll-margin-top:20px; }
+
+  /* ============================================================
+     DIAGRAMS ARE HTML BOXES, NOT SVG TEXT.
+     SVG <text> does not wrap and must be hand-positioned, so it
+     overflows its box, collides, and needs a second font to stay
+     legible. HTML wraps, inherits the page font, and cannot escape
+     its container. SVG is for wordless icons and arrows only.
+     ============================================================ */
+  .diagram { border:3px dashed #4f6c91; border-radius:20px; background:#fffdf7; padding:28px 32px; margin-top:16px; }
+  .diagram .fig { margin:0 0 22px; text-align:center; color:#173b66; font-size:25px; font-weight:700; line-height:1.2; }
+  .diagram .figcap { margin:22px 0 0; padding-top:14px; border-top:2px dashed #d5d8d4; text-align:center; color:#7b3437; font-size:18px; font-weight:700; line-height:1.4; }
+
+  /* A labelled box inside a diagram */
+  .dbox { border:3px solid #173b66; border-radius:14px; background:#dbe7f5; padding:14px 18px; }
+  .dbox.red { border-color:#a85a50; background:#f6ddd1; }
+  .dbox.green { border-color:#3d7a52; background:#dcecd8; }
+  .dbox.plain { border-style:dashed; border-color:#4f6c91; background:#fffdf7; }
+  .dbox h4 { margin:0; font-size:21px; line-height:1.2; color:#173b66; }
+  .dbox.red h4 { color:#8b393b; }
+  .dbox.green h4 { color:#2f6b45; }
+  .dbox p { margin:7px 0 0; font-size:17px; line-height:1.4; }
+  .dbox p.sub { color:#7b3437; }
+  .dbox p.code { font-family:'Consolas','Courier New',monospace; font-size:16px; }
+  .dbox.tall { display:flex; flex-direction:column; justify-content:center; min-height:120px; }
+
+  /* Arrows between boxes — a glyph, never a hand-placed SVG line */
+  .darrow { text-align:center; color:#a85a50; font-size:32px; font-weight:700; line-height:1; padding:8px 0; }
+  .darrow.side { display:flex; align-items:center; justify-content:center; font-size:36px; padding:0 12px; }
+
+  /* Vertical pipeline: stack of boxes with down-arrows */
+  .dstack { display:flex; flex-direction:column; }
+
+  /* Horizontal columns with arrows between them */
+  .drow { display:flex; align-items:stretch; }
+  .dcol { flex:1; min-width:0; }
+  .dcol.narrow { flex:0 0 auto; }
+  .dcol h5 { margin:0 0 4px; font-size:23px; line-height:1.15; color:#173b66; }
+  .dcol .sub { margin:0 0 14px; font-size:16px; line-height:1.35; color:#7b3437; font-weight:700; }
+  .dcol .dbox { margin-bottom:10px; }
+
+  /* 2x2 matrix: header row + header column + four cells */
+  .dmatrix { display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:14px; }
+  .dmatrix .head { display:flex; align-items:center; justify-content:center; text-align:center; }
+
+  /* Decision tree: start box spans the rows; condition -> arrow -> outcome */
+  .dtree { display:grid; grid-template-columns:230px 54px 270px 54px 1fr; gap:22px 0; align-items:center; }
+  .dtree .start { grid-column:1; grid-row:1 / span 3; }
+
+  svg { width:100%; height:100%; overflow:visible; }
+  /* Icons are clipped to their viewBox so a stray shape can never print over neighbouring text */
+  .art, .art svg { overflow:hidden; }
+  .ink { stroke:#173b66; stroke-width:5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .red { stroke:#a85a50; stroke-width:4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .green { stroke:#3d7a52; stroke-width:4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .fillblue { fill:#dbe7f5; stroke:#173b66; stroke-width:4; }
+  .fillred { fill:#f6ddd1; stroke:#a85a50; stroke-width:4; }
+  .fillgreen { fill:#dcecd8; stroke:#3d7a52; stroke-width:4; }
+</style>
+</head>
+<body>
+
+<div class="page cover">
+  <h1>HEALTHCARE<br>INTELLIGENCE AGENT</h1>
+  <div class="kicker">REVERSE BLUEPRINT &bull; SEPSIS EARLY WARNING &bull; 15 DECISIONS</div>
+  <div class="intro">A hospital already knew how to spot sepsis. Its screening tool caught 78% of cases &mdash; and clinicians threw away 94% of its alerts. This is the product built to fix that, taken apart decision by decision: what it does, why each part exists, and which part to look at when it breaks.</div>
+  <div class="foot"><span>REVERSE BLUEPRINT &mdash; CH.13, 30 AGENTS EVERY AI ENGINEER MUST BUILD</span><span>1</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s1"><span class="num">1</span>The problem was never detection</h2>
+  <section class="grid3">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Warning triangle"><path d="M60 16l46 80H14z" class="fillred"/><path d="M60 46v26" class="red"/><circle cx="60" cy="82" r="4" fill="#a85a50"/></svg></div>
+        <h3>The tool already worked</h3></div>
+      <p class="cap"><mark>qSOFA</mark><span class="gloss">a bedside sepsis checklist</span> ran for three years at <b>78% sensitivity</b>. Detection was largely solved.</p>
+      <p class="cap">It fired on <b>22% of patients</b> &mdash; roughly <b>43 alerts a shift</b>.</p>
+      <div class="example">Clinicians dismissed 94% of them.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Broken chain link"><path d="M44 44L28 60a16 16 0 0 0 22 22l10-10" class="ink"/><path d="M76 76l16-16a16 16 0 0 0-22-22L60 48" class="red"/><path d="M52 52l-8-8M68 68l8 8" class="red"/></svg></div>
+        <h3>So it stopped working</h3></div>
+      <p class="cap">A tool ignored 94% of the time has an <b>effective sensitivity near zero</b>, whatever the paper says.</p>
+      <p class="cap">Staff called it <b>&ldquo;the boy who cried wolf.&rdquo;</b></p>
+      <div class="example">14 missed cases last year. 3 deaths. ~$280K each.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="A narrow beam focused on a single target"><path d="M14 14l40 40" class="ink"/><path d="M8 40l46 14M40 8l14 46" class="ink"/><circle cx="76" cy="76" r="30" class="fillblue"/><circle cx="76" cy="76" r="16" class="fillred"/><circle cx="76" cy="76" r="5" fill="#8b393b"/></svg></div>
+        <h3>The actual job</h3></div>
+      <p class="cap">Not a better sensor. <b>An alert worth believing.</b></p>
+      <p class="cap">Every design choice downstream serves that, and most of them are about saying <b>less</b>, not more.</p>
+      <div class="example">Target: 43 alerts/shift &rarr; under 12.</div>
+    </article>
+  </section>
+  <div class="eli"><b>ELI10:</b> the smoke alarm worked fine. It went off so often that everyone took the battery out. The job isn&rsquo;t a better sensor &mdash; it&rsquo;s an alarm people don&rsquo;t want to silence.</div>
+
+  <div class="diagram">
+    <p class="fig">FIGURE 1 &mdash; Why the three previous attempts failed</p>
+    <div class="drow">
+      <div class="dcol">
+        <h5>WHAT WAS TRIED</h5><p class="sub">each one reasonable on paper</p>
+        <div class="dbox red"><h4>qSOFA checklist</h4><p class="sub">Binary screen. One knob: the threshold.</p></div>
+        <div class="dbox red"><h4>Sepsis bundle protocol</h4><p class="sub">Tests + antibiotics within 3 hours.</p></div>
+        <div class="dbox red"><h4>Cloud AI vendor</h4><p class="sub">Stream raw vitals off-site for scoring.</p></div>
+        <div class="dbox red"><h4>Hire more specialists</h4><p class="sub">30% more consults absorbed.</p></div>
+      </div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dcol">
+        <h5>WHY IT FAILED</h5><p class="sub">three different failures, one pattern</p>
+        <div class="dbox"><h4>Too noisy to trust</h4><p class="sub">94% dismissal. Credibility spent.</p></div>
+        <div class="dbox"><h4>Fires too late</h4><p class="sub">Only starts once someone <b>already</b> suspects sepsis. Waiting is the bug.</p></div>
+        <div class="dbox"><h4>Blocked at the door</h4><p class="sub">Patient data leaving the hospital. Two vendors rejected on this.</p></div>
+        <div class="dbox"><h4>Volume &ne; targeting</h4><p class="sub">40% of the extra consults were low-acuity.</p></div>
+      </div>
+    </div>
+    <p class="figcap">The tools worked. The humans stopped believing them &mdash; or were never reached in time.</p>
+  </div>
+  <div class="note">The person who could kill this deal was the VP of Clinical Technology &mdash; neither the buyer nor the user. In regulated industries, that is usually true.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>2</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s2"><span class="num">2</span>What actually happens, start to finish</h2>
+  <div class="diagram">
+    <p class="fig">FIGURE 2 &mdash; One patient, arrival to mortality conference</p>
+    <div class="drow">
+      <div class="dcol narrow" style="flex:0 0 250px; padding-right:22px;">
+        <h5>THE WHOLE FLOW</h5>
+        <p class="sub">Steps 3&ndash;8 finish in under a second and repeat every time new evidence lands.</p>
+        <p class="sub">The agent has <b>no front door</b>. Nobody logs in. Nobody launches it.</p>
+        <p class="sub">For ~172 of David&rsquo;s 180 patients a shift, the correct output is <b>silence</b>.</p>
+      </div>
+      <div class="dcol">
+        <div class="dstack">
+          <div class="dbox red"><h4>1 &mdash; Triage, 90 seconds</h4><p class="sub">David takes vitals, types a note. That is his entire window.</p></div>
+          <div class="darrow">&darr;</div>
+          <div class="dbox"><h4>2 &mdash; Agent picks it up</h4><p class="sub">Automatically, from the hospital record system.</p></div>
+          <div class="darrow">&darr;</div>
+          <div class="dbox"><h4>3 &mdash; One format, one timeline</h4><p class="sub">Fever 06:00 &rarr; shivering 08:00 &rarr; arrival 10:30. Order carries clinical meaning.</p></div>
+          <div class="darrow">&darr;</div>
+          <div class="dbox"><h4>4 &mdash; Scoreboard opens</h4><p class="sub">Candidate diagnoses, each with a likelihood.</p></div>
+          <div class="darrow">&darr;</div>
+          <div class="dbox"><h4>5 &mdash; Evidence nudges it</h4><p class="sub">Vitals now, lactate in 40 min, imaging an hour later. Never a rerun.</p></div>
+          <div class="darrow">&darr;</div>
+          <div class="dbox green"><h4>6 &mdash; Safety check asks one question</h4><p class="sub">Is sepsis above 15%? A <b>separate</b> component from the scoring.</p></div>
+          <div class="darrow">&darr;</div>
+          <div class="dbox red"><h4>7 &mdash; Three outputs at once</h4><p class="sub">Page the attending. One line to triage. Plain note for the patient.</p></div>
+          <div class="darrow">&darr;</div>
+          <div class="dbox"><h4>8 &mdash; Tamper-evident log</h4><p class="sub">Inputs, timing, rule version, conclusion, reasoning.</p></div>
+          <div class="darrow">&darr;</div>
+          <div class="dbox green"><h4>9 &mdash; A human decides</h4><p class="sub">No method exists to order, prescribe or close a case.</p></div>
+          <div class="darrow">&darr;</div>
+          <div class="dbox"><h4>10 &mdash; Replayed months later</h4><p class="sub">Mortality conference reconstructs what was known, and when.</p></div>
+        </div>
+      </div>
+    </div>
+    <p class="figcap">Step 9 is a <b>structural</b> limit, not a policy note. The agent cannot overstep because there is nothing to overstep with.</p>
+  </div>
+  <div class="eli"><b>ELI10:</b> it watches every patient quietly, keeps a running scoreboard of what might be wrong, and taps a doctor on the shoulder when the score gets worrying. It never treats anyone. It just points.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>3</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s3"><span class="num">3</span>Six parts, and none of them knows what sepsis is</h2>
+  <div class="diagram">
+    <p class="fig">FIGURE 3 &mdash; A general engine plus one swappable rulebook</p>
+    <div class="drow">
+      <div class="dcol">
+        <h5>THE ENGINE</h5><p class="sub">condition-agnostic &mdash; never mentions sepsis</p>
+        <div class="dbox"><h4>1 Ingest</h4><p class="sub">Any format in, one shape out. Places events on a timeline. Reports what is missing.</p></div>
+        <div class="dbox"><h4>2 Scoreboard</h4><p class="sub">Ranked candidates with likelihoods. Evidence multiplies in; the list renormalises to 100%.</p></div>
+        <div class="dbox green"><h4>3 Safety gate</h4><p class="sub">Reads the scoreboard, asks one question. Its own owner, its own change log.</p></div>
+        <div class="dbox"><h4>4 Explain</h4><p class="sub">Turns the scoreboard into sentences, per audience. Fill-in-the-blank templates.</p></div>
+        <div class="dbox"><h4>5 Audit</h4><p class="sub">Append-only, hash-chained record of every scoring pass.</p></div>
+        <div class="dbox"><h4>6 Deliver</h4><p class="sub">Pushes the one-liner to triage and the page to the attending.</p></div>
+      </div>
+      <div class="darrow side">&larr;</div>
+      <div class="dcol narrow" style="flex:0 0 420px;">
+        <h5>THE CONDITION PACK</h5><p class="sub">the rulebook it reads at startup</p>
+        <div class="dbox red"><h4>Candidate list</h4><p class="sub">What it is allowed to consider.</p></div>
+        <div class="dbox red"><h4>Starting odds</h4><p class="sub">Where every scoreboard begins.</p></div>
+        <div class="dbox red"><h4>Evidence weights</h4><p class="sub">How much each finding shifts each candidate.</p></div>
+        <div class="dbox red"><h4>Escalation threshold</h4><p class="sub">The bar that pages a human.</p></div>
+        <div class="dbox green tall"><h4>ACTIVE: sepsis</h4><p>Three more packs &mdash; heart attack, clot, stroke &mdash; sit complete in <code>_archive</code>. <b>Never imported.</b></p></div>
+      </div>
+    </div>
+    <p class="figcap">Enabling a fourth condition = move a folder, edit config. <b>Zero engine changes.</b></p>
+  </div>
+  <div class="eli"><b>ELI10:</b> the six parts are a scoreboard, a scorer and a referee. The condition pack is the rulebook telling them which sport they are refereeing today. Swap the rulebook and they will happily referee something else without noticing.</div>
+  <section class="grid3" style="margin-top:18px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Archive box"><rect x="14" y="26" width="92" height="22" rx="4" class="fillred"/><path d="M22 48v52h76V48" class="ink"/><path d="M48 66h24" class="red"/></svg></div>
+        <h3>Kept, not deleted</h3></div>
+      <p class="cap">The three unused conditions stay as <b>complete, valid packs</b>. Nothing imports them; a startup check fails loudly if anything tries.</p>
+      <div class="example">The original book code is never modified.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Gavel representing a judge"><rect x="52" y="18" width="46" height="22" rx="6" transform="rotate(45 75 29)" class="fillblue"/><path d="M46 42L20 68" class="ink"/><rect x="14" y="94" width="70" height="14" rx="4" class="fillred"/></svg></div>
+        <h3>Expansion is governance</h3></div>
+      <p class="cap">Each new condition needs its own odds and weights, <b>derived by a clinician and signed</b>. And it spends from a fixed alert budget.</p>
+      <div class="example">Not an engineering cost. A sign-off cost.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="One path splitting into two"><path d="M14 60h34" class="ink"/><path d="M48 60l30-28h28M48 60l30 28h28" class="ink"/><circle cx="48" cy="60" r="8" class="fillred"/></svg></div>
+        <h3>It travels</h3></div>
+      <p class="cap">Ranked hypotheses, calibrated confidence, conservative escalation, audit trail, human decides.</p>
+      <div class="example">The same skeleton is a FinCrime investigation copilot.</div>
+    </article>
+  </section>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>4</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s4"><span class="num">4</span>The scoreboard &mdash; a running score, not an alarm</h2>
+  <div class="diagram">
+    <p class="fig">FIGURE 4 &mdash; What one piece of evidence does</p>
+    <div class="drow">
+      <div class="dcol">
+        <h5>BEFORE</h5><p class="sub">starting odds, no evidence yet</p>
+        <div class="dbox plain"><h4>Urosepsis</h4><p class="code">0.25</p></div>
+        <div class="dbox plain"><h4>Pneumonia-source sepsis</h4><p class="code">0.25</p></div>
+        <div class="dbox plain"><h4>Biliary sepsis</h4><p class="code">0.15</p></div>
+        <div class="dbox plain"><h4>Viral syndrome</h4><p class="code">0.20</p></div>
+        <div class="dbox plain"><h4>Dehydration</h4><p class="code">0.15</p></div>
+      </div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dcol narrow" style="flex:0 0 260px;">
+        <h5>EVIDENCE</h5><p class="sub">arrives whenever it arrives</p>
+        <div class="dbox red tall"><h4>Fever + fast pulse + urinary symptoms</h4><p class="sub">Multiplies into every row, then the whole list is rescaled to total 100%.</p></div>
+      </div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dcol">
+        <h5>AFTER</h5><p class="sub">same five candidates, re-weighted</p>
+        <div class="dbox red"><h4>Urosepsis</h4><p class="code">0.61 &nbsp;&#9650;</p></div>
+        <div class="dbox red"><h4>Pneumonia-source sepsis</h4><p class="code">0.21 &nbsp;&#9660;</p></div>
+        <div class="dbox"><h4>Biliary sepsis</h4><p class="code">0.11 &nbsp;&#9660;</p></div>
+        <div class="dbox"><h4>Viral syndrome</h4><p class="code">0.04 &nbsp;&#9660;</p></div>
+        <div class="dbox"><h4>Dehydration</h4><p class="code">0.03 &nbsp;&#9660;</p></div>
+      </div>
+    </div>
+    <p class="figcap">The total is always exactly 1.0 &mdash; the code asserts it. That guarantee is a contract with every layer downstream.</p>
+  </div>
+  <section class="grid3" style="margin-top:18px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="A binary true false switch beside a crossed-out rating scale"><rect x="10" y="18" width="100" height="34" rx="17" class="fillgreen"/><circle cx="88" cy="35" r="13" fill="#3d7a52"/><path d="M14 78h92" class="red"/><circle cx="20" cy="78" r="5" class="fillred"/><circle cx="42" cy="78" r="5" class="fillred"/><circle cx="64" cy="78" r="5" class="fillred"/><circle cx="86" cy="78" r="5" class="fillred"/><path d="M16 62l88 34M104 62l-88 34" class="red"/></svg></div>
+        <h3>Why not a yes/no</h3></div>
+      <p class="cap">A binary tool has <b>one knob</b>, so sensitivity and alert volume trade 1:1 forever. You are stuck on a single line.</p>
+      <div class="example">A ranked list is how clinicians already think. That is an adoption argument, not an accuracy one.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Stopwatch running late"><circle cx="60" cy="66" r="34" class="fillblue"/><path d="M60 66V44M60 66l18 12" class="ink"/><path d="M50 20h20M60 20v12" class="ink"/><path d="M92 30l12-12" class="red"/></svg></div>
+        <h3>Why it must be live</h3></div>
+      <p class="cap">Evidence arrives <b>asynchronously</b> and each piece updates the same object. No waiting for a complete record &mdash; waiting was the old bug.</p>
+      <div class="example">Latency IS the metric: 4.2 hours &rarr; 1.1 hours.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Two dice showing probabilistic output"><rect x="18" y="30" width="52" height="52" rx="8" class="fillblue"/><circle cx="34" cy="46" r="4" fill="#173b66"/><circle cx="54" cy="66" r="4" fill="#173b66"/><rect x="58" y="52" width="44" height="44" rx="8" class="fillred"/><circle cx="70" cy="64" r="4" fill="#a85a50"/><circle cx="90" cy="84" r="4" fill="#a85a50"/><circle cx="80" cy="74" r="4" fill="#a85a50"/></svg></div>
+        <h3>The trap</h3></div>
+      <p class="cap">The <mark>priors</mark><span class="gloss">the starting odds, before any evidence arrives</span> are <b>five numbers in a config file</b>. Change them and every future diagnosis changes &mdash; silently, no code edit, no retraining.</p>
+      <div class="example">Nobody owns that file. See &sect;12.</div>
+      <div class="xlink">Also: <a href="#s6">&sect;6 the gap they create</a> &middot; <a href="#s13">&sect;13 where they live</a></div>
+    </article>
+  </section>
+  <div class="note">The output is an <b>interrupt, not a document</b>. Nobody logs in to check the sepsis dashboard &mdash; a dashboard nobody opens has the same effective sensitivity as an alert everybody dismisses.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>5</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s5"><span class="num">5</span>The safety gate &mdash; 0.15 is a price, not a setting</h2>
+  <div class="diagram">
+    <p class="fig">FIGURE 5 &mdash; What the number actually buys</p>
+    <div class="dtree">
+      <div class="start dbox red tall"><h4>A candidate crosses the scoreboard</h4><p class="sub">Sepsis reaches some confidence.</p></div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dbox"><h4>Above 0.15?</h4><p class="sub">e.g. urosepsis at 0.61</p></div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dbox red"><h4>PAGE A HUMAN</h4><p class="sub">Immediately. No discretion.</p></div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dbox"><h4>Above 0.15, but only just?</h4><p class="sub">pneumonia-source at 0.21</p></div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dbox red"><h4>STILL PAGES</h4><p class="sub">A 21% chance of sepsis demands a human look. A 0.5 bar would have dropped it silently.</p></div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dbox"><h4>Below 0.15, non-critical?</h4><p class="sub">low confidence, ambiguous findings</p></div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dbox green"><h4>FLAG FOR REVIEW</h4><p class="sub">Presents no diagnosis. Low confidence produces <b>more</b> human involvement, never less.</p></div>
+    </div>
+    <p class="figcap">There is no path through this system where the agent becomes more autonomous as it becomes less sure.</p>
+  </div>
+  <section class="grid3" style="margin-top:18px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Balance scale weighing a trade-off"><path d="M60 16v76M32 100h56" class="ink"/><path d="M20 40h80" class="ink"/><path d="M20 40l-10 22h20zM100 40l-10 22h20z" class="fillred"/><circle cx="60" cy="16" r="5" class="fillblue"/></svg></div>
+        <h3>What 0.15 means</h3></div>
+      <p class="cap">&ldquo;We will accept about <b>six unnecessary reviews</b> to avoid <b>one missed sepsis</b>.&rdquo;</p>
+      <p class="cap">An explicit exchange rate between a clinician&rsquo;s time and a patient&rsquo;s life.</p>
+      <div class="example">Somebody signs that. No engineer can. That is the job.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Speedometer gauge"><path d="M14 84a46 46 0 0 1 92 0z" class="fillblue"/><path d="M60 84l26-30" class="red"/><circle cx="60" cy="84" r="6" fill="#173b66"/></svg></div>
+        <h3>Where it came from</h3></div>
+      <p class="cap"><mark>Cost asymmetry</mark><span class="gloss">a miss costs far more than a false alarm</span>: a missed case runs roughly <b>10&times;</b> a false alarm. The break-even lands in <b>0.12&ndash;0.18</b>.</p>
+      <p class="cap">0.15 is the midpoint, deliberately rounded conservative.</p>
+      <div class="example">Another hospital, different ICU costs, lands elsewhere in that range.</div>
+      <div class="xlink">Also: <a href="#s13">&sect;13 who may change it</a> &middot; <a href="#s4">&sect;4 what it reads</a></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Signed document with a seal"><rect x="20" y="12" width="66" height="88" rx="6" class="fillblue"/><path d="M34 34h38M34 48h38M34 62h24" class="ink"/><circle cx="88" cy="86" r="18" class="fillred"/><path d="M80 86l6 7 11-13" class="red"/></svg></div>
+        <h3>Who can move it</h3></div>
+      <p class="cap"><b>Nobody, at runtime.</b> It lives in version control. There is no admin screen.</p>
+      <p class="cap">Changing it needs a written justification, a signature and a logged deployment.</p>
+      <div class="example">A dial that exists will get turned during a bad week.</div>
+    </article>
+  </section>
+  <div class="note blue">The gate is a <b>separate component</b> from the scorer on purpose. Fuse them and tuning accuracy silently retunes safety &mdash; and nobody notices which change did it.</div>
+  <div class="eli"><b>ELI10:</b> the 15% isn&rsquo;t a technical setting, it&rsquo;s a promise about how many false alarms you&rsquo;re willing to put up with so that nobody dies. Someone has to put their name to that promise, and it shouldn&rsquo;t be whoever last touched the code.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>6</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s6"><span class="num">6</span>The hole in the book &mdash; who gets scored at all?</h2>
+  <div class="note">This came out of one question: <b>&ldquo;wouldn&rsquo;t it generate a lot of alerts if it&rsquo;s alerting on incomplete data?&rdquo;</b> Chasing it found something the book never addresses.</div>
+  <div class="diagram">
+    <p class="fig">FIGURE 6 &mdash; The starting odds already break the threshold</p>
+    <div class="drow">
+      <div class="dcol">
+        <h5>THE ARITHMETIC</h5><p class="sub">before any evidence arrives</p>
+        <div class="dbox red"><h4>Urosepsis &mdash; 0.25</h4><p class="sub">above the bar</p></div>
+        <div class="dbox red"><h4>Pneumonia-source &mdash; 0.25</h4><p class="sub">above the bar</p></div>
+        <div class="dbox red"><h4>Biliary sepsis &mdash; 0.15</h4><p class="sub">at the bar</p></div>
+        <div class="dbox green"><h4>THE BAR &mdash; 0.15</h4><p class="sub">pages a human</p></div>
+      </div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dcol">
+        <h5>THE CONSEQUENCE</h5><p class="sub">follow it through</p>
+        <div class="dbox"><h4>A scoreboard pages the moment it opens</h4><p class="sub">Three candidates are already at or over the bar with nothing observed.</p></div>
+        <div class="dbox red tall"><h4>Open one on all 180 patients &rarr; 180 alerts a shift</h4><p class="sub">Forty times worse than the tool being replaced.</p></div>
+        <div class="dbox"><h4>So why doesn&rsquo;t it?</h4><p class="sub">Those odds are <b>conditional</b> &mdash; they are for a patient who already presents with fever and a fast pulse.</p></div>
+      </div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dcol">
+        <h5>THE MISSING PIECE</h5><p class="sub">two controls, one undocumented</p>
+        <div class="dbox red tall"><h4>Control 1 &mdash; who gets a scoreboard</h4><p class="sub"><b>Never specified anywhere.</b> Does essentially all the volume management.</p></div>
+        <div class="dbox tall"><h4>Control 2 &mdash; the 0.15 bar</h4><p class="sub">Does almost none of it. The odds already clear it.</p></div>
+        <div class="dbox green tall"><h4>DECISION</h4><p>Score <b>everyone</b>, starting from true population odds &mdash; low single digits, not 25%. No binary cutoff anywhere.</p></div>
+      </div>
+    </div>
+    <p class="figcap">A pre-screen on vitals would have been qSOFA again, one layer earlier &mdash; and subtle cases are exactly what binary checklists miss.</p>
+  </div>
+  <div class="eli"><b>ELI10:</b> somebody told you the alarm was set sensibly. True &mdash; but nobody wrote down which rooms get an alarm fitted in the first place, and that decision is doing all the work.</div>
+  <div class="note green">Found by the reader&rsquo;s question, not by the book. This is the strongest thing in the whole study &mdash; and it is a <b>specification</b> gap, which is the kind a product manager catches and an engineer does not.</div>
+  <div class="card" style="margin-top:16px;">
+    <p class="cap">The missing piece has a name worth keeping: the <mark>entry gate</mark><span class="gloss">whatever decides which patients get scored at all</span>. Every alerting product has one. Most never write it down, because it usually lives in a filter someone added early and nobody revisited.</p>
+    <div class="xlink">Also: <a href="#s4">&sect;4 the scoreboard it opens</a> &middot; <a href="#s8">&sect;8 who then hears about it</a> &middot; <a href="#s14">&sect;14 ticket T5</a></div>
+  </div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>7</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s7"><span class="num">7</span>The decision map &mdash; every call this product needed</h2>
+  <div class="note blue">Read this <b>before</b> the questions start, not after. Fifteen decisions, grouped by document. Each one is a genuine fork &mdash; both branches were defensible, and the choice changed what got built.</div>
+  <section class="grid3" style="margin-top:16px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Rocket launching"><path d="M60 10c14 14 20 30 20 46l-10 16H50L40 56c0-16 6-32 20-46z" class="fillblue"/><circle cx="60" cy="46" r="8" class="fillred"/><path d="M50 72l-14 16 14-2M70 72l14 16-14-2" class="ink"/><path d="M56 96l4 14 4-14z" class="fillred"/></svg></div>
+        <h3>Setup &mdash; 3 calls</h3></div>
+      <ul class="list">
+        <li><b>D01 Which agent to study.</b> Finish the one in progress, or jump to the one needed tomorrow?</li>
+        <li><b>D02 How to study it.</b> Read the code line by line, or run the blueprint backwards?</li>
+        <li><b>D03 Where docs live.</b> Inside the repo, or outside to keep it pristine?</li>
+      </ul>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="A single person"><circle cx="60" cy="34" r="18" class="fillblue"/><path d="M26 104c0-19 15-34 34-34s34 15 34 34" class="ink"/></svg></div>
+        <h3>Doc 1 PRD &mdash; 4 calls</h3></div>
+      <ul class="list">
+        <li><b>D04 Primary user.</b> Triage nurse, attending, or the buyer? One only.</li>
+        <li><b>D05 Whose interest sets the bar.</b> Catch rate, or alert trust?</li>
+        <li><b>D06 Minimum launch.</b> Serve the main user roughly, or the senior user fully?</li>
+        <li><b>D07 Condition scope.</b> One condition or four &mdash; and delete the rest or archive them?</li>
+      </ul>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="A robot blocked from performing a task"><rect x="26" y="30" width="54" height="44" rx="8" class="fillblue"/><circle cx="42" cy="52" r="5" fill="#173b66"/><circle cx="64" cy="52" r="5" fill="#173b66"/><path d="M53 30V18" class="ink"/><circle cx="53" cy="14" r="5" class="fillred"/><circle cx="86" cy="82" r="26" class="fillred"/><path d="M70 66l32 32" class="red"/></svg></div>
+        <h3>Doc 2 Technical &mdash; 5 calls</h3></div>
+      <ul class="list">
+        <li><b>D08 Any AI model at all?</b> None, local, or cloud?</li>
+        <li><b>D09 Go-live bar.</b> How long silent, and what must it prove?</li>
+        <li><b>D10 Who gets scored.</b> Everyone, a pre-screen, or on request?</li>
+        <li><b>D11 When it breaks.</b> Show it, hide it, or refuse to answer?</li>
+        <li><b>D12 Audit write fails.</b> Page anyway, or stay silent?</li>
+      </ul>
+    </article>
+  </section>
+  <section class="grid2" style="margin-top:20px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Shield with a warning triangle"><path d="M60 12l38 14v34c0 26-20 42-38 48-18-6-38-22-38-48V26z" class="fillblue"/><path d="M60 38l20 34H40z" class="fillred"/><path d="M60 50v10" class="red"/><circle cx="60" cy="66" r="2.5" fill="#a85a50"/></svg></div>
+        <h3>Doc 3 Security &amp; Access &mdash; 4 calls</h3></div>
+      <ul class="list">
+        <li><b>D13 Who sees a scoreboard.</b> Care team only, everyone on shift, or care team plus a logged override?</li>
+        <li><b>D14 Who can move the 15%.</b> Nobody, an admin screen, or auto-tuned to hold volume?</li>
+        <li><b>D15 Reflex dismissal.</b> Require a reason, watch patterns only, or trust and do nothing?</li>
+        <li><b>Repeat alerts.</b> Silent until confidence rises, one per time window, or one per visit ever?</li>
+      </ul>
+      <div class="example">The abuse risk here is not intrusion. It is a tired clinician clicking &ldquo;dismiss&rdquo;.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Monitoring dashboard with a live chart"><rect x="10" y="20" width="100" height="66" rx="7" class="fillblue"/><path d="M22 70l18-22 14 12 16-26 18 20" class="red"/><circle cx="40" cy="48" r="4" fill="#a85a50"/><circle cx="70" cy="34" r="4" fill="#a85a50"/><path d="M44 96h32" class="ink"/></svg></div>
+        <h3>Docs 4&ndash;5 Frontend &amp; Tickets &mdash; 4 calls</h3></div>
+      <ul class="list">
+        <li><b>Local view.</b> Something to look at, terminal only, or a full dashboard?</li>
+        <li><b>The look.</b> Reference screenshots, clinical-dark, or clean-light? <b>(Still a risk &mdash; no screenshots given.)</b></li>
+        <li><b>The silent state.</b> Nothing on screen, a quiet marker, or always show the score?</li>
+        <li><b>Pager text, ~15 words.</b> Add the action, add the evidence, or name the condition only?</li>
+        <li><b>What to build first.</b> Vertical slice, dependency order, or tests first?</li>
+      </ul>
+    </article>
+  </section>
+  <div class="eli"><b>ELI10:</b> this is the list you want in your hand <b>before</b> anyone starts asking. Fifteen forks, each with two or three sensible answers. Knowing what&rsquo;s coming is the difference between deciding and just agreeing.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>8</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s8"><span class="num">8</span>One decision, three renderings</h2>
+  <div class="diagram">
+    <p class="fig">FIGURE 7 &mdash; The same conclusion, said three ways</p>
+    <div class="drow">
+      <div class="dcol narrow" style="flex:0 0 210px; padding-right:20px;">
+        <div class="dbox green tall"><h4>ONE SCOREBOARD</h4><p>No second computation. Every view reads the same numbers.</p></div>
+      </div>
+      <div class="dcol">
+        <h5>ATTENDING &mdash; ~90 words</h5><p class="sub">assumes eight years of training</p>
+        <div class="dbox"><h4>Full report (v2)</h4><p class="sub">Evidence contributions, differential with probabilities, protocol citation, time-bound action.</p></div>
+        <div class="dbox red"><h4>At launch: a pager line</h4><p class="code">Bed 7 &mdash; SEPSIS 0.70 &mdash; review now</p><p class="sub">Rejected: adding the top driver. It invites arguing with the machine on a two-line screen.</p></div>
+      </div>
+      <div class="dcol">
+        <h5>TRIAGE &mdash; ~25 words</h5><p class="sub">ninety seconds, 180 patients</p>
+        <div class="dbox red"><h4>One line, one action</h4><p class="sub">Severity suggestion, up to three drivers, one re-check interval. Nothing to interpret.</p></div>
+        <div class="dbox plain"><h4>Silent state</h4><p class="sub">&ldquo;Monitored &mdash; nothing flagged, last checked 14:32.&rdquo; The most common screen there is.</p></div>
+      </div>
+      <div class="dcol">
+        <h5>PATIENT &mdash; ~50 words</h5><p class="sub">frightened, no training</p>
+        <div class="dbox green"><h4>Reassurance only</h4><p class="sub">What happens next, and that the team knows.</p></div>
+        <div class="dbox green"><h4>Deliberately absent</h4><p class="sub"><b>No diagnosis name. No number.</b> &ldquo;70% chance of sepsis&rdquo; is accurate and clinically destructive.</p></div>
+      </div>
+    </div>
+    <p class="figcap">What is <b>removed</b> is the design. Every &ldquo;should we show the confidence score?&rdquo; argument you will ever have is this argument.</p>
+  </div>
+  <section class="grid3" style="margin-top:18px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Network of connected members"><circle cx="60" cy="24" r="11" class="fillred"/><circle cx="22" cy="66" r="11" class="fillblue"/><circle cx="98" cy="66" r="11" class="fillblue"/><circle cx="60" cy="100" r="11" class="fillblue"/><path d="M60 35L26 56M60 35l34 21M30 74l22 20M90 74L68 94M33 66h54" class="ink"/></svg></div>
+        <h3>Audiences &ne; users</h3></div>
+      <p class="cap">Three audiences all get a view. Only one is the <mark>primary user</mark><span class="gloss">the one who wins when two audiences want opposite things</span>.</p>
+      <div class="example">Serving everyone is fine. Optimising for everyone is not.</div>
+      <div class="xlink">Also: <a href="#s7">&sect;7 decision D04</a> &middot; <a href="#s13">&sect;13 what each view reads</a></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Stopwatch running late"><circle cx="60" cy="66" r="34" class="fillblue"/><path d="M60 66V44M60 66l18 12" class="ink"/><path d="M50 20h20M60 20v12" class="ink"/><path d="M92 30l12-12" class="red"/></svg></div>
+        <h3>The book&rsquo;s omission</h3></div>
+      <p class="cap">The code ships the attending&rsquo;s view and the patient&rsquo;s. <b>The triage view does not exist.</b></p>
+      <div class="example">The user with 90 seconds &mdash; and the most leverage on the metric &mdash; got the least product.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Document with magnifying glass"><rect x="20" y="16" width="52" height="68" rx="6" class="fillblue"/><path d="M30 32h32M30 44h32M30 56h20" class="ink"/><circle cx="82" cy="82" r="16" class="fillred"/><path d="M93 93l14 14" class="red"/></svg></div>
+        <h3>A fourth, unbuilt</h3></div>
+      <p class="cap">The <b>auditor</b>. The log stores everything they need and renders none of it.</p>
+      <div class="example">Compliance data with no compliance view is half a feature.</div>
+    </article>
+  </section>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>9</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s9"><span class="num">9</span>When it breaks &mdash; which part do I look at?</h2>
+  <div class="note">Every failure <b>names itself at the point of use</b>, not only in a log nobody reads. That is what turns &ldquo;it broke in production&rdquo; into &ldquo;which part broke&rdquo;.</div>
+  <div class="diagram">
+    <p class="fig">FIGURE 8 &mdash; Symptom on screen &rarr; the part to fix</p>
+    <div class="drow">
+      <div class="dcol">
+        <h5>WHAT THE USER SEES</h5><p class="sub">the words on the screen</p>
+        <div class="dbox red"><h4>&ldquo;stale &mdash; last updated 09:42&rdquo;</h4></div>
+        <div class="dbox red"><h4>&ldquo;partial &mdash; no lab results&rdquo;</h4></div>
+        <div class="dbox red"><h4>&ldquo;degraded &mdash; scoring on vitals only&rdquo;</h4></div>
+        <div class="dbox red"><h4>Nothing different &mdash; but an ops light is red</h4></div>
+        <div class="dbox red"><h4>Alerts per shift creeping upward</h4></div>
+        <div class="dbox red"><h4>Timeline events out of order</h4></div>
+      </div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dcol">
+        <h5>WHERE TO LOOK</h5><p class="sub">one part, every time</p>
+        <div class="dbox"><h4>The evidence feed</h4><p class="sub">Nothing is arriving. Scoreboard is frozen at its last state.</p></div>
+        <div class="dbox"><h4>One source, in ingest</h4><p class="sub">Labs are down. Scoring continues on what did arrive.</p></div>
+        <div class="dbox"><h4>A component threw</h4><p class="sub">Fallback answer returned. The log names the component.</p></div>
+        <div class="dbox"><h4>The audit store</h4><p class="sub">Can&rsquo;t write. <b>The alert still fires</b> &mdash; patient safety outranks record-keeping.</p></div>
+        <div class="dbox"><h4>The starting odds</h4><p class="sub">Case mix has drifted. Tracked as a live metric with an alarm.</p></div>
+        <div class="dbox"><h4>Clock skew between systems</h4><p class="sub">Weakens the trajectory signal, which is where the sepsis evidence lives.</p></div>
+      </div>
+    </div>
+    <p class="figcap">Never show a raw error dump. Never let a degraded answer look like a normal one.</p>
+  </div>
+  <section class="grid2" style="margin-top:18px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Circular feedback loop with a checkmark"><path d="M96 60a36 36 0 1 1-14-28" class="ink"/><path d="M84 12v22H62" class="ink"/><path d="M44 62l12 12 22-26" class="red"/></svg></div>
+        <h3>Why silence needs a marker</h3></div>
+      <p class="cap">For ~172 of 180 patients the agent has nothing to say. If it renders <b>nothing</b>, then silence means both <b>&ldquo;this patient is fine&rdquo;</b> and <b>&ldquo;the system is broken&rdquo;</b>.</p>
+      <div class="example">A quiet &ldquo;monitored, last checked 14:32&rdquo; tells the two apart.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Shield with a warning triangle"><path d="M60 12l38 14v34c0 26-20 42-38 48-18-6-38-22-38-48V26z" class="fillblue"/><path d="M60 38l20 34H40z" class="fillred"/><path d="M60 50v10" class="red"/><circle cx="60" cy="66" r="2.5" fill="#a85a50"/></svg></div>
+        <h3>The one deliberate exception</h3></div>
+      <p class="cap">If the tamper-evident log can&rsquo;t be written, the alert <b>still goes out</b>, and a <b>separate</b> alarm tells IT the logbook is broken.</p>
+      <div class="example">An unrecorded clinical decision is a compliance breach &mdash; so this needs written sign-off, not a code comment.</div>
+    </article>
+  </section>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>10</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s10"><span class="num">10</span>Proving it works before it touches a patient</h2>
+  <div class="diagram">
+    <p class="fig">FIGURE 9 &mdash; Two kinds of evidence, and what each can prove</p>
+    <div class="drow">
+      <div class="dcol">
+        <h5>SYNTHETIC TEST SET</h5><p class="sub">680 invented patients, answers known</p>
+        <div class="dbox"><h4>Sepsis, obvious &mdash; 30</h4><p class="sub">does it alert at all</p></div>
+        <div class="dbox red"><h4>Sepsis, subtle &mdash; 150</h4><p class="sub"><b>the whole point of the product</b></p></div>
+        <div class="dbox"><h4>Looks like it, isn&rsquo;t &mdash; 100</h4><p class="sub">false-alarm generators</p></div>
+        <div class="dbox"><h4>Unremarkable &mdash; 300</h4><p class="sub">does it stay quiet</p></div>
+        <div class="dbox"><h4>Incomplete &mdash; 60</h4><p class="sub">labs pending, one feed down</p></div>
+        <div class="dbox green"><h4>Adversarial &mdash; 40</h4><p class="sub">&ldquo;septicaemia&rdquo;, &ldquo;septic shock&rdquo;, impossible values</p></div>
+      </div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dcol narrow" style="flex:0 0 380px;">
+        <h5>SHADOW MODE</h5><p class="sub">real patients, real timing, alerts nobody</p>
+        <div class="dbox red tall"><h4>One full quarter</h4><p class="sub">They miss ~14 cases a year, so four weeks contains roughly <b>one</b>. Too few to prove anything.</p></div>
+        <div class="dbox green tall"><h4>Pass needs all three</h4><p class="sub">100% of what the old tool caught &middot; <b>&ge;50% of what it missed</b> &middot; under 12 alerts a shift</p></div>
+        <div class="dbox"><h4>A switch, not a habit</h4><p class="sub">Leaving shadow mode writes to the audit log. It cannot be left by accident.</p></div>
+      </div>
+    </div>
+    <p class="figcap">Synthetic proves the system <b>behaves as specified</b>. It cannot prove the starting odds are <b>medically correct</b> &mdash; that needs real charts and a clinician&rsquo;s signature.</p>
+  </div>
+  <section class="grid3" style="margin-top:18px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Verified checklist with big tick"><rect x="14" y="16" width="66" height="88" rx="6" class="fillblue"/><path d="M28 38h38M28 54h38M28 70h22" class="ink"/><circle cx="88" cy="80" r="22" class="fillred"/><path d="M78 80l8 9 14-18" class="red"/></svg></div>
+        <h3>Why invent patients</h3></div>
+      <p class="cap">The case that matters most is the <b>rarest thing in real data</b>. Reality supplies 14 subtle cases a year.</p>
+      <div class="example">Synthetic supplies 150.</div>
+      <div class="xlink">Also: <a href="#s14">&sect;14 tickets T10 and T11</a> &middot; <a href="#s13">&sect;13 the shadow-mode switch</a></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Monitoring dashboard with a live chart"><rect x="10" y="20" width="100" height="66" rx="7" class="fillblue"/><path d="M22 70l18-22 14 12 16-26 18 20" class="red"/><circle cx="40" cy="48" r="4" fill="#a85a50"/><circle cx="70" cy="34" r="4" fill="#a85a50"/><path d="M44 96h32" class="ink"/></svg></div>
+        <h3>The headline number</h3></div>
+      <p class="cap"><b>Useful alerts per shift.</b> Before: 43 &times; 6% acted &asymp; <b>2.6</b>. After: 8 &times; 82% acted &asymp; <b>6.6</b>.</p>
+      <div class="example">5&times; fewer alerts, 2.5&times; more action. Not a trade &mdash; the old volume was destroying its own value.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Spreadsheet grid of rows"><rect x="14" y="20" width="92" height="80" rx="5" class="fillblue"/><path d="M14 38h92M14 58h92M14 78h92M46 20v80M78 20v80" class="ink"/></svg></div>
+        <h3>One column decides</h3></div>
+      <p class="cap">Every alert row records <b>acted / dismissed / no response</b>. The headline metric is computed from that column alone.</p>
+      <div class="example">Don&rsquo;t capture it and the product cannot prove it worked.</div>
+    </article>
+  </section>
+  <div class="eli"><b>ELI10:</b> first you test it on made-up patients where you already know the answer. Then you run it silently on real ones for three months and check its homework afterwards. Only then does it get to interrupt anybody.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>11</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s11"><span class="num">11</span>Build order &mdash; vertical slice first</h2>
+  <section class="flow wide">
+    <div class="flow-step">
+      <div class="art"><svg viewBox="0 0 120 120" aria-label="Rocket launching"><path d="M60 10c14 14 20 30 20 46l-10 16H50L40 56c0-16 6-32 20-46z" class="fillblue"/><circle cx="60" cy="46" r="8" class="fillred"/><path d="M50 72l-14 16 14-2M70 72l14 16-14-2" class="ink"/><path d="M56 96l4 14 4-14z" class="fillred"/></svg></div>
+      <span class="tag">T1</span>
+      <h3>One patient, end to end</h3>
+      <p>Ugly, one file, no adapters. Arrival &rarr; scoreboard &rarr; alert. Everything after is refactoring.</p>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="art"><svg viewBox="0 0 120 120" aria-label="Speedometer gauge"><path d="M14 84a46 46 0 0 1 92 0z" class="fillblue"/><path d="M60 84l26-30" class="red"/><circle cx="60" cy="84" r="6" fill="#173b66"/></svg></div>
+      <span class="tag">T5</span>
+      <h3>Fix the starting odds</h3>
+      <p>Do this <b>early</b>. Skip it and every later test is wrong in a confusing way.</p>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="art"><svg viewBox="0 0 120 120" aria-label="Stacked layers of a technology stack"><rect x="16" y="16" width="88" height="16" rx="5" class="fillblue"/><rect x="16" y="38" width="88" height="16" rx="5" class="fillred"/><rect x="16" y="60" width="88" height="16" rx="5" class="fillblue"/><rect x="16" y="82" width="88" height="16" rx="5" class="fillred"/></svg></div>
+      <span class="tag blue">T2 T3</span>
+      <h3>Split into six parts</h3>
+      <p>Engine plus condition pack. The architecture appears here, not before.</p>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="art"><svg viewBox="0 0 120 120" aria-label="Broken chain link"><path d="M44 44L28 60a16 16 0 0 0 22 22l10-10" class="ink"/><path d="M76 76l16-16a16 16 0 0 0-22-22L60 48" class="red"/><path d="M52 52l-8-8M68 68l8 8" class="red"/></svg></div>
+      <span class="tag blue">T6 T7 T8</span>
+      <h3>Degraded, audit, suppress</h3>
+      <p>Failure states, the tamper-evident log, and no repeat pages for one patient.</p>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="art"><svg viewBox="0 0 120 120" aria-label="Verified checklist with big tick"><rect x="14" y="16" width="66" height="88" rx="6" class="fillblue"/><path d="M28 38h38M28 54h38M28 70h22" class="ink"/><circle cx="88" cy="80" r="22" class="fillred"/><path d="M78 80l8 9 14-18" class="red"/></svg></div>
+      <span class="tag">T10 T11</span>
+      <h3>Data and evals</h3>
+      <p><b>Where the synonym bug shows up.</b> Reaching here turns a tutorial into evidence.</p>
+    </div>
+  </section>
+  <section class="grid3" style="margin-top:20px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="One path splitting into two"><path d="M14 60h34" class="ink"/><path d="M48 60l30-28h28M48 60l30 28h28" class="ink"/><circle cx="48" cy="60" r="8" class="fillred"/></svg></div>
+        <h3>Why slice, not layer</h3></div>
+      <p class="cap">A <mark>vertical slice</mark><span class="gloss">one thin path through every layer at once</span> surfaces the misunderstandings <b>while they are still cheap</b>. Build each part properly in order instead, and you see nothing working until late in the day.</p>
+      <div class="example">One patient walks the whole building before any room is finished.</div>
+      <div class="xlink">Also: <a href="#s14">&sect;14 the full ticket list</a> &middot; <a href="#s8">&sect;8 what the slice must output</a></div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Stopwatch running late"><circle cx="60" cy="66" r="34" class="fillblue"/><path d="M60 66V44M60 66l18 12" class="ink"/><path d="M50 20h20M60 20v12" class="ink"/><path d="M92 30l12-12" class="red"/></svg></div>
+        <h3>Honest scope</h3></div>
+      <p class="cap">A realistic day reaches <b>step 4 or 5 of 9</b>. Evals are a second session.</p>
+      <div class="example">17 tickets total. Nine of them are P0.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Archive box"><rect x="14" y="26" width="92" height="22" rx="4" class="fillred"/><path d="M22 48v52h76V48" class="ink"/><path d="M48 66h24" class="red"/></svg></div>
+        <h3>The proof ticket</h3></div>
+      <p class="cap"><b>T17 &mdash; enable a second condition.</b> If it takes more than moving a folder and editing config, the engine was never really general.</p>
+      <div class="example">It proves the two tickets that came before it were done properly.</div>
+    </article>
+  </section>
+  <section class="grid2" style="margin-top:20px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="A robot blocked from performing a task"><rect x="26" y="30" width="54" height="44" rx="8" class="fillblue"/><circle cx="42" cy="52" r="5" fill="#173b66"/><circle cx="64" cy="52" r="5" fill="#173b66"/><path d="M53 30V18" class="ink"/><circle cx="53" cy="14" r="5" class="fillred"/><circle cx="86" cy="82" r="26" class="fillred"/><path d="M70 66l32 32" class="red"/></svg></div>
+        <h3>What choosing &ldquo;no model&rdquo; bought</h3></div>
+      <div class="badge-row" style="margin-top:6px;">
+        <span class="badge green">No GPU</span><span class="badge green">No API cost</span><span class="badge green">No provider lock-in</span><span class="badge green">Nothing to pin</span><span class="badge green">Fully deterministic</span><span class="badge green">Auditable</span>
+      </div>
+      <p class="cap" style="margin-top:12px;">Verified, not assumed: the model-call appears <b>once</b> across all six versions of the book&rsquo;s notebook &mdash; in a self-test.</p>
+      <div class="example">Runs in seconds on an ordinary laptop with integrated graphics.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Shield with a warning triangle"><path d="M60 12l38 14v34c0 26-20 42-38 48-18-6-38-22-38-48V26z" class="fillblue"/><path d="M60 38l20 34H40z" class="fillred"/><path d="M60 50v10" class="red"/><circle cx="60" cy="66" r="2.5" fill="#a85a50"/></svg></div>
+        <h3>The privacy rule paid for itself</h3></div>
+      <p class="cap">Because raw data never leaves the building, transmission drops from <b>~100 TB/day to ~140 MB/day</b> for 10,000 patients &mdash; roughly <b>700&times;</b>.</p>
+      <p class="cap">A competitor streaming raw vitals to the cloud is <b>illegal <i>and</i> more expensive</b>.</p>
+      <div class="example">Compliance is usually a tax. When it points the same way as unit economics, it is a moat.</div>
+    </article>
+  </section>
+  <div class="note blue">The intelligence is roughly <b>seven lines of arithmetic</b>. The other 90% of the work is ingestion, safety, explanation and audit. In production AI, the model is the cheap part.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>12</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s12"><span class="num">12</span>What is still unresolved</h2>
+  <section class="grid2">
+    <article class="card">
+      <div class="card-head big"><div class="art"><svg viewBox="0 0 120 120" aria-label="Warning triangle"><path d="M60 16l46 80H14z" class="fillred"/><path d="M60 46v26" class="red"/><circle cx="60" cy="82" r="4" fill="#a85a50"/></svg></div>
+        <h3>O1 &mdash; Nobody owns the starting odds</h3></div>
+      <p class="cap">Scoring everyone needs true population odds from this hospital&rsquo;s own history. That is <b>clinical analysis, not engineering</b>, and no one is assigned to it.</p>
+      <p class="cap">If they come from a population unlike your patients, you have a bias engine with a mathematical alibi &mdash; trusted <b>more</b> than a black box, because it shows its working.</p>
+      <div class="example">The biggest unaddressed risk across all five documents.</div>
+    </article>
+    <article class="card">
+      <div class="card-head big"><div class="art"><svg viewBox="0 0 120 120" aria-label="A robot blocked from performing a task"><rect x="26" y="30" width="54" height="44" rx="8" class="fillblue"/><circle cx="42" cy="52" r="5" fill="#173b66"/><circle cx="64" cy="52" r="5" fill="#173b66"/><path d="M53 30V18" class="ink"/><circle cx="53" cy="14" r="5" class="fillred"/><circle cx="86" cy="82" r="26" class="fillred"/><path d="M70 66l32 32" class="red"/></svg></div>
+        <h3>O2 &mdash; The gate reads words, not codes</h3></div>
+      <p class="cap">The safety check matches condition names as <b>free text</b>. A case recorded as &ldquo;septicaemia&rdquo; or &ldquo;septic shock&rdquo; would <b>not</b> escalate.</p>
+      <p class="cap">Everything else in the system insists on coded medical vocabularies. The single most safety-critical line does not.</p>
+      <div class="example">Nothing crashes. It just quietly fails to page anyone.</div>
+    </article>
+  </section>
+  <section class="grid3" style="margin-top:20px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Balance scale weighing a trade-off"><path d="M60 16v76M32 100h56" class="ink"/><path d="M20 40h80" class="ink"/><path d="M20 40l-10 22h20zM100 40l-10 22h20z" class="fillred"/><circle cx="60" cy="16" r="5" class="fillblue"/></svg></div>
+        <h3>O4 &mdash; Is 15% per hospital?</h3></div>
+      <p class="cap">The cost-asymmetry gives a <b>0.12&ndash;0.18</b> range. A different hospital lands elsewhere in it.</p>
+      <div class="example">If configurable per customer: pricing, liability and support consequences nobody has discussed.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Stacked database cylinder"><ellipse cx="60" cy="30" rx="34" ry="13" class="fillblue"/><path d="M26 30v60c0 7 15 13 34 13s34-6 34-13V30" class="ink"/><path d="M26 55c0 7 15 13 34 13s34-6 34-13M26 80c0 7 15 13 34 13s34-6 34-13" class="ink"/></svg></div>
+        <h3>O5 &mdash; No memory between visits</h3></div>
+      <p class="cap">State is keyed on the <b>visit</b>, not the person. A patient returning three days later starts from scratch.</p>
+      <div class="example">Correct for privacy. Possibly a lost clinical signal.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Balance scale weighing a trade-off"><path d="M60 16v76M32 100h56" class="ink"/><path d="M20 40h80" class="ink"/><path d="M20 40l-10 22h20zM100 40l-10 22h20z" class="fillred"/><circle cx="60" cy="16" r="5" class="fillblue"/></svg></div>
+        <h3>O7 &mdash; Nobody costed it</h3></div>
+      <p class="cap">The book states savings (~$3.8M/yr) and <b>never</b> states build or licence cost.</p>
+      <div class="example">The uncosted item is attending attention &mdash; the only budget that can bankrupt this product.</div>
+    </article>
+  </section>
+
+  <h2 style="margin-top:34px;">Threads running through the whole thing</h2>
+  <section class="threads">
+    <article class="thread">
+      <h3>Volume is the budget</h3>
+      <p>Alert volume &mdash; not accuracy &mdash; is the scarce resource, and almost every design choice is spending or saving it.</p>
+      <div class="stops"><a href="#s1">&sect;1 problem</a><a href="#s5">&sect;5 the bar</a><a href="#s6">&sect;6 the gap</a><a href="#s9">&sect;9 drift</a><a href="#s10">&sect;10 pass mark</a></div>
+    </article>
+    <article class="thread">
+      <h3>Restraint is the feature</h3>
+      <p>One condition not forty. Four candidates not four hundred. No LLM. The product works because of what it refuses to do.</p>
+      <div class="stops"><a href="#s3">&sect;3 packs</a><a href="#s5">&sect;5 gate</a><a href="#s7">&sect;7 D07 D08</a><a href="#s11">&sect;11 tickets</a></div>
+    </article>
+    <article class="thread">
+      <h3>Failure must name itself</h3>
+      <p>A silent fallback is worse than a crash. Every degraded state says which part broke, on the screen of the person affected.</p>
+      <div class="stops"><a href="#s2">&sect;2 flow</a><a href="#s9">&sect;9 breaks</a><a href="#s12">&sect;12 open</a></div>
+    </article>
+    <article class="thread">
+      <h3>Policy numbers need a signature</h3>
+      <p>0.15, the +0.10 re-alert margin, the starting odds. Each looks like a setting and is actually a signed clinical judgement.</p>
+      <div class="stops"><a href="#s5">&sect;5 the price</a><a href="#s7">&sect;7 D14</a><a href="#s12">&sect;12 O1 O4</a></div>
+    </article>
+  </section>
+  <div class="remember">REMEMBER: the alarm was never the problem &mdash; nobody had written down which rooms get one fitted.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>13</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s13"><span class="num">13</span>Every knob, and what turns it</h2>
+  <div class="note blue">Nothing here is a preference. Each setting is either a <b>signed clinical policy</b>, an <b>operational safety catch</b>, or a <b>path</b>. Knowing which is which is the difference between a config change and an incident.</div>
+  <div class="diagram">
+    <p class="fig">FIGURE 10 &mdash; The settings, by who is allowed to touch them</p>
+    <div class="drow">
+      <div class="dcol">
+        <h5>SIGNED POLICY</h5><p class="sub">version control only &mdash; needs a signature</p>
+        <div class="dbox red"><h4>Escalation threshold</h4><p class="code">0.15</p><p class="sub">The page bar. Written justification + CMIO signature + logged deploy.</p></div>
+        <div class="dbox red"><h4>Re-alert margin</h4><p class="code">+0.10</p><p class="sub">How much worse it must get before interrupting again. A second policy number, tuned against shadow data.</p></div>
+        <div class="dbox red"><h4>Starting odds</h4><p class="sub">Inside the condition pack. Change these and every future diagnosis changes silently. <b>Currently unowned.</b></p></div>
+      </div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dcol">
+        <h5>SAFETY CATCH</h5><p class="sub">operational, but never silent</p>
+        <div class="dbox green"><h4>Shadow mode</h4><p class="code">true / false</p><p class="sub">Score and log, alert nobody. Leaving it writes to the audit log. Cannot be left by accident.</p></div>
+        <div class="dbox green"><h4>Active condition</h4><p class="code">sepsis</p><p class="sub">Which rulebook loads. One at a time.</p></div>
+        <div class="dbox green"><h4>Stale-after minutes</h4><p class="code">30</p><p class="sub">When to warn that evidence has stopped arriving.</p></div>
+      </div>
+      <div class="darrow side">&rarr;</div>
+      <div class="dcol">
+        <h5>PLUMBING</h5><p class="sub">paths and endpoints</p>
+        <div class="dbox plain"><h4>Condition pack path</h4><p class="sub">Where the active rulebook lives.</p></div>
+        <div class="dbox plain"><h4>Audit database path</h4><p class="sub">The append-only store.</p></div>
+        <div class="dbox plain"><h4>Evidence feed &middot; pager endpoint</h4><p class="sub">The only two secrets in the system.</p></div>
+        <div class="dbox tall"><h4>No model ID</h4><p class="sub">There is no AI model, so there is nothing to pin and nothing to auto-route.</p></div>
+      </div>
+    </div>
+    <p class="figcap">If an AI model is ever added for the richer report, its exact version gets pinned here &mdash; never left to pick itself.</p>
+  </div>
+  <section class="grid3" style="margin-top:18px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Stacked database cylinder"><ellipse cx="60" cy="30" rx="34" ry="13" class="fillblue"/><path d="M26 30v60c0 7 15 13 34 13s34-6 34-13V30" class="ink"/><path d="M26 55c0 7 15 13 34 13s34-6 34-13M26 80c0 7 15 13 34 13s34-6 34-13" class="ink"/></svg></div>
+        <h3>Live patient state</h3></div>
+      <p class="cap">One row per <b>visit</b>: the current scoreboard, when it last updated, how complete the data is, which sources have reported.</p>
+      <div class="example">Deleted on discharge. A working cache, not a record.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Signed document with a seal"><rect x="20" y="12" width="66" height="88" rx="6" class="fillblue"/><path d="M34 34h38M34 48h38M34 62h24" class="ink"/><circle cx="88" cy="86" r="18" class="fillred"/><path d="M80 86l6 7 11-13" class="red"/></svg></div>
+        <h3>The audit log</h3></div>
+      <p class="cap">One row per scoring pass: what evidence existed, the scoreboard either side of the update, <b>which rulebook version was in force</b>, the bar at that moment, whether it escalated, whether it was degraded.</p>
+      <div class="example">Chained so a deleted row is detectable. Never updated by anyone, including an administrator.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Spreadsheet grid of rows"><rect x="14" y="20" width="92" height="80" rx="5" class="fillblue"/><path d="M14 38h92M14 58h92M14 78h92M46 20v80M78 20v80" class="ink"/></svg></div>
+        <h3>Alerts</h3></div>
+      <p class="cap">One row per page sent, plus <b>acted / dismissed / no response</b> and the one-tap reason.</p>
+      <div class="example">The only fields a human may ever write.</div>
+    </article>
+  </section>
+  <div class="eli"><b>ELI10:</b> three notebooks. One is a scratchpad wiped when the patient leaves. One is written in permanent ink and nobody may erase it. One records every time the machine shouted and whether anyone listened.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>14</span></div>
+</div>
+
+<div class="page">
+  <h2 id="s14"><span class="num">14</span>All seventeen tickets</h2>
+  <div class="note">Nine are <b>P0</b> &mdash; cannot launch without. Each is small enough that you can check whether it works in one sitting.</div>
+  <section class="grid3" style="margin-top:16px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Rocket launching"><path d="M60 10c14 14 20 30 20 46l-10 16H50L40 56c0-16 6-32 20-46z" class="fillblue"/><circle cx="60" cy="46" r="8" class="fillred"/><path d="M50 72l-14 16 14-2M70 72l14 16-14-2" class="ink"/><path d="M56 96l4 14 4-14z" class="fillred"/></svg></div>
+        <h3>The spine &mdash; P0</h3></div>
+      <ul class="list">
+        <li><b>T1</b> One patient end to end. Ugly, one file.</li>
+        <li><b>T2</b> Split into the six parts. Searching the engine for &ldquo;sepsis&rdquo; must return nothing.</li>
+        <li><b>T3</b> The sepsis rulebook as data the engine reads at startup.</li>
+        <li><b>T5</b> True population starting odds. <b>Do early.</b></li>
+      </ul>
+      <div class="example">T1 works &rarr; everything after is refactoring.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Shield with a warning triangle"><path d="M60 12l38 14v34c0 26-20 42-38 48-18-6-38-22-38-48V26z" class="fillblue"/><path d="M60 38l20 34H40z" class="fillred"/><path d="M60 50v10" class="red"/><circle cx="60" cy="66" r="2.5" fill="#a85a50"/></svg></div>
+        <h3>Safety &amp; honesty &mdash; P0</h3></div>
+      <ul class="list">
+        <li><b>T4</b> Archive the other three conditions, complete and unimported.</li>
+        <li><b>T6</b> Completeness and degraded states. A fallback must never look normal.</li>
+        <li><b>T7</b> The append-only log. Write fails &rarr; alert still fires.</li>
+        <li><b>T8</b> No repeat pages unless it genuinely worsens.</li>
+        <li><b>T9</b> The three text outputs, from one scoreboard.</li>
+      </ul>
+      <div class="example">Safety is ticket 5 of 9, not a pre-launch hardening pass.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Verified checklist with big tick"><rect x="14" y="16" width="66" height="88" rx="6" class="fillblue"/><path d="M28 38h38M28 54h38M28 70h22" class="ink"/><circle cx="88" cy="80" r="22" class="fillred"/><path d="M78 80l8 9 14-18" class="red"/></svg></div>
+        <h3>Evidence &mdash; P0/P1</h3></div>
+      <ul class="list">
+        <li><b>T10</b> 680 invented patients, six classes, reproducible from a fixed seed.</li>
+        <li><b>T11</b> The scoring harness. <b>Report the synonym cases separately.</b></li>
+        <li><b>T12</b> Shadow-mode switch. <span class="lab now">P1</span> locally, P0 for real.</li>
+      </ul>
+      <div class="example">Reaching T11 is what turns a tutorial into evidence.</div>
+    </article>
+  </section>
+  <section class="grid3" style="margin-top:20px;">
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Monitoring dashboard with a live chart"><rect x="10" y="20" width="100" height="66" rx="7" class="fillblue"/><path d="M22 70l18-22 14 12 16-26 18 20" class="red"/><circle cx="40" cy="48" r="4" fill="#a85a50"/><circle cx="70" cy="34" r="4" fill="#a85a50"/><path d="M44 96h32" class="ink"/></svg></div>
+        <h3>Soon after &mdash; P1</h3></div>
+      <ul class="list">
+        <li><b>T13</b> The local demo view. Not in the real product &mdash; it exists for learning and screenshots.</li>
+        <li><b>T14</b> One-tap dismissal reason.</li>
+        <li><b>T15</b> The attending&rsquo;s full report, deferred by the choice of primary user.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Funnel icon"><path d="M20 22h80l-30 40v30l-20 10V62z" class="fillblue"/></svg></div>
+        <h3>Later &mdash; P2</h3></div>
+      <ul class="list">
+        <li><b>T16</b> Real hospital-system adapters, replacing invented input.</li>
+        <li><b>T17</b> Turn on a second condition and prove nothing in the engine changed.</li>
+      </ul>
+      <div class="example">T17 is the audit of T2 and T4.</div>
+    </article>
+    <article class="card">
+      <div class="card-head"><div class="art"><svg viewBox="0 0 120 120" aria-label="Warning triangle"><path d="M60 16l46 80H14z" class="fillred"/><path d="M60 46v26" class="red"/><circle cx="60" cy="82" r="4" fill="#a85a50"/></svg></div>
+        <h3>Still blocked</h3></div>
+      <ul class="list q">
+        <li>Where the patient note is actually delivered &mdash; no channel exists.</li>
+        <li>No reference screenshots for the demo view.</li>
+        <li>Does the triage line need an acknowledge action, or is reading it enough?</li>
+        <li>Who signs off the starting odds.</li>
+      </ul>
+    </article>
+  </section>
+  <div class="eli"><b>ELI10:</b> nine things must exist before anyone can use it, three make it pleasant, two are for later, and four questions still have nobody&rsquo;s name against them.</div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT</span><span>15</span></div>
+</div>
+
+<div class="page">
+  <div class="coverage">
+    <h3>Coverage report</h3>
+    <table>
+      <tr><th>Source</th><td>7 files &mdash; 5 blueprint docs, decision log, handoff note. 69,823 chars.</td></tr>
+      <tr><th>Source class</th><td>Textbook chapter (numbered sections, ~0 filler, few code fences)</td></tr>
+      <tr><th>Sections</th><td>14, plus 10 figures and 4 thread trails</td></tr>
+      <tr><th>Promotional material</th><td>0% &mdash; none present in the source</td></tr>
+      <tr><th>Ledger rows placed</th><td>103 of 103 &mdash; fidelity 30/30</td></tr>
+      <tr><th class="drop">Density &mdash; the honest number</th><td class="drop"><b>G = 2.33&times;, against a ceiling of 1.6 for this source class.</b> The checker&rsquo;s verdict is &ldquo;likely summarised&rdquo;, and it is right: this is an overview, not a full-fidelity note. That was the brief &mdash; a flow-chart map of what happens and what was decided, deliberately not every table. A full-fidelity version would be roughly twice as long. Density scores 0/30 and the total is 65/100 because of it.</td></tr>
+      <tr><th class="drop">Genuine losses</th><td class="drop">None identified &mdash; every ledger row landed. The gap is in the material never balloted into the ledger, listed below.</td></tr>
+      <tr><th>Deliberate cuts</th><td>Folder-tree listing (reproduced in doc 2, adds nothing visually) &middot; three full database column tables, ~30 rows (the one load-bearing column is kept in &sect;10) &middot; per-ticket acceptance-criteria checkboxes, 17 tickets &times; ~4 boxes (build order kept in &sect;11) &middot; the seven-row role/permission matrix (its shape is kept in &sect;8) &middot; build-process metadata about who made which call</td></tr>
+      <tr><th>Corrections</th><td>None &mdash; the source is self-authored and internally consistent after the naming fix</td></tr>
+      <tr><th>Known risk carried forward</th><td>No reference screenshots were supplied for the visual direction; the design is a written brief, which historically reads as unfinished</td></tr>
+    </table>
+    <p style="margin-top:14px; font-size:17px; line-height:1.45;"><b>Two reported defects are false positives.</b> The checker greps for <code>&lt;text</code> and unbalanced <code>&lt;mark&gt;</code> without stripping comments; both hits are on lines 102 and 133, inside the stylesheet comment block that the skill requires be copied verbatim. Real SVG text: <b>zero</b>. Content mark tags: <b>six, balanced</b>.</p>
+    <p style="margin-top:10px; font-size:17px; line-height:1.45;"><b>What was not checked:</b> nothing was rendered in a browser &mdash; Chrome automation cannot open local files, so page-overflow was budgeted arithmetically, not seen. If a page looks clipped, that is the reason.</p>
+    <div class="stamp">
+      <span>16 pages</span><span>10 figures</span><span>4 threads</span><span>103/103 placed</span><span>Fidelity 30/30</span><span>Linkage 20/20</span><span>Clarity 15/20</span><span>Density 0/30</span><span>Total 65/100</span><span>7 build passes</span><span>0 subagents</span><span>Tokens: ~110k (estimate, unmetered)</span>
+    </div>
+  </div>
+  <div class="foot"><span>HEALTHCARE INTELLIGENCE AGENT &mdash; COVERAGE</span><span>14</span></div>
+</div>
+
+</body>
+</html>

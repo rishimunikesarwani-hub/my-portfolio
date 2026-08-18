@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rishi Muni Kesarwani — Working notes</title>
+    <link>https://rishi-ships-every-day.vercel.app/blog.html</link>
+    <atom:link href="https://rishi-ships-every-day.vercel.app/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>I'm opinionated about AI, economics and product.</description>
+    <language>en</language>
+    <copyright>© 2026 Rishi Muni Kesarwani. All rights reserved. Read it, quote it, cite it — with attribution and a link back. Do not republish it whole, and do not train a model on it without asking first.</copyright>
+    <managingEditor>rishi.rte@gmail.com (Rishi Muni Kesarwani)</managingEditor>
+    <lastBuildDate>Wed, 05 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <item>
+      <title>NesGPT &amp; the Nescafé Content Engine</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=nestle-nesgpt</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=nestle-nesgpt</guid>
+      <pubDate>Wed, 05 Aug 2026 09:00:00 GMT</pubDate>
+      <description>A private ChatGPT for 30,000 employees cut campaign production time 60% across 15 markets — and produced content that was technically correct and culturally flat. Not a model problem. A decision-rights problem.</description>
+      <category>Governance</category>
+      <category>Decision rights</category>
+      <category>Prompt engineering</category>
+      <category>Human-in-the-loop</category>
+      <category>Zero-cost</category>
+    </item>
+    <item>
+      <title>Lilli, and the Death of Hourly Billing</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=mckinsey-lilli</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=mckinsey-lilli</guid>
+      <pubDate>Tue, 04 Aug 2026 09:00:00 GMT</pubDate>
+      <description>An internal AI that searches 100,000 documents in seconds turned two days of research into two hours. Everyone read that as a workforce crisis. It is a business model crisis that shows up first as a workforce question.</description>
+      <category>Business model</category>
+      <category>Pricing</category>
+      <category>Outcome-based</category>
+      <category>Workforce</category>
+      <category>AI enablement</category>
+    </item>
+    <item>
+      <title>AI-Led Operations &amp; the Human Delivery Manager</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=zomato-ops</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=zomato-ops</guid>
+      <pubDate>Mon, 03 Aug 2026 09:00:00 GMT</pubDate>
+      <description>50 million decisions a day. During a heat wave the AI optimised for speed and cost and routed riders into unsafe conditions. The AI was not wrong — its objective function simply had no safety constraint in it.</description>
+      <category>Safety constraints</category>
+      <category>Concept drift</category>
+      <category>Gig workers</category>
+      <category>Ethics</category>
+      <category>Pre-processing</category>
+    </item>
+    <item>
+      <title>AI Coding &amp; the Disappearing Analyst Class</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=goldman-analysts</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=goldman-analysts</guid>
+      <pubDate>Sun, 02 Aug 2026 09:00:00 GMT</pubDate>
+      <description>AI cut equity research from four hours to 25 minutes. Goldman still recruits hundreds of analysts a year. You cannot cut junior headcount without cutting your future Managing Directors — the labour function and the leadership pipeline were never the same thing.</description>
+      <category>Workforce</category>
+      <category>AI enablement</category>
+      <category>Role design</category>
+      <category>Hiring</category>
+      <category>Policy change</category>
+    </item>
+    <item>
+      <title>Agentic AI in Supply Chain &amp; Dark Store Management</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=swiggy-instamart</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=swiggy-instamart</guid>
+      <pubDate>Sat, 01 Aug 2026 09:00:00 GMT</pubDate>
+      <description>During a festival surge the AI over-ordered perishables in 12 cities on last year&apos;s data. ₹2 crore spoiled before a human noticed. A forecasting model with no spoilage-aware ordering strategy, and no continuous monitoring to catch it.</description>
+      <category>Causal AI</category>
+      <category>Data drift</category>
+      <category>Continuous monitoring</category>
+      <category>Config change</category>
+      <category>Autonomy tiers</category>
+    </item>
+  </channel>
+</rss>

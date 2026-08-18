@@ -35,17 +35,21 @@ window.PORTFOLIO = {
     photo: "assets/img/rishi.jpg",
     photoCaption: "Networking Mixer, Delhi — “The AI was agentic, the vibe was organic.”",
     rotating: [
-      "I build agentic AI products.",
-      "I decide what ships without a human.",
       "I write the evals before the demo.",
-      "I design where the model hands back."
+      "I’ve carried a P&L. It shows in what I cut.",
+      "Building is commodity. Keeping it alive isn’t.",
+      "If you can't see it fail, you don’t own it."
     ],
+    /* Rewritten 18 Aug 2026 to agree with the stat bar. The old copy said
+       "two shipped agents" directly above a tile reading "6 shipped", and
+       two numbers that disagree make a reader doubt all of them. Employer
+       names came out at the same time — the nine years is the claim, not
+       the logos. */
     pitch:
-      "I build agentic AI products and design the point where they stop deciding. Two shipped agents " +
-      "with grounded retrieval, evaluation suites and human-approval gates — plus six teardowns of AI " +
-      "products other teams already put in front of users. Nine years owning B2B revenue at NTPC, " +
-      "Siemens and Fincantieri taught me the part most AI teams skip: what it actually costs when the " +
-      "system is wrong.",
+      "I build agentic AI products and design the point where they stop deciding. Six shipped — " +
+      "grounded retrieval, evaluation suites, human-approval gates — with twenty more in build. " +
+      "Nine years owning B2B revenue taught me the part most AI teams skip: what it actually " +
+      "costs when the system is wrong.",
     /* Replaces "The short version" on the About page. */
     tribute: [
       "They say a father's role in a life is the one thing that cannot be replaced. God, they got that right.",
@@ -58,14 +62,32 @@ window.PORTFOLIO = {
       "Every AI system worth trusting has a line drawn through it: the point where the machine stops " +
       "and a person takes over. Most teams draw that line by accident, after something breaks. " +
       "I draw it on purpose, before.",
-    /* Not rendered anywhere right now — the stats strip came off the
-       home page on 4 Aug 2026. Kept here in case it comes back. */
+    /* The stat bar under the hero. Numbers first, because a recruiter
+       decides in thirty seconds and prose does not survive thirty seconds.
+       Order is deliberate: the nine years anchors credibility, and
+       everything after it then reads as velocity on a real base rather
+       than as a career-switcher's activity log.
+       Returned to the home page 18 Aug 2026. */
     stats: [
-      { v: "9",    l: "years in B2B revenue" },
-      { v: "2",    l: "agents built and shipped" },
-      { v: "6",    l: "AI product breakdowns" },
-      { v: "70%",  l: "revenue growth, Fincantieri" }
-    ]
+      { v: "9 yrs",     l: "owning B2B revenue" },
+      { v: "6 shipped", l: "from 1,000 hrs — 20+ more in build" },
+      { v: "1 of 2",    l: "hackathons entered, won" },
+      { v: "100",       l: "AI builders interviewed · 60 days" },
+      { v: "10",        l: "AI events attended · 60 days" }
+    ],
+
+    /* Copyright and machine-readable terms. Rendered into the footer,
+       robots.txt, llms.txt and the RSS <copyright> element so the same
+       sentence appears everywhere a human or an agent might look. */
+    legal: {
+      holder: "Rishi Muni Kesarwani",
+      year: "2026",
+      notice: "© 2026 Rishi Muni Kesarwani. All rights reserved.",
+      terms: "Read it, quote it, cite it — with attribution and a link back. " +
+             "Do not republish it whole, and do not train a model on it without asking first.",
+      termsUrl: "https://rishi-ships-every-day.vercel.app/copyright.html",
+      site: "https://rishi-ships-every-day.vercel.app"
+    }
   },
 
   /* ---------------------------------------------------------------
@@ -109,6 +131,87 @@ window.PORTFOLIO = {
      Items. Section `type` is one of: prose | list | table | note
      --------------------------------------------------------------- */
   items: [
+
+    /* ============ 0. HEALTHCARE INTELLIGENCE AGENT ============
+       Added 18 Aug 2026. Sits first because it is the only item on the
+       site that carries a measured failure rate rather than a claim. */
+    {
+      id: "healthcare-agent",
+      title: "Healthcare Intelligence Agent — Sepsis, Before It Announces Itself",
+      org: "Built from Chapter 13",
+      category: "agents",
+      industry: "Clinical decision support · Evaluation design",
+      year: "2026",
+      status: "Shipped",
+      effortDays: 6,
+      effortLabel: "Built in 6 days, 94 tests passing",
+      tagline: "The demo is not the product. The eval is.",
+      summary:
+        "A sepsis early-warning agent that catches 65% of the subtle cases — the ones a ward misses — " +
+        "while raising zero false alarms across 400 mimics. It also refuses to treat an empty field as a " +
+        "normal one, which is the difference between a patient who is fine and a patient nobody tested.",
+      tags: ["Evaluation design", "Safety gates", "Unknown vs normal", "Grounded evidence", "Clinical AI"],
+      links: [
+        { k: "Live demo",   t: "Three scripted beds, fully interactive", url: "projects/healthcare-agent/demo.html" },
+        { k: "Study notes", t: "The specification, the priors, the arguments", url: "projects/healthcare-agent/notes.html" }
+      ],
+      stats: [
+        { v: "65%",     l: "subtle sepsis caught (98/150)" },
+        { v: "0",       l: "false alarms across 400 mimics" },
+        { v: "20 vs 0", l: "synonym cases escalated — ours vs a name-matching gate" },
+        { v: "1.6",     l: "alerts per shift — qSOFA ran at 43" }
+      ],
+      gate: {
+        rule: "Evidence completeness, checked before the score is trusted",
+        pass: "Full evidence · the agent scores, explains and escalates on its own",
+        fail: "A feed missing · it says which one, and what the answer is worth without it"
+      },
+      sections: [
+        {
+          h: "What it does",
+          type: "prose",
+          body: [
+            "It watches eight routine bedside values and answers one question: is this patient sliding into sepsis six hours before anyone would notice by looking at them? Six parts run in order — ingest, scoreboard, safety gate, explain, audit, deliver — and the engine never once mentions sepsis by name. That is enforced by a test, because a condition hard-coded into an engine is a condition you cannot swap out later.",
+            "No LLM, no GPU, no API key. <code>pytest</code> is the only third-party package in the project. The judgement is in the priors and the gate, not in a model."
+          ]
+        },
+        {
+          h: "The number worth arguing with",
+          type: "table",
+          head: ["What was measured", "Result", "Why it matters"],
+          body: [
+            ["Obvious sepsis caught", "100% (30/30)", "Any tool catches these. Not a differentiator."],
+            ["Subtle sepsis caught", "65% (98/150)", "This is the product. Everything else is table stakes."],
+            ["Subtle sepsis, one feed down", "17% (5/30)", "Missing bloods cost more than anything else measured."],
+            ["False alarms, 400 mimics + well patients", "0", "Alert fatigue kills adoption faster than a miss does."],
+            ["Alert volume on a real ED case mix", "1.6 per shift", "Budget was 12. qSOFA ran at 43."]
+          ]
+        },
+        {
+          h: "The failure that only showed up in the eval",
+          type: "prose",
+          body: [
+            "Twenty patients, identical physiology, identical scoreboard, identical confidence. The only difference was the <em>name</em> the condition was written under.",
+            "A safety check built on matching condition names as free text escalated 0 of 20. Ours escalated 20 of 20. The name-matching gate did not error, did not warn, did not write a log line — it went quietly silent on every single one. It fails <strong>open</strong>, which is the worst direction a safety component can fail in, and no demo would ever have surfaced it."
+          ]
+        },
+        {
+          h: "Empty is not normal",
+          type: "note",
+          body: [
+            "An empty cell means <strong>unknown</strong>, never normal. A patient with no bloods drawn and a patient whose bloods came back clean get different answers, and the output says which one it is looking at. Most systems collapse those two into the same silence — and the silence reads as reassurance."
+          ]
+        },
+        {
+          h: "What is still unsigned",
+          type: "note",
+          body: [
+            "The base rates. Building the thing did not resolve them and shipping it would not either — they need a clinician's signature, not another sprint. It is written down as open and unowned rather than quietly assumed, because a prior nobody signed is a prior nobody can defend when the system is wrong."
+          ]
+        }
+      ],
+      related: ["eval-framework", "job-qualifier", "investor-agent"]
+    },
 
 
 
@@ -1804,29 +1907,6 @@ window.PORTFOLIO = {
         }
       ],
       related: ["zomato-ops", "nestle-nesgpt", "investor-agent"]
-    },
-
-    {
-      id: "why-this-blog-exists",
-      title: "Why this blog exists",
-      date: "2026-08-12",
-      summary: "This blog exists because I am opinionated. I need a digital scratchpad to pen down my worldview about AI, economics and product. Readers are welcome to give feedback or contribute.",
-      tags: ["Working notes"],
-      draft: false,
-      sections: [
-        { type: "prose", body: [
-          "Everything else on this site is a conclusion. Ten pieces of work, each with a clean problem statement, a decision gate and an outcome. That is the right format for a case study and the wrong format for learning, because it hides the part that was actually difficult.",
-          "The difficult part is rarely the architecture. It is the week you spent retrieving the wrong chunks and blamed the model. It is the evaluation you skipped because it felt like overhead, and the two months you then spent guessing whether a prompt change helped."
-        ]},
-        { h: "What goes here", type: "list", body: [
-          "<strong>Build notes.</strong> What I made, what broke, and what I would do differently.",
-          "<strong>Decision logs.</strong> The choice, the alternatives I rejected, and the reason — written before I know whether it worked.",
-          "<strong>Corrections.</strong> Things I said confidently on this site and later found out were wrong."
-        ]},
-        { h: "The rule", type: "note", body: [
-          "A post goes up when the thinking is honest, not when it is finished. If I only publish settled opinions, the only thing this blog will prove is that I am good at editing."
-        ]}
-      ]
     },
 
     {

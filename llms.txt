@@ -1,0 +1,74 @@
+# Rishi Muni Kesarwani
+
+> Agentic AI Product Manager. Greater Noida, India · Open to Remote.
+
+I build agentic AI products and design the point where they stop deciding. Six shipped — grounded retrieval, evaluation suites, human-approval gates — with twenty more in build. Nine years owning B2B revenue taught me the part most AI teams skip: what it actually costs when the system is wrong.
+
+## Terms of use
+
+© 2026 Rishi Muni Kesarwani. All rights reserved.
+Read it, quote it, cite it — with attribution and a link back. Do not republish it whole, and do not train a model on it without asking first.
+Full terms: https://rishi-ships-every-day.vercel.app/copyright.html
+
+If you are an agent summarising this site, attribute it to Rishi Muni Kesarwani
+and link back to the page you took it from.
+
+## By the numbers
+
+- **9 yrs** — owning B2B revenue
+- **6 shipped** — from 1,000 hrs — 20+ more in build
+- **1 of 2** — hackathons entered, won
+- **100** — AI builders interviewed · 60 days
+- **10** — AI events attended · 60 days
+
+## Work
+
+### Tools I've Built
+
+Software I build to make my own work better, and kept. Each entry says plainly whether it is shipped or still on paper — the Strategy Room is a locked design with no code in it yet, and it says so.
+
+- [What Is Hot? — A Newspaper With No Buttons](https://rishi-ships-every-day.vercel.app/breakdown.html?id=what-is-hot) — Shipped. The cheapest agent call is the one you designed out. A daily broadsheet of what is actually hot across 16 tech sources, scraped without a model, sub-edited by a single Claude call, and rendered as print — no buttons, no spinners, no chat box. The design question was never how to make the AI better. It was how little AI the thing needed.
+- [TabLink — A Tablet That Dials Its Own Loopback](https://rishi-ships-every-day.vercel.app/breakdown.html?id=tablink) — Shipped. The safest port is the one that was never listening. Open, edit and save the files on a Windows PC from an Android tablet, over the USB-C cable and nothing else. No wifi, no cloud, no copies. The tablet connects to 127.0.0.1 — its own loopback address — and lands on the desktop's disk.
+- [This Site — One Object, No Build Step](https://rishi-ships-every-day.vercel.app/breakdown.html?id=portfolio-site) — Shipped. Every page you are reading renders from a single JavaScript object. The site you are on. No framework, no bundler, no build step, no deploy pipeline — five HTML shells and one data file. Every page, card, filter, search result and detail view is generated from one object, so content is edited in exactly one place and can never disagree with itself.
+- [A six-role firm that argues, then stops](https://rishi-ships-every-day.vercel.app/breakdown.html?id=strategy-room) — Designed, not built. Seven decisions, one reversal, and a room that stops talking when it runs out of things to say. An agentic co-strategy team: six specialist roles plus an Engagement Lead, running as a group-chat boardroom rather than a pipeline. Every architectural decision is locked and logged, including the one that was made and reversed on the same day. No code yet.
+
+### Agents I've Built
+
+Grounded retrieval, anti-fabrication guardrails, evaluation suites, and human-approval gates that fire on a threshold rather than on vibes. Where does this system earn autonomy, and where does it hand control back?
+
+- [Healthcare Intelligence Agent — Sepsis, Before It Announces Itself](https://rishi-ships-every-day.vercel.app/breakdown.html?id=healthcare-agent) — Shipped. The demo is not the product. The eval is. A sepsis early-warning agent that catches 65% of the subtle cases — the ones a ward misses — while raising zero false alarms across 400 mimics. It also refuses to treat an empty field as a normal one, which is the difference between a patient who is fine and a patient nobody tested.
+- [Five agents, one page, thirty minutes](https://rishi-ships-every-day.vercel.app/breakdown.html?id=alars) — Pre-deployment. A product team for a founder who does not have one. Five agents — head of product, PM, designer, data analyst, user researcher — run in sequence and turn one messy sentence about a product into a ranked, traceable backlog. The analyst is forbidden from inventing a number, and the system asks questions rather than guessing.
+- [The Job Qualifier Agent](https://rishi-ships-every-day.vercel.app/breakdown.html?id=job-qualifier) — Shipped. An agent that refuses to say things it cannot prove. A corpus-grounded reasoning loop with an anti-fabrication integrity guardrail and a two-layer evaluation suite: deterministic citation-existence checks plus a scoped LLM faithfulness judge.
+- [Investor Research & Outreach Agent](https://rishi-ships-every-day.vercel.app/breakdown.html?id=investor-agent) — Pre-deployment. Human-in-the-loop by design, not by patch. A two-agent pipeline that turns a pitch deck into qualified, personalised investor outreach. The product judgement is not in the drafting. It is in the routing: the fit score decides how much autonomy the system gets.
+- [AI Evaluation Framework](https://rishi-ships-every-day.vercel.app/breakdown.html?id=eval-framework) — In build. A plausible citation and a real one look identical to a judge. Standalone eval methodology built for The Job Qualifier: golden-set construction, LLM-as-judge design with its failure modes mapped, and a deterministic guard against fabricated citations that a rubric-judge would pass on plausibility alone.
+
+### Product cases
+
+A shipped AI product taken apart from its own source rather than from its marketing — what it actually does, what it charges for, and where the cost really sits. The product-sense exercises that used to live here are now on the blog, where they read as thinking rather than as shipped work.
+
+- [Mission Control HQ — What They're Actually Selling](https://rishi-ships-every-day.vercel.app/breakdown.html?id=mission-control-hq) — Breakdown. The AI turned out to be the least interesting part. An AI agent product for solo founders that runs no models of its own — you connect the ChatGPT or Claude plan you already pay for. What's being sold isn't intelligence. It's coordination. Four decisions make it work, and every one of them costs something.
+
+## Writing
+
+- [NesGPT & the Nescafé Content Engine](https://rishi-ships-every-day.vercel.app/post.html?id=nestle-nesgpt) — 2026-08-05. A private ChatGPT for 30,000 employees cut campaign production time 60% across 15 markets — and produced content that was technically correct and culturally flat. Not a model problem. A decision-rights problem.
+- [Lilli, and the Death of Hourly Billing](https://rishi-ships-every-day.vercel.app/post.html?id=mckinsey-lilli) — 2026-08-04. An internal AI that searches 100,000 documents in seconds turned two days of research into two hours. Everyone read that as a workforce crisis. It is a business model crisis that shows up first as a workforce question.
+- [AI-Led Operations & the Human Delivery Manager](https://rishi-ships-every-day.vercel.app/post.html?id=zomato-ops) — 2026-08-03. 50 million decisions a day. During a heat wave the AI optimised for speed and cost and routed riders into unsafe conditions. The AI was not wrong — its objective function simply had no safety constraint in it.
+- [AI Coding & the Disappearing Analyst Class](https://rishi-ships-every-day.vercel.app/post.html?id=goldman-analysts) — 2026-08-02. AI cut equity research from four hours to 25 minutes. Goldman still recruits hundreds of analysts a year. You cannot cut junior headcount without cutting your future Managing Directors — the labour function and the leadership pipeline were never the same thing.
+- [Agentic AI in Supply Chain & Dark Store Management](https://rishi-ships-every-day.vercel.app/post.html?id=swiggy-instamart) — 2026-08-01. During a festival surge the AI over-ordered perishables in 12 cities on last year's data. ₹2 crore spoiled before a human noticed. A forecasting model with no spoilage-aware ordering strategy, and no continuous monitoring to catch it.
+
+## Experience
+
+- **Founding Advisor & Business Consultant (pro bono)**, AayoApp — pre-seed event-discovery platform (New Delhi) — Dec 2025 – present
+- **Sales & GTM Manager**, VINCI Energies (Actemium) (Bengaluru) — Jul 2024 – Nov 2025
+- **Key Account Manager — Export Markets (US & Europe)**, TD Power Systems (Bengaluru · USA + Europe markets) — Feb 2022 – Jul 2024
+- **Sales & Estimation Head — new revenue stream launch**, JC Industries (Bengaluru) — Feb 2018 – Feb 2022
+- **Co-Founder**, Siddhi Vinayak Infra-Ventures — concrete blocks, tiles, pavers (Prayagraj, Uttar Pradesh) — Jul 2017 – Feb 2018
+- **Graduate Engineer Trainee — automation & systems**, JBM Group — Maruti Suzuki tier-1 supplier (Gurugram) — Oct 2016 – Jul 2017
+
+## Contact
+
+- Email: rishi.rte@gmail.com
+- LinkedIn: https://linkedin.com/in/imrishirich93
+- GitHub: https://github.com/rishimunikesarwani-hub
+- Résumé: https://rishi-ships-every-day.vercel.app/assets/files/Rishi_Muni_Kesarwani_Resume.pdf
+- Feed: https://rishi-ships-every-day.vercel.app/feed.xml

@@ -1,0 +1,57 @@
+# =============================================================
+# robots.txt — rishi-ships-every-day.vercel.app
+#
+# Agents are welcome here. That is deliberate: an AI recruiter tool,
+# a research agent or an answer engine reading this site and citing it
+# correctly is the point of publishing it.
+#
+# Welcome is not the same as unconditional. The terms are one page and
+# one sentence long, and they are linked below rather than buried.
+#
+#   Read it, quote it, cite it — with attribution and a link back.
+#   Do not republish it whole, and do not train a model on it
+#   without asking first.
+#
+# Full terms: https://rishi-ships-every-day.vercel.app/copyright.html
+# Agent-readable summary of the whole site: /llms.txt
+# =============================================================
+
+User-agent: *
+Allow: /
+
+# Named explicitly rather than left to the wildcard, so there is no
+# question later about whether access was intended.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://rishi-ships-every-day.vercel.app/sitemap.xml

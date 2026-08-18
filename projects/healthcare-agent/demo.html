@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Healthcare Intelligence Agent - local demo</title>
+<style>
+  :root{
+    --bg:#FAFAF9; --surface:#FFFFFF; --border:#E7E5E4; --primary:#1C64F2;
+    --text:#1C1917; --muted:#78716C; --success:#059669; --warning:#D97706;
+    --danger:#DC2626;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--text);
+    font:400 14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-variant-numeric:tabular-nums; padding:32px 16px 64px;
+  }
+  .page{max-width:960px;margin:0 auto}
+  h1{font-size:20px;font-weight:600;letter-spacing:-0.01em}
+  h2{font-size:16px;font-weight:600;margin-bottom:16px}
+  .sub{color:var(--muted);font-size:12px;font-weight:500;letter-spacing:0.02em}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:16px}
+  header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+
+  .banner{border:1px solid var(--border);border-left:3px solid var(--warning);border-radius:8px;
+          padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--muted);background:var(--surface)}
+  .banner b{color:var(--warning)}
+
+  .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .tab{border:1px solid var(--border);background:var(--surface);border-radius:8px;
+       padding:8px 16px;font:inherit;font-weight:500;color:var(--muted);cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
+  .tab.live{border-style:dashed}
+  .tab.live[aria-selected="true"]{border-style:solid}
+
+  .patientline{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+  .bed{font-size:28px;font-weight:600}
+  .note{color:var(--muted);font-size:12px;margin-bottom:24px;max-width:62ch}
+
+  .controls{display:flex;gap:8px;align-items:center;margin-bottom:24px;flex-wrap:wrap}
+  button.primary{background:var(--primary);border:1px solid var(--primary);color:#fff;
+                 border-radius:8px;padding:8px 16px;font:inherit;font-weight:500;cursor:pointer}
+  button.plain{background:none;border:none;color:var(--primary);font:inherit;font-weight:500;
+               cursor:pointer;padding:8px}
+  button:disabled{opacity:.4;cursor:default}
+  .clock{color:var(--muted);font-size:12px;font-weight:500;letter-spacing:0.02em;margin-left:auto}
+
+  .timeline{display:flex;gap:0;margin-bottom:24px;border-top:1px solid var(--border);padding-top:16px}
+  .tick{flex:1;font-size:12px;color:var(--muted);border-left:1px solid var(--border);padding:0 8px;opacity:.45}
+  .tick.done{opacity:1}
+  .tick.now{opacity:1;color:var(--text);border-left-color:var(--primary)}
+  .tick b{display:block;font-weight:600}
+
+  /* ── the input panel ────────────────────────────────────────────────── */
+  .inputs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;
+          border-top:1px solid var(--border);padding-top:24px}
+  @media (max-width:820px){.inputs{grid-template-columns:repeat(2,1fr)}}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:12px;font-weight:500;letter-spacing:0.02em;color:var(--muted)}
+  .field input,.field select{
+    font:inherit;font-variant-numeric:tabular-nums;padding:8px;border:1px solid var(--border);
+    border-radius:8px;background:var(--surface);color:var(--text);width:100%}
+  .field input:focus,.field select:focus{outline:2px solid var(--primary);outline-offset:-1px}
+  .field input::placeholder{color:#D6D3D1}
+  .field.blank label::after{content:" · unknown";color:var(--warning)}
+  .panelactions{display:flex;gap:8px;align-items:center;margin:-8px 0 8px;flex-wrap:wrap}
+  .panelactions select{font:inherit;font-weight:500;padding:8px 12px;border-radius:8px;
+    border:1px solid var(--primary);color:var(--primary);background:var(--surface);cursor:pointer}
+  #sourcenote{margin:0 0 24px}
+
+  /* ── the scoreboard ─────────────────────────────────────────────────── */
+  .board{position:relative;margin-bottom:8px}
+  .row{display:grid;grid-template-columns:200px 1fr 64px;align-items:center;gap:16px;height:32px}
+  .name{font-size:14px;text-align:right;color:var(--text)}
+  .name.residual{color:var(--muted)}
+  .track{position:relative;height:16px;background:#F5F5F4;border-radius:8px;overflow:hidden}
+  .fill{position:absolute;inset:0 auto 0 0;width:0;border-radius:8px;background:var(--muted);
+        transition:width 700ms cubic-bezier(.4,0,.2,1),background-color 400ms ease}
+  .fill.critical{background:var(--primary)}
+  .fill.over{background:var(--danger)}
+  .fill.residual{background:#D6D3D1}
+  .value{font-size:14px;font-weight:600;text-align:right;transition:color 400ms ease}
+  .value.over{color:var(--danger)}
+  .threshold{position:absolute;top:0;bottom:20px;width:1px;background:var(--primary);opacity:.5}
+  .threshold span{position:absolute;top:-18px;left:-24px;font-size:12px;color:var(--primary);
+                  white-space:nowrap;font-weight:500}
+
+  .status{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 0}
+  .chip{border-radius:8px;padding:4px 12px;font-size:12px;font-weight:500;letter-spacing:0.02em;
+        border:1px solid var(--border);color:var(--muted);background:var(--surface)}
+  .chip.calm{color:var(--success);border-color:var(--success)}
+  .chip.warn{color:var(--warning);border-color:var(--warning)}
+  .chip.danger{color:var(--danger);border-color:var(--danger)}
+
+  .findings{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .f{font-size:12px;padding:4px 8px;border-radius:8px;border:1px solid var(--border);color:var(--muted)}
+  .f.present{color:var(--text);border-color:var(--text)}
+  .f.unknown{opacity:.5;border-style:dashed}
+
+  .outputs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media (max-width:820px){.outputs{grid-template-columns:1fr}.row{grid-template-columns:140px 1fr 56px}}
+  .out{border:1px solid var(--border);border-radius:8px;padding:16px;background:var(--bg)}
+  .out h3{font-size:12px;font-weight:600;letter-spacing:0.02em;color:var(--muted);margin-bottom:8px}
+  .out p{font-size:13px;min-height:88px}
+  .out.pager p{font-weight:600}
+  .out.pager.live{border-color:var(--danger)}
+  .out.pager.live h3{color:var(--danger)}
+  .removed{margin-top:8px;font-size:12px;color:var(--muted);font-style:italic}
+  footer{color:var(--muted);font-size:12px;margin-top:32px;line-height:1.7}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+  [hidden]{display:none !important}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div>
+      <h1>Healthcare Intelligence Agent</h1>
+      <div class="sub" id="packline"></div>
+    </div>
+    <div class="sub">local demo view &middot; does not ship</div>
+  </header>
+
+  <div class="banner" id="unsigned"></div>
+
+  <div class="tabs" id="tabs" role="tablist"></div>
+
+  <div class="card">
+    <div class="patientline">
+      <div><span class="bed" id="bed"></span> <span class="sub" id="summary"></span></div>
+      <div class="clock" id="clock"></div>
+    </div>
+    <p class="note" id="note"></p>
+
+    <div class="controls" id="controls">
+      <button class="primary" id="play">Play</button>
+      <button class="plain" id="step">Step</button>
+      <button class="plain" id="reset">Reset</button>
+    </div>
+
+    <div class="timeline" id="timeline"></div>
+
+    <div class="inputs" id="inputs" hidden></div>
+    <div class="panelactions" id="panelactions" hidden>
+      <select id="loadpatient" aria-label="Load a patient">
+        <option value="">Load a patient&hellip;</option>
+      </select>
+      <button class="plain" id="clearall">Clear all</button>
+      <span class="sub" id="livestatus"></span>
+    </div>
+    <p class="sub" id="sourcenote" hidden></p>
+
+    <h2>Scoreboard</h2>
+    <div class="board" id="board"></div>
+
+    <div class="status" id="status"></div>
+    <div class="findings" id="findings"></div>
+  </div>
+
+  <div class="card">
+    <h2>One reasoning trace, three audiences</h2>
+    <div class="outputs">
+      <div class="out pager" id="out-pager"><h3>ATTENDING'S PAGER</h3><p></p></div>
+      <div class="out"><h3>TRIAGE SCREEN</h3><p id="out-triage"></p></div>
+      <div class="out"><h3>PATIENT NOTE</h3><p id="out-patient"></p></div>
+    </div>
+    <p class="removed">What is removed is the design. The patient version carries no condition
+      name and no number &mdash; not by convention, but because no code path exists that could
+      put one there.</p>
+  </div>
+
+  <footer>
+    Every number on this page came out of <code>engine\</code>. Nothing here is mocked, and the
+    input panel scores in Python rather than in this page &mdash; a second copy of the
+    arithmetic is a second opinion that can drift from the first one silently.<br>
+    Red appears only when a human is being paged. Amber means the result is degraded, partial
+    or stale &mdash; still an answer, but one that names what it could not see.<br>
+    An empty box means <b>unknown</b>, not normal. That is the whole difference between
+    &ldquo;the bloods came back clean&rdquo; and &ldquo;no bloods were drawn&rdquo;.
+  </footer>
+</div>
+
+<script>
+const DATA = {"pack": {"version": "sepsis-1.0.0", "label": "Sepsis", "threshold": 0.15, "signed_off": false, "source": "ESTIMATE - Rishi, 2026-08-15, local learning build only. Unsigned. Derivation below."}, "candidates": [{"id": "urosepsis", "label": "Urosepsis", "critical": true, "residual": false}, {"id": "pneumonia_sepsis", "label": "Pneumonia-source sepsis", "critical": true, "residual": false}, {"id": "biliary_sepsis", "label": "Biliary sepsis", "critical": true, "residual": false}, {"id": "viral_syndrome", "label": "Viral syndrome", "critical": false, "residual": false}, {"id": "dehydration", "label": "Dehydration", "critical": false, "residual": false}, {"id": "other_benign", "label": "Other / nothing acute", "critical": false, "residual": true}], "findings": [{"id": "fever", "label": "fever", "source": "vitals"}, {"id": "hypothermia", "label": "low temperature", "source": "vitals"}, {"id": "tachycardia", "label": "fast heart rate", "source": "vitals"}, {"id": "hypotension", "label": "low blood pressure", "source": "vitals"}, {"id": "tachypnea", "label": "fast breathing", "source": "vitals"}, {"id": "hypoxia", "label": "low oxygen saturation", "source": "vitals"}, {"id": "leukocytosis", "label": "raised white cell count", "source": "labs"}, {"id": "lactate_elevated", "label": "raised lactate", "source": "labs"}, {"id": "altered_mental_status", "label": "new confusion", "source": "assessment"}], "inputs": [{"field": "temperature_c", "label": "Temperature (C)", "placeholder": "36.8", "bool": false}, {"field": "heart_rate_bpm", "label": "Heart rate (bpm)", "placeholder": "78", "bool": false}, {"field": "blood_pressure_systolic", "label": "Systolic BP", "placeholder": "128", "bool": false}, {"field": "respiratory_rate", "label": "Resp. rate", "placeholder": "16", "bool": false}, {"field": "spo2_percent", "label": "SpO2 (%)", "placeholder": "98", "bool": false}, {"field": "wbc_count", "label": "White cells", "placeholder": "7.2", "bool": false}, {"field": "lactate_mmol", "label": "Lactate (mmol/L)", "placeholder": "1.1", "bool": false}, {"field": "altered_mental_status", "label": "New confusion", "placeholder": "", "bool": true}], "patients": [{"bed": "7", "summary": "72F, unwell two days, brought in by family", "note": "The book's patient, SIM-PT-00421. Watch the board redistribute as evidence lands - it always totals 1.0.", "states": [{"clock": "09:42", "event": "arrival - nobody has examined her yet", "likelihoods": {"urosepsis": 0.005, "pneumonia_sepsis": 0.005, "biliary_sepsis": 0.002, "viral_syndrome": 0.08, "dehydration": 0.04, "other_benign": 0.868}, "before": null, "findings": {"fever": "unknown", "hypothermia": "unknown", "tachycardia": "unknown", "hypotension": "unknown", "tachypnea": "unknown", "hypoxia": "unknown", "leukocytosis": "unknown", "lactate_elevated": "unknown", "altered_mental_status": "unknown"}, "completeness": "incomplete - nothing reported", "completeness_level": "incomplete", "degraded": false, "degraded_reason": "", "stale": true, "escalate": false, "leader": "urosepsis", "confidence": 0.005, "review": [], "rejected": [], "outputs": {"pager": "(nothing sent)", "triage": "Bed 7: monitored, nothing flagged. Re-check 60 min.", "patient": "We are keeping an eye on your observations while you wait, and a nurse is checking them regularly. Nothing needs your attention at the moment. Please tell a nurse if you start to feel worse, or if you have been waiting longer than you expected."}}, {"clock": "09:47", "event": "triage vitals taken", "likelihoods": {"urosepsis": 0.2858489032851778, "pneumonia_sepsis": 0.11005947078359789, "biliary_sepsis": 0.09928183690123704, "viral_syndrome": 0.35372156870971977, "dehydration": 0.13044752642850033, "other_benign": 0.02064069389176718}, "before": null, "findings": {"fever": "present", "hypothermia": "absent", "tachycardia": "present", "hypotension": "present", "tachypnea": "unknown", "hypoxia": "absent", "leukocytosis": "unknown", "lactate_elevated": "unknown", "altered_mental_status": "unknown"}, "completeness": "partial - no assessment, labs", "completeness_level": "partial", "degraded": false, "degraded_reason": "", "stale": false, "escalate": true, "leader": "urosepsis", "confidence": 0.2858489032851778, "review": ["pneumonia_sepsis", "biliary_sepsis"], "rejected": [], "outputs": {"pager": "Bed 7 - UROSEPSIS 0.29 - review now [PARTIAL - NO ASSESSMENT, LABS]", "triage": "Bed 7: urosepsis 0.29, attending paged. Drivers: fever, low blood pressure, fast heart rate. [PARTIAL - NO ASSESSMENT, LABS] Re-check 15 min.", "patient": "We are keeping a close eye on you. Some of your observations need a senior doctor's opinion, so one has been asked to come and see you. This is a precaution and nothing about your treatment has changed yet. Please tell a nurse straight away if you feel worse while you are waiting."}}, {"clock": "10:24", "event": "bloods back from the lab", "likelihoods": {"urosepsis": 0.5485294251003187, "pneumonia_sepsis": 0.2051642525050543, "biliary_sepsis": 0.20242406498935733, "viral_syndrome": 0.03030239279326569, "dehydration": 0.013410114172563447, "other_benign": 0.00016975043944048693}, "before": {"urosepsis": 0.2858489032851778, "pneumonia_sepsis": 0.11005947078359789, "biliary_sepsis": 0.09928183690123704, "viral_syndrome": 0.35372156870971977, "dehydration": 0.13044752642850033, "other_benign": 0.02064069389176718}, "findings": {"fever": "present", "hypothermia": "absent", "tachycardia": "present", "hypotension": "present", "tachypnea": "unknown", "hypoxia": "absent", "leukocytosis": "present", "lactate_elevated": "present", "altered_mental_status": "unknown"}, "completeness": "partial - no assessment", "completeness_level": "partial", "degraded": false, "degraded_reason": "", "stale": false, "escalate": true, "leader": "urosepsis", "confidence": 0.5485294251003187, "review": [], "rejected": [], "outputs": {"pager": "Bed 7 - UROSEPSIS 0.55 - review now [PARTIAL - NO ASSESSMENT]", "triage": "Bed 7: urosepsis 0.55, attending paged. Drivers: raised lactate, raised white cell count, fever. [PARTIAL - NO ASSESSMENT] Re-check 15 min.", "patient": "We are keeping a close eye on you. Some of your observations need a senior doctor's opinion, so one has been asked to come and see you. This is a precaution and nothing about your treatment has changed yet. Please tell a nurse straight away if you feel worse while you are waiting."}}]}, {"bed": "3", "summary": "34M, twisted ankle, otherwise well", "note": "The correct output for roughly 172 of 180 patients is nothing. That state is designed, not blank - silence must not mean both 'fine' and 'broken'.", "states": [{"clock": "09:44", "event": "triage vitals taken", "likelihoods": {"urosepsis": 2.309481820668296e-05, "pneumonia_sepsis": 3.041292932567303e-06, "biliary_sepsis": 2.404825252186551e-05, "viral_syndrome": 0.012011403959598611, "dehydration": 0.011778805876115862, "other_benign": 0.9761596058006243}, "before": null, "findings": {"fever": "absent", "hypothermia": "absent", "tachycardia": "absent", "hypotension": "absent", "tachypnea": "absent", "hypoxia": "absent", "leukocytosis": "unknown", "lactate_elevated": "unknown", "altered_mental_status": "unknown"}, "completeness": "partial - no assessment, labs", "completeness_level": "partial", "degraded": false, "degraded_reason": "", "stale": false, "escalate": false, "leader": "biliary_sepsis", "confidence": 2.404825252186551e-05, "review": [], "rejected": [], "outputs": {"pager": "Bed 3 - BILIARY SEPSIS 0.00 - review now [PARTIAL - NO ASSESSMENT, LABS]", "triage": "Bed 3: monitored, nothing flagged. [PARTIAL - NO ASSESSMENT, LABS] Re-check 60 min.", "patient": "We are keeping an eye on your observations while you wait, and a nurse is checking them regularly. Nothing needs your attention at the moment. Please tell a nurse if you start to feel worse, or if you have been waiting longer than you expected."}}, {"clock": "09:50", "event": "bloods and assessment complete", "likelihoods": {"urosepsis": 1.026432819246975e-06, "pneumonia_sepsis": 1.5527003162102592e-07, "biliary_sepsis": 9.249295944195046e-07, "viral_syndrome": 0.008777534112739453, "dehydration": 0.007441763443128739, "other_benign": 0.9837785958116865}, "before": {"urosepsis": 2.309481820668296e-05, "pneumonia_sepsis": 3.041292932567303e-06, "biliary_sepsis": 2.404825252186551e-05, "viral_syndrome": 0.012011403959598611, "dehydration": 0.011778805876115862, "other_benign": 0.9761596058006243}, "findings": {"fever": "absent", "hypothermia": "absent", "tachycardia": "absent", "hypotension": "absent", "tachypnea": "absent", "hypoxia": "absent", "leukocytosis": "absent", "lactate_elevated": "absent", "altered_mental_status": "absent"}, "completeness": "complete", "completeness_level": "complete", "degraded": false, "degraded_reason": "", "stale": false, "escalate": false, "leader": "urosepsis", "confidence": 1.026432819246975e-06, "review": [], "rejected": [], "outputs": {"pager": "Bed 3 - UROSEPSIS 0.00 - review now", "triage": "Bed 3: monitored, nothing flagged. Re-check 60 min.", "patient": "We are keeping an eye on your observations while you wait, and a nurse is checking them regularly. Nothing needs your attention at the moment. Please tell a nurse if you start to feel worse, or if you have been waiting longer than you expected."}}]}, {"bed": "12", "summary": "81M, from a nursing home, lab link down", "note": "A degraded result must never look identical to a normal one. Warning colour, named cause, at the point of use - not only in a log nobody reads.", "states": [{"clock": "10:22", "event": "triage vitals - cold, not hot", "likelihoods": {"urosepsis": 0.10239598542385421, "pneumonia_sepsis": 0.04413025634428734, "biliary_sepsis": 0.04361107685788396, "viral_syndrome": 0.18269926126534963, "dehydration": 0.29494586622576036, "other_benign": 0.33221755388286445}, "before": null, "findings": {"fever": "absent", "hypothermia": "present", "tachycardia": "present", "hypotension": "absent", "tachypnea": "present", "hypoxia": "absent", "leukocytosis": "unknown", "lactate_elevated": "unknown", "altered_mental_status": "unknown"}, "completeness": "partial - no assessment, labs", "completeness_level": "partial", "degraded": true, "degraded_reason": "scoring on vitals only", "stale": true, "escalate": false, "leader": "urosepsis", "confidence": 0.10239598542385421, "review": ["urosepsis"], "rejected": [], "outputs": {"pager": "Bed 12 - UROSEPSIS 0.10 - review now [DEGRADED - scoring on vitals only]", "triage": "Bed 12: below the alert bar but worth a look - urosepsis. Not a diagnosis; flagging for review. [DEGRADED - scoring on vitals only] [STALE - last updated 09:42] [PARTIAL - NO ASSESSMENT, LABS] Re-check 30 min.", "patient": "We are keeping a close eye on you. A member of the team will look at your observations again shortly. There is nothing for you to do right now. Please tell a nurse if you feel worse, or if anything changes that you think we should know about."}}]}]};
+const T = DATA.pack.threshold;
+const LIVE = DATA.patients.length;          // the index of the "Your patient" tab
+let patientIndex = 0, stepIndex = 0, timer = null, liveState = null, liveReady = false;
+let debounce = null;
+
+const el = id => document.getElementById(id);
+
+el('packline').textContent =
+  `pack ${DATA.pack.version} · escalation bar ${T.toFixed(2)} · ${DATA.candidates.length} candidates · ${DATA.findings.length} findings`;
+el('unsigned').innerHTML = DATA.pack.signed_off
+  ? 'Base rates signed off.'
+  : '<b>Base rates are an unsigned estimate.</b> They shape every diagnosis this system will '
+    + 'ever make, and nobody owns them yet. Open question O1 &mdash; the largest unresolved '
+    + 'risk across all five blueprint documents.';
+
+// ── tabs ────────────────────────────────────────────────────────────────
+DATA.patients.forEach((p, i) => {
+  const b = document.createElement('button');
+  b.className = 'tab'; b.type = 'button'; b.role = 'tab';
+  b.textContent = 'Bed ' + p.bed;
+  b.onclick = () => { patientIndex = i; stepIndex = 0; stop(); render(); };
+  el('tabs').appendChild(b);
+});
+const liveTab = document.createElement('button');
+liveTab.className = 'tab live'; liveTab.type = 'button'; liveTab.role = 'tab';
+liveTab.textContent = 'Your patient';
+liveTab.onclick = () => { patientIndex = LIVE; stop(); render(); scoreLive(); };
+el('tabs').appendChild(liveTab);
+
+// ── the input panel ─────────────────────────────────────────────────────
+DATA.inputs.forEach(f => {
+  const wrap = document.createElement('div');
+  wrap.className = 'field blank';
+  wrap.id = 'wrap-' + f.field;
+  const control = f.bool
+    ? `<select id="in-${f.field}">
+         <option value="">not assessed</option>
+         <option value="true">yes</option>
+         <option value="false">no</option>
+       </select>`
+    : `<input id="in-${f.field}" type="number" step="any" inputmode="decimal"
+              placeholder="${f.placeholder}">`;
+  wrap.innerHTML = `<label for="in-${f.field}">${f.label}</label>${control}`;
+  el('inputs').appendChild(wrap);
+});
+
+function readPanel(){
+  const record = {};
+  DATA.inputs.forEach(f => {
+    const box = el('in-' + f.field);
+    const raw = box.value.trim();
+    el('wrap-' + f.field).classList.toggle('blank', raw === '');
+    if (raw === '') return;
+    record[f.field] = f.bool ? (raw === 'true') : Number(raw);
+  });
+  return record;
+}
+
+async function scoreLive(){
+  const record = readPanel();
+  el('livestatus').textContent = 'scoring…';
+  try {
+    const response = await fetch('/score', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({record, bed: 'Y'})
+    });
+    if (!response.ok) throw new Error(response.status);
+    const next = await response.json();
+    next.before = liveState ? liveState.likelihoods : null;
+    liveState = next;
+    liveReady = true;
+    el('livestatus').textContent = 'scored in engine\\ · ' + Object.keys(record).length
+      + ' of ' + DATA.inputs.length + ' values given';
+    render();
+  } catch (error) {
+    liveReady = false;
+    el('livestatus').innerHTML =
+      'Not connected. Run <code>.venv\\Scripts\\python.exe -m demo.serve</code> and open the '
+      + 'page it prints &mdash; scoring happens in Python on purpose, so this panel cannot '
+      + 'work from a bare file.';
+    render();
+  }
+}
+
+el('inputs').addEventListener('input', () => {
+  readPanel();
+  clearTimeout(debounce);
+  debounce = setTimeout(scoreLive, 250);
+});
+el('clearall').onclick = () => {
+  DATA.inputs.forEach(f => { el('in-' + f.field).value = ''; });
+  el('loadpatient').value = '';
+  chosenName = null;              // stop tracking the file until a patient is picked again
+  scoreLive();
+};
+
+// ── the dropdown, filled from patients.csv by the server ────────────────
+// Re-fetched every page load, so editing the CSV and refreshing is enough. Once a patient is
+// loaded the boxes are just boxes — clear one, type it back, and watch the board move. That
+// is the whole point of loading them here rather than showing them as read-only cards.
+// The file is POLLED, not read once. Change a number in the CSV mid-demo and the board moves
+// on its own — no refresh, no re-picking from the list. The server hashes the file's contents
+// (not its timestamp, which is too coarse to catch an edit and an undo in the same second)
+// and the page only touches the boxes when that hash actually changes, so it never fights
+// with you while you are typing.
+let loadable = [], fileVersion = null, chosenName = null;
+
+function applyRecord(record){
+  DATA.inputs.forEach(f => {
+    const box = el('in-' + f.field);
+    const value = record[f.field];
+    box.value = value === undefined ? '' : (f.bool ? String(value) : value);
+  });
+  scoreLive();
+}
+
+async function fillDropdown(){
+  const select = el('loadpatient');
+  let data;
+  try {
+    const response = await fetch('/patients', {cache: 'no-store'});
+    if (!response.ok) throw new Error(response.status);
+    data = await response.json();
+  } catch (error) {
+    loadable = []; fileVersion = null;
+    el('sourcenote').hidden = false;
+    el('sourcenote').textContent =
+      'Live patient panel runs only under the local server. The three scripted beds on this page are fully interactive.';
+    return;
+  }
+
+  if (data.version === fileVersion) return;        // nothing changed; leave everything alone
+  const firstLoad = fileVersion === null;
+  fileVersion = data.version;
+  loadable = data.options;
+
+  select.innerHTML = '<option value="">Load a patient…</option>'
+    + loadable.map((o, i) => `<option value="${i}">${o.name}</option>`).join('');
+
+  // Hold the selection by NAME, so a re-ordered or re-written file keeps the same patient.
+  const index = loadable.findIndex(o => o.name === chosenName);
+  el('sourcenote').hidden = false;
+  el('sourcenote').textContent = data.note
+    + (firstLoad ? '' : ' · updated ' + new Date().toLocaleTimeString());
+
+  if (index >= 0) {
+    select.value = String(index);
+    if (!firstLoad) applyRecord(loadable[index].record);   // the live re-score
+  } else if (chosenName) {
+    el('sourcenote').textContent += ' · "' + chosenName + '" is no longer in the file';
+  }
+}
+
+el('loadpatient').onchange = event => {
+  const chosen = loadable[Number(event.target.value)];
+  chosenName = chosen ? chosen.name : null;
+  if (chosen) applyRecord(chosen.record);
+};
+
+setInterval(fillDropdown, 700);
+
+// ── the board is built once; only widths change (that is the animation) ──
+function buildBoard(){
+  const board = el('board');
+  board.innerHTML = '';
+  DATA.candidates.forEach(c => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML =
+      `<div class="name${c.residual ? ' residual' : ''}">${c.label}</div>` +
+      `<div class="track"><div class="fill${c.critical ? ' critical' : ''}${c.residual ? ' residual' : ''}" data-id="${c.id}"></div></div>` +
+      `<div class="value" data-v="${c.id}">0.000</div>`;
+    board.appendChild(row);
+  });
+  const rule = document.createElement('div');
+  rule.className = 'threshold';
+  rule.innerHTML = `<span>${T.toFixed(2)} escalation</span>`;
+  rule.style.left = `calc(216px + ${T} * (100% - 296px))`;
+  board.appendChild(rule);
+}
+
+const BLANK_STATE = {
+  clock: '', event: '',
+  likelihoods: Object.fromEntries(DATA.candidates.map(c => [c.id, 0])),
+  findings: Object.fromEntries(DATA.findings.map(f => [f.id, 'unknown'])),
+  completeness: 'nothing entered yet', completeness_level: 'incomplete',
+  degraded: false, degraded_reason: '', stale: false, escalate: false, review: [],
+  confidence: 0, rejected: [],
+  outputs: {pager: '(nothing sent)', triage: '(waiting for values)', patient: '(waiting for values)'}
+};
+
+function render(){
+  const isLive = patientIndex === LIVE;
+  const patient = isLive ? null : DATA.patients[patientIndex];
+  const state = isLive ? (liveState || BLANK_STATE)
+                       : (patient.states[stepIndex] || BLANK_STATE);
+  const single = !isLive && patient.states.length <= 1;
+
+  [...el('tabs').children].forEach((t, i) =>
+    t.setAttribute('aria-selected', i === patientIndex));
+
+  el('controls').hidden = isLive || single;
+  el('timeline').hidden = isLive || single;
+  el('inputs').hidden = !isLive;
+  el('panelactions').hidden = !isLive;
+
+  el('bed').textContent = isLive ? 'Your patient' : 'Bed ' + patient.bed;
+  el('summary').textContent = isLive ? '' : patient.summary;
+  el('note').textContent = isLive
+    ? 'Load one from patients.csv, or type values in yourself — the board moves on every '
+      + 'keystroke, scored by the same Agent.score_encounter the eval harness uses. Nothing '
+      + 'is recomputed in this page. Clear a box and put it back to watch what one piece of '
+      + 'evidence is actually worth; an empty box is unknown, not normal.'
+    : patient.note;
+  el('clock').textContent = isLive ? ''
+    : [state.clock, state.event].filter(Boolean).join(' · ');
+
+  if (!isLive && !single) {
+    el('timeline').innerHTML = patient.states.map((s, i) =>
+      `<div class="tick ${i < stepIndex ? 'done' : ''} ${i === stepIndex ? 'now' : ''}">
+         <b>${s.clock}</b>${s.event}</div>`).join('');
+  }
+
+  DATA.candidates.forEach(c => {
+    const p = state.likelihoods[c.id];
+    const fill = document.querySelector(`.fill[data-id="${c.id}"]`);
+    const value = document.querySelector(`.value[data-v="${c.id}"]`);
+    fill.style.width = (p * 100).toFixed(2) + '%';
+    const over = c.critical && p >= T;
+    fill.classList.toggle('over', over);
+    value.classList.toggle('over', over);
+    value.textContent = p.toFixed(3);
+  });
+
+  const chips = [];
+  if (state.escalate) chips.push(['danger', 'ESCALATED — attending paged']);
+  else if (state.review.length) chips.push(['warn', 'below the bar — flagged for review']);
+  else if (!isLive || liveReady) chips.push(['calm', '✓ Monitored — nothing flagged' + (state.clock ? ' · ' + state.clock : '')]);
+  if (state.degraded) chips.push(['warn', 'DEGRADED — ' + state.degraded_reason]);
+  if (state.stale && !isLive) chips.push(['warn', 'STALE — last updated ' + state.clock]);
+  // Read the sentence, not the level. "complete" is about feeds having reported; a finding
+  // can still be unassessed inside a feed that did report, and the sentence says so.
+  const nothingMissing = state.completeness === 'complete';
+  chips.push([nothingMissing ? 'calm' : 'warn',
+              nothingMissing ? 'complete — every finding assessed' : state.completeness]);
+  (state.rejected || []).forEach(r => chips.push(['warn', 'REJECTED — ' + r]));
+  el('status').innerHTML = chips.map(([k, t]) => `<span class="chip ${k}">${t}</span>`).join('');
+
+  el('findings').innerHTML = DATA.findings.map(f => {
+    const s = state.findings[f.id];
+    const mark = s === 'present' ? '●' : s === 'absent' ? '○' : '?';
+    return `<span class="f ${s}">${mark} ${f.label}</span>`;
+  }).join('');
+
+  const pager = el('out-pager');
+  pager.classList.toggle('live', state.escalate);
+  pager.querySelector('p').textContent = state.escalate ? state.outputs.pager : '(nothing sent)';
+  el('out-triage').textContent = state.outputs.triage;
+  el('out-patient').textContent = state.outputs.patient;
+
+  el('step').disabled = isLive || single || stepIndex >= patient.states.length - 1;
+  el('play').disabled = isLive || single;
+}
+
+function advance(){
+  const patient = DATA.patients[patientIndex];
+  if (stepIndex < patient.states.length - 1){ stepIndex++; render(); }
+  else stop();
+}
+function stop(){ clearInterval(timer); timer = null; el('play').textContent = 'Play'; }
+
+el('play').onclick = () => {
+  if (timer) return stop();
+  if (stepIndex >= DATA.patients[patientIndex].states.length - 1) stepIndex = 0;
+  render();
+  el('play').textContent = 'Pause';
+  timer = setInterval(advance, 1600);
+};
+el('step').onclick = () => { stop(); advance(); };
+el('reset').onclick = () => { stop(); stepIndex = 0; render(); };
+
+buildBoard();
+render();
+fillDropdown();
+</script>
+</body>
+</html>

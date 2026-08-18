@@ -1806,3 +1806,157 @@ td:first-child { color: #b8c8dc; }
     box-shadow: none;
   }
 }
+
+/* =============================================================
+   ADDITIONS — 18 Aug 2026
+   Stat bar, credit-card work cards, About side rail.
+   Appended rather than woven in so the diff reads in one place.
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   STAT BAR
+
+   The thirty-second hook. A recruiter scans numbers before they
+   read sentences, so this sits directly under the hero grid and
+   spans the full column rather than hiding in the portrait gutter.
+   Five tiles is the ceiling: past six the eye stops counting and
+   starts skimming, and the first number loses its weight.
+   ------------------------------------------------------------- */
+.stat-bar {
+  list-style: none;
+  margin: clamp(2rem, 4vw, 3.2rem) 0 0;
+  padding: clamp(1.2rem, 2.4vw, 1.7rem) 0 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(.9rem, 2vw, 2rem);
+}
+.stat-bar li {
+  margin: 0;
+  display: flex; flex-direction: column; gap: .35rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+}
+.stat-bar li:first-child { padding-left: 0; border-left: 0; }
+.stat-bar b {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 2.7vw, 2.15rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.035em;
+  color: var(--cyan);
+  white-space: nowrap;
+}
+.stat-bar span {
+  font-family: var(--mono);
+  font-size: .68rem;
+  line-height: 1.5;
+  letter-spacing: .04em;
+  color: var(--muted-2);
+}
+
+/* Two rows of tiles beats five squeezed columns on a narrow screen —
+   a number that wraps mid-digit is worse than no number. */
+@media (max-width: 900px) {
+  .stat-bar { grid-template-columns: repeat(2, 1fr); gap: 1.3rem 1.1rem; }
+  .stat-bar li { padding-left: .9rem; border-left: 1px solid var(--line); }
+  .stat-bar li:nth-child(odd) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 480px) {
+  .stat-bar { grid-template-columns: 1fr; }
+  .stat-bar li, .stat-bar li:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .stat-bar li + li { padding-top: 1rem; border-top: 1px solid var(--line); }
+}
+
+/* -------------------------------------------------------------
+   WORK CARDS — credit-card proportions
+
+   Roughly half the previous height and landscape rather than
+   portrait. The summary paragraph and the gate line came out of
+   the card markup: at this size they were the difference between
+   a card you scan and a card you have to read. Both still live on
+   the breakdown page, which is where someone who wants them goes.
+
+   aspect-ratio is a preference, not a cage — a long title still
+   grows the card rather than being clipped.
+   ------------------------------------------------------------- */
+.card-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.1rem; }
+.card-grid.two { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
+
+.card:not(.cat-card) {
+  aspect-ratio: 1.55 / 1;
+  padding: 1.15rem 1.25rem;
+}
+.card:not(.cat-card) .card-top { margin-bottom: .6rem; font-size: .62rem; }
+.card:not(.cat-card) h3 { font-size: 1.02rem; line-height: 1.25; margin-bottom: .3rem; }
+.card:not(.cat-card) .card-tagline {
+  font-size: .84rem;
+  margin-bottom: .7rem;
+  color: var(--muted);
+}
+.card:not(.cat-card) .tags { margin-bottom: 0; gap: .3rem; }
+.card:not(.cat-card) .tags li { font-size: .6rem; padding: .16rem .42rem; }
+.card:not(.cat-card) .card-link { margin-top: auto; padding-top: .8rem; font-size: .8rem; }
+
+/* -------------------------------------------------------------
+   ABOUT — side rail
+
+   The left column used to end at the photo and leave a tall empty
+   gutter. It now carries the jump links, so the page is navigable
+   without scrolling to find out what is on it.
+   ------------------------------------------------------------- */
+.about-side { position: sticky; top: calc(var(--nav-h) + 1.2rem); }
+.about-photo { position: static; }   /* the wrapper is the sticky one now */
+
+.about-nav { margin-top: 1.4rem; }
+.about-nav-h {
+  font-family: var(--mono);
+  font-size: .64rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin: 0 0 .6rem;
+}
+.about-nav ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
+.about-nav li { margin: 0; }
+.about-nav a {
+  display: block;
+  padding: .5rem 0 .5rem .9rem;
+  margin-left: -1px;
+  border-left: 2px solid transparent;
+  font-family: var(--display);
+  font-size: .92rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color .18s var(--ease), border-color .18s var(--ease);
+}
+.about-nav a:hover { color: var(--paper); border-left-color: var(--cyan-dim); }
+.about-nav a.on { color: var(--cyan); border-left-color: var(--cyan); }
+
+/* Anchor jumps land under the fixed nav bar without this. */
+#skills, #education, #reading, #experience, #certificates { scroll-margin-top: calc(var(--nav-h) + 1.5rem); }
+
+/* On a narrow screen the rail stops being a rail: the photo and the
+   links sit inline above the content rather than pinned beside it. */
+@media (max-width: 900px) {
+  .about-side { position: static; }
+  .about-nav ul { display: flex; flex-wrap: wrap; gap: .3rem; border-left: 0; }
+  .about-nav a { padding: .4rem .8rem; border: 1px solid var(--line); border-radius: 999px; font-size: .84rem; }
+  .about-nav a:hover, .about-nav a.on { border-color: var(--cyan); }
+}
+
+/* -------------------------------------------------------------
+   FOOTER — terms link sits with the copyright line
+   ------------------------------------------------------------- */
+.foot-bot a { color: inherit; border-bottom: 1px solid var(--line); }
+.foot-bot a:hover { color: var(--cyan); border-bottom-color: var(--cyan); }
+
+/* -------------------------------------------------------------
+   PAGER ARROW — pre-existing bug, fixed 18 Aug 2026
+
+   The prev/next arrow inside .pager had no size on it, so the SVG
+   fell back to filling its flex line: roughly 357px square on every
+   breakdown page. Every other arrow on the site is sized by its own
+   rule (.btn svg, .card-link svg); this one was simply missed.
+   ------------------------------------------------------------- */
+.pager svg { width: 15px; height: 15px; flex: 0 0 auto; }

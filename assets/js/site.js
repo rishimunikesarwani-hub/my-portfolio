@@ -7,6 +7,9 @@
   "use strict";
 
   var P = window.PORTFOLIO;
+  /* Copyright and machine-readable terms — one object, used by the footer,
+     the copyright page and the feed generator in tools\. */
+  var L = P.person.legal;
   var $  = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
@@ -367,7 +370,7 @@
           '<div>' +
             '<a class="brand" href="index.html" style="margin-bottom:.9rem">' +
               '<span class="brand-name">Rishi<span>.</span></span></a>' +
-            '<p class="foot-blurb">' + esc(P.person.role) + '. I design where the machine stops and a person takes over.</p>' +
+            '<p class="foot-blurb">' + esc(P.person.role) + '.</p>' +
           '</div>' +
           '<div><h4>Navigate</h4><ul>' +
             NAV.map(function (n) { return '<li><a href="' + n.href + '">' + n.label + '</a></li>'; }).join("") +
@@ -383,11 +386,10 @@
         '<p class="build-pill">' +
           '<span class="dot" aria-hidden="true"></span>' +
           'Content of this website is under active review' +
-          '<span class="sep" aria-hidden="true">·</span>' +
-          'Generated with Claude Code' +
         '</p>' +
         '<div class="foot-bot">' +
-          '<span>© 2026 ' + esc(P.person.name) + '</span>' +
+          '<span>' + esc(L.notice) + '</span>' +
+          '<span><a href="copyright.html">Terms of use &amp; AI policy</a></span>' +
           '<span>' + esc(P.person.location) + '</span>' +
         '</div>' +
       '</div>';
@@ -416,9 +418,7 @@
       '</div>' +
       '<h3><a href="' + href + '">' + esc(it.title) + '</a></h3>' +
       '<p class="card-tagline">' + esc(it.tagline) + '</p>' +
-      '<p class="card-sum">' + esc(it.summary) + '</p>' +
-      '<ul class="tags">' + it.tags.slice(0, 4).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' +
-      (it.gate ? '<div class="gate-mini"><b>Gate</b> · ' + esc(it.gate.rule) + '</div>' : '') +
+      '<ul class="tags">' + it.tags.slice(0, 3).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' +
       '<a class="card-link" href="' + href + '">Read the breakdown' + ICON.arrow + '</a>' +
     '</article>';
   }
@@ -452,11 +452,18 @@
           '<div class="portrait-frame">' +
             '<img src="' + p.photo + '" alt="' + esc(p.name) + ', ' + esc(p.role) + '">' +
           '</div>' +
-          '<span class="portrait-chip chip-1"><b>2</b> agents shipped</span>' +
-          '<span class="portrait-chip chip-2"><b>6</b> product breakdowns</span>' +
-          '<span class="portrait-chip chip-3"><b>9</b> yrs B2B revenue</span>' +
         '</div>' +
-      '</div></div>';
+      '</div>' +
+      /* The stat bar. Full width under the hero grid on purpose: it is the
+         first thing that should survive a thirty-second scan, and it cannot
+         do that squeezed into the portrait column. Chips removed 18 Aug 2026
+         — they carried older numbers and disagreed with these. */
+      '<ul class="stat-bar reveal">' +
+        p.stats.map(function (st) {
+          return '<li><b>' + esc(st.v) + '</b><span>' + esc(st.l) + '</span></li>';
+        }).join("") +
+      '</ul>' +
+      '</div>';
 
     typeLoop($("#typed"), p.rotating);
 
@@ -711,7 +718,7 @@
       '<section class="section tight"><div class="wrap">' +
         '<p class="eyebrow">Working notes</p>' +
         '<h1 class="page-h1">Blog</h1>' +
-        '<p class="page-lede">The case studies are conclusions. This is the thinking before it settled — build notes, decision logs, and the things I got wrong.</p>' +
+        '<p class="page-lede">I’m opinionated about AI, economics and product.</p>' +
         (posts.length
           ? '<ul class="post-list">' + posts.map(postCard).join("") + '</ul>'
           : '<div class="empty"><h3>Nothing published yet</h3>' +
@@ -913,6 +920,13 @@
               '</li>' +
               (it.repo.note ? '<li><span class="side-flat"><span class="k">Note</span>' + esc(it.repo.note) + '</span></li>' : '') +
             '</ul></div>' : '') +
+          (it.links && it.links.length ?
+            '<div class="side-box"><h4>See it</h4><ul class="side-links">' +
+              it.links.map(function (lk) {
+                return '<li><a href="' + esc(lk.url) + '" target="_blank" rel="noopener">' +
+                  '<span class="k">' + esc(lk.k) + '</span>' + esc(lk.t) + '</a></li>';
+              }).join("") +
+            '</ul></div>' : '') +
           '<div class="side-box"><h4>Tagged</h4><ul class="tags" style="margin:0">' +
             it.tags.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") +
           '</ul></div>' +
@@ -1069,17 +1083,66 @@
   /* =============================================================
      PAGE: ABOUT
      ============================================================= */
+  /* The four jump targets in the About page side rail. `Certificates`
+     points at the full-width certificate ring, which sits outside the
+     about grid — hence a plain id rather than a section inside it. */
+  var ABOUT_NAV = [
+    { id: "skills",       label: "Skills" },
+    { id: "certificates", label: "Certificates" },
+    { id: "reading",      label: "Reading list" },
+    { id: "experience",   label: "Experience" }
+  ];
+
+  function aboutNavHTML() {
+    return '<nav class="about-nav" aria-label="On this page">' +
+      '<p class="about-nav-h">On this page</p>' +
+      '<ul>' +
+        ABOUT_NAV.map(function (n) {
+          return '<li><a href="#' + n.id + '" data-spy="' + n.id + '">' + n.label + '</a></li>';
+        }).join("") +
+      '</ul>' +
+    '</nav>';
+  }
+
+  /* Scrollspy. Marks the link for whichever section currently owns the
+     top third of the viewport, so the rail always answers "where am I"
+     rather than only "where could I go". */
+  function wireAboutSpy() {
+    var links = [].slice.call(document.querySelectorAll(".about-nav a"));
+    if (!links.length) return;
+
+    var targets = ABOUT_NAV.map(function (n) { return document.getElementById(n.id); });
+
+    function mark() {
+      var line = window.scrollY + window.innerHeight * 0.33;
+      var current = null;
+      targets.forEach(function (t, k) {
+        if (t && t.getBoundingClientRect().top + window.scrollY <= line) current = ABOUT_NAV[k].id;
+      });
+      links.forEach(function (a) {
+        a.classList.toggle("on", a.getAttribute("data-spy") === current);
+      });
+    }
+
+    mark();
+    window.addEventListener("scroll", mark, { passive: true });
+    window.addEventListener("resize", mark);
+  }
+
   function renderAbout() {
     var p = P.person;
 
     $("#aboutBody").innerHTML =
       '<div class="wrap"><div class="about-grid">' +
-        '<div class="about-photo">' +
-          '<img src="' + p.photo + '" alt="' + esc(p.name) + ', ' + esc(p.role) + '">' +
+        '<div class="about-side">' +
+          '<div class="about-photo">' +
+            '<img src="' + p.photo + '" alt="' + esc(p.name) + ', ' + esc(p.role) + '">' +
+          '</div>' +
+          aboutNavHTML() +
         '</div>' +
         '<div>' +
           '<section style="margin-bottom:3rem">' +
-            '<p class="eyebrow">Personal</p>' +
+            '<p class="eyebrow">About</p>' +
             p.tribute.map(function (t) {
               return '<p style="font-size:1.12rem;color:#c3d2e4;margin-bottom:1em">' + esc(t) + '</p>';
             }).join("") +
@@ -1090,8 +1153,8 @@
             skillsHTML() +
           '</section>' +
 
-          '<section id="education">' +
-            '<p class="eyebrow">Education & learning</p><h2>Certificates and the reading list</h2>' +
+          '<section id="education" style="margin-bottom:3rem">' +
+            '<p class="eyebrow">Education & learning</p><h2>Where the grounding came from</h2>' +
             '<div class="timeline timeline-edu">' + P.education.map(function (e) {
               return '<div class="tl-item' + (e.inProgress ? ' in-progress' : '') + '">' +
                 '<p class="tl-when">' + esc(e.when) + '</p>' +
@@ -1101,6 +1164,12 @@
                 progressRailHTML(e) +
               '</div>';
             }).join("") + '</div>' +
+          '</section>' +
+
+          /* Split out of the education block 18 Aug 2026 so the side rail
+             can point at it directly. */
+          '<section id="reading" style="margin-bottom:3rem">' +
+            '<p class="eyebrow">Reading list</p><h2>What I am reading</h2>' +
             P.reading.map(function (g) {
               return '<div class="side-box" style="margin-top:1.5rem"><h4>' + esc(g.group) + '</h4>' +
                 '<ul style="margin:0;padding-left:1.1em">' +
@@ -1112,7 +1181,7 @@
           /* Work history sits last on purpose: the AI proof and the current
              learning lead, and the nine years support them rather than
              introduce them. Moved below skills and education 2026-08-12. */
-          '<section id="experience" style="margin-top:3rem">' +
+          '<section id="experience">' +
             '<p class="eyebrow">Experience</p><h2>Where the judgement came from</h2>' +
             '<div class="timeline">' + P.experience.map(function (e) {
               return '<div class="tl-item">' +
@@ -1379,7 +1448,7 @@
     if (page === "blog")       renderBlog();
     if (page === "post")       renderPost();         // builds its own crumbs
     if (page === "search")     renderSearch();
-    if (page === "about")    { renderAbout(); renderCertificates(); }
+    if (page === "about")    { renderAbout(); renderCertificates(); wireAboutSpy(); }
     if (page === "contact")    renderContact();
 
     buildFooter();

@@ -125,6 +125,9 @@ spot, so check any new one in the browser before calling it done.
 | `search.html?q=…` | Full-text search across every page |
 | `about.html` | Bio, experience timeline, skills, education |
 | `contact.html` | Email, phone, LinkedIn, résumé |
+| `copyright.html` | Terms of use and the AI policy — what agents may do with this |
+| `projects/healthcare-agent/demo.html` | The sepsis agent's demo, mirrored here so it has a public URL |
+| `projects/healthcare-agent/notes.html` | The same project's study notes |
 
 `assets/css/style.css` is all the styling. `assets/js/site.js` builds the header,
 breadcrumbs, footer and renders each page.
@@ -171,9 +174,9 @@ shorter post leaves dead space inside the frame, change `height` on
 
 ### The build notice
 
-The amber pill in the footer — "content of this website is under active review ·
-generated with Claude Code" — is `.build-pill`, written in `buildFooter()` in
-`site.js`, so it shows on every page.
+The amber pill in the footer — "content of this website is under active review"
+— is `.build-pill`, written in `buildFooter()` in `site.js`, so it shows on
+every page. The "generated with Claude Code" half came off on 18 Aug 2026.
 
 It is deliberately the same pill as `.avail` in the hero — same size, mono type,
 letterspacing and pulsing dot — recoloured amber so it reads as a caution rather
@@ -188,6 +191,35 @@ to live there.
 Email, phone, LinkedIn, GitHub and location all come from `person` in `data.js`.
 GitHub is optional — set `github: ""` and it vanishes from the hero icons, the
 Contact list and the footer without leaving a gap.
+
+## Copyright, feeds and agents
+
+Four files at the root exist for machines rather than for readers:
+
+| File | What it is for |
+|---|---|
+| `robots.txt` | Crawlers are **allowed**, and the major AI ones are named individually rather than left to a wildcard, so the intent is on the record |
+| `llms.txt` | The whole site as plain markdown — the emerging convention for "here is my site in the form a language model can use" |
+| `feed.xml` | RSS of the blog posts, with the terms in the `<copyright>` element |
+| `sitemap.xml` | Every page, including the query-string ones a crawler would not otherwise find |
+
+The terms themselves live in one sentence in `person.legal` in `data.js`, and are
+rendered into the footer, `copyright.html`, `llms.txt` and the feed from there.
+`LICENSE` says the same thing for anyone reading the repository.
+
+### Regenerating the feeds
+
+A crawler cannot run JavaScript reliably, so those files have to exist on disk
+rather than be rendered from `data.js` in the browser like everything else.
+
+```
+node tools/build-feeds.mjs
+```
+
+Run it after adding a post or a piece of work. **The site still has no build
+step** — nothing on any page depends on this having been run, and a stale feed is
+a stale feed rather than a broken page. That distinction matters, because "one
+object, no build step" is itself one of the case studies.
 
 ## Hosting it
 

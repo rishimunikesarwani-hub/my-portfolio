@@ -1550,8 +1550,9 @@ window.PORTFOLIO = {
           h: "Frameworks applied",
           type: "list",
           body: [
-            "<strong>Local cultural-intelligence model</strong> — Each market owns a living library of language, humour, festivals, social context and approved local examples. Managers correct output, tag why it failed, and use that feedback to maintain and grow cultural sensitivity over time.",
-            "<strong>Culture-by-design system</strong> — Local cultural inputs are not a last-minute review step. They feed into the global content-design system from the start: a shared global brand core, with market-level cultural context applied before content is generated."
+            "<strong>70% global AI</strong> — A shared global brand core handles scale, consistency and reusable campaign structure.",
+            "<strong>20% local AI</strong> — Each market uses AI trained on local taste, language, humour, festivals and social context to adapt the global core.",
+            "<strong>10% human creativity</strong> — Local teams add the judgement, originality and cultural nuance that makes the work feel truly native."
           ]
         },
         {

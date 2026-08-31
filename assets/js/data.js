@@ -1385,6 +1385,72 @@ window.PORTFOLIO = {
        nothing is lost and so a gate can be surfaced on posts later
        without rebuilding the content. ---- */
     {
+      id: "ai-agents-need-control-systems",
+      date: "2026-08-31",
+      draft: false,
+      title: "AI Agents Need Control Systems, Not Just Better Prompts",
+      summary:
+        "A PM note on what turns an agent from a demo into a product: cost limits, threat checks, compliance gates, evals, and traces that prove where the system failed.",
+      tags: ["AI agents", "Observability", "Evals", "Product management", "Governance"],
+      sections: [
+        {
+          h: "The real lesson",
+          type: "prose",
+          body: [
+            "The easy way to talk about AI agents is to talk about autonomy: give the model a goal, a few tools, and let it work. The harder and more useful question is: what stops it?",
+            "After studying agent control systems and LangSmith observability side by side, my answer is clearer. A serious agent is not one model call. It is a product system with five control loops around it: cost, security, compliance, quality, and improvement."
+          ]
+        },
+        {
+          h: "Control loop 1: cost",
+          type: "prose",
+          body: [
+            "Every model call has a price. A production agent should record tokens, model choice, timestamp, and cost for each call, then degrade gracefully when the budget is hit. Graceful degradation means the product switches to a cheaper or narrower mode instead of silently burning money or failing in front of the user.",
+            "For a PM, this changes the roadmap conversation. The question is not <em>can the model answer?</em> It is <em>which requests deserve the expensive answer?</em> Customer refunds, security issues, and clinical facts may justify a larger model. Routine FAQ work probably does not."
+          ]
+        },
+        {
+          h: "Control loop 2: safety",
+          type: "prose",
+          body: [
+            "Agents need zero-trust input handling: treat every prompt, file, and tool instruction as untrusted until checked. Prompt injection, identity spoofing, scripts, shell commands, and suspicious URLs should be detected before the agent acts.",
+            "This is not paranoia. It is product design. If an agent can send email, edit records, move money, or call APIs, then bad input is no longer just bad text. It can become bad action."
+          ]
+        },
+        {
+          h: "Control loop 3: compliance",
+          type: "prose",
+          body: [
+            "Compliance cannot live in a slide deck after launch. It needs to be inside the workflow as a gate: scan the action, assign risk, approve low-risk cases, escalate uncertain ones, and reject clear violations. The important product habit is writing the decision down as an audit trail, not trusting memory."
+          ]
+        },
+        {
+          h: "Control loop 4: observability",
+          type: "prose",
+          body: [
+            "LangSmith makes the hidden system visible through traces. A trace is the full record of one request: prompts, retrieval, tool calls, model calls, errors, latency, token use, and cost. That matters because <em>the AI was wrong</em> is not a useful diagnosis. Was retrieval bad? Was the prompt weak? Did the tool fail? Did the model ignore evidence?",
+            "Good observability turns complaints into datasets. The failures from production become eval examples, and evals become the launch gate for the next version."
+          ]
+        },
+        {
+          h: "Control loop 5: improvement",
+          type: "prose",
+          body: [
+            "The best agents do not just recover from failure; they learn what kind of failure happened. If task completion drops, cost spikes, or latency crosses the agreed threshold, the system should create a hypothesis: change the prompt, change retrieval, route to a different model, or ask for human review.",
+            "That last part matters. Self-improvement without approval is just another uncontrolled agent. The safer version is versioned adaptation: propose the change, test it against evals, keep the old version available, and record who approved the new one. Improvement becomes a product process, not a mysterious behaviour."
+          ]
+        },
+        {
+          h: "The PM takeaway",
+          type: "note",
+          body: [
+            "A demo proves the agent can act once. A control system proves it can act repeatedly without surprising the business. The PM job is to define the thresholds: when to spend more, when to slow down, when to ask a human, when to block, and which failures must never repeat."
+          ]
+        }
+      ]
+    },
+
+    {
       id: "nestle-nesgpt",
       date: "2026-08-05",
       draft: false,

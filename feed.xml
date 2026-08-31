@@ -8,7 +8,19 @@
     <language>en</language>
     <copyright>© 2026 Rishi Muni Kesarwani. All rights reserved. Read it, quote it, cite it — with attribution and a link back. Do not republish it whole, and do not train a model on it without asking first.</copyright>
     <managingEditor>rishi.rte@gmail.com (Rishi Muni Kesarwani)</managingEditor>
-    <lastBuildDate>Wed, 05 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <item>
+      <title>AI Agents Need Control Systems, Not Just Better Prompts</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=ai-agents-need-control-systems</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=ai-agents-need-control-systems</guid>
+      <pubDate>Mon, 31 Aug 2026 09:00:00 GMT</pubDate>
+      <description>A PM note on what turns an agent from a demo into a product: cost limits, threat checks, compliance gates, evals, and traces that prove where the system failed.</description>
+      <category>AI agents</category>
+      <category>Observability</category>
+      <category>Evals</category>
+      <category>Product management</category>
+      <category>Governance</category>
+    </item>
     <item>
       <title>NesGPT &amp; the Nescafé Content Engine</title>
       <link>https://rishi-ships-every-day.vercel.app/post.html?id=nestle-nesgpt</link>

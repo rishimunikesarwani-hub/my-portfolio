@@ -52,6 +52,7 @@ A shipped AI product taken apart from its own source rather than from its market
 
 ## Writing
 
+- [AI Agents Need Control Systems, Not Just Better Prompts](https://rishi-ships-every-day.vercel.app/post.html?id=ai-agents-need-control-systems) — 2026-08-31. A PM note on what turns an agent from a demo into a product: cost limits, threat checks, compliance gates, evals, and traces that prove where the system failed.
 - [NesGPT & the Nescafé Content Engine](https://rishi-ships-every-day.vercel.app/post.html?id=nestle-nesgpt) — 2026-08-05. A private ChatGPT for 30,000 employees cut campaign production time 60% across 15 markets — and produced content that was technically correct and culturally flat. Not a model problem. A decision-rights problem.
 - [Lilli, and the Death of Hourly Billing](https://rishi-ships-every-day.vercel.app/post.html?id=mckinsey-lilli) — 2026-08-04. An internal AI that searches 100,000 documents in seconds turned two days of research into two hours. Everyone read that as a workforce crisis. It is a business model crisis that shows up first as a workforce question.
 - [AI-Led Operations & the Human Delivery Manager](https://rishi-ships-every-day.vercel.app/post.html?id=zomato-ops) — 2026-08-03. 50 million decisions a day. During a heat wave the AI optimised for speed and cost and routed riders into unsafe conditions. The AI was not wrong — its objective function simply had no safety constraint in it.

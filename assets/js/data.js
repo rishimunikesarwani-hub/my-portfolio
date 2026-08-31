@@ -1763,13 +1763,6 @@ window.PORTFOLIO = {
       },
       sections: [
         {
-          h: "The constraint: a 10% budget cut",
-          type: "prose",
-          body: [
-            "We cannot hire a team of humans watching a dashboard 24/7 — expensive and slow. Instead we build the safety constraint into the decision function itself. The AI becomes its own safety layer, at no additional human cost."
-          ]
-        },
-        {
           h: "Frameworks applied",
           type: "list",
           body: [

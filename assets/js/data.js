@@ -1556,15 +1556,6 @@ window.PORTFOLIO = {
           ]
         },
         {
-          h: "What I'd ship: a cultural governance layer",
-          type: "list",
-          body: [
-            "<strong>Cultural prompt library</strong> — 20–30 templates per market (festival greetings, regional humour, local idioms) feeding NesGPT as input context. Lives in a shared document. No new tool.",
-            "<strong>Content confidence scoring</strong> — NesGPT rates its own cultural confidence High / Medium / Low based on available local training data. Low auto-routes to the manager's queue.",
-            "<strong>Local override protocol</strong> — Managers edit and tag their overrides. Overrides feed back into the prompt library. The feedback loop is the product."
-          ]
-        },
-        {
           h: "Decision rights matrix",
           type: "table",
           head: ["AI owns (global)", "Human owns (local)"],

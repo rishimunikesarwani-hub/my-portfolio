@@ -1547,14 +1547,6 @@ window.PORTFOLIO = {
           ]
         },
         {
-          h: "The constraint: a 10% budget cut",
-          type: "prose",
-          body: [
-            "No new hires. No new tools. We cannot build a separate local content engine or hire cultural consultants per market. We work inside the existing NesGPT infrastructure and add governance logic, not new systems.",
-            "Instead of 15 separate cultural engines, one configurable cultural layer: a prompt template library owned by local teams, feeding the same NesGPT instance. Zero infrastructure cost. Process redesign only."
-          ]
-        },
-        {
           h: "Frameworks applied",
           type: "list",
           body: [

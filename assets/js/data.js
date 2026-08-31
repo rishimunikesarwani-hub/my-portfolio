@@ -1704,15 +1704,6 @@ window.PORTFOLIO = {
             "<strong>Year 2</strong> — 50% outcome-priced. Partner comp includes deferred equity. Junior intake down 40% by natural attrition, with each remaining junior producing 3× output."
           ]
         },
-        {
-          h: "How this actually ships",
-          type: "note",
-          body: [
-            "The internal metric change is one analyst for one week: Lilli already logs queries and document access, so export it to a dashboard, add a five-question scoring form per deliverable, fold it into the quarterly review template.",
-            "The pricing shift is harder and matters more. The Managing Partner picks five clients and has the conversation this week: <em>we can deliver this in three days instead of three weeks, and we want to price it on what it produces for you, not how long it takes us.</em> Co-define three to five measurable outcomes. Price it fixed. Track profitability against the old model.",
-            "The question that matters: have you had that conversation with a client yet? Your competitors will."
-          ]
-        }
       ],
       related: ["goldman-analysts", "nestle-nesgpt", "alars"]
     },

@@ -1198,12 +1198,12 @@ window.PORTFOLIO = {
     {
       title: "IBM RAG and Agentic AI",
       org: "Coursera",
-      when: "Still studying · 2026",
-      inProgress: true,
+      when: "Stopped at 30% · 2026",
       /* Drives the progress rail in the Skills section too — one number,
          one place. Update it here and both move together. */
       progress: 30,
-      note: "Retrieval-augmented generation, vector stores and agentic orchestration — the formal grounding under the retrieval and agent work already shipped."
+      progressState: "stopped",
+      note: "Stopped at 30% because completing this certification no longer added value after the retrieval and agent work already shipped."
     },
     {
       title: "IBM AI Product Manager Professional Certificate",

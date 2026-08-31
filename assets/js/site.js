@@ -1205,18 +1205,6 @@
             }).join("") + '</div>' +
           '</section>' +
 
-          /* Split out of the education block 18 Aug 2026 so the side rail
-             can point at it directly. */
-          '<section id="reading" style="margin-bottom:3rem">' +
-            '<p class="eyebrow">Reading list</p><h2>What I am reading</h2>' +
-            P.reading.map(function (g) {
-              return '<div class="side-box" style="margin-top:1.5rem"><h4>' + esc(g.group) + '</h4>' +
-                '<ul style="margin:0;padding-left:1.1em">' +
-                  g.items.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") +
-                '</ul></div>';
-            }).join("") +
-          '</section>' +
-
           /* Work history sits last on purpose: the AI proof and the current
              learning lead, and the nine years support them rather than
              introduce them. Moved below skills and education 2026-08-12. */
@@ -1296,17 +1284,8 @@
     var list = P.certificates;
     var cards = list.map(certCardHTML).join("");
 
-    host.innerHTML = '<div class="wrap">' +
-      '<div class="section-head">' +
-        '<p class="eyebrow">Certificates</p>' +
-        '<h2>' + list.length + ' course certificates, earned in the open</h2>' +
-        '<p>Every certificate behind the two Coursera tracks above. Hover to stop the ' +
-          'rail, click a certificate to open it full size, or verify any of them ' +
-          'directly with Coursera.</p>' +
-      '</div>' +
-    '</div>' +
-
-    /* Outside the wrap: the rail runs the full width of the viewport
+    host.innerHTML =
+      /* The rail runs the full width of the viewport
        and fades out at both edges, so it reads as continuing rather
        than starting and stopping at the column. */
     '<div class="cert-rail">' +
@@ -1345,13 +1324,14 @@
   function progressRailHTML(e) {
     if (typeof e.progress !== "number") return "";
     var pct = Math.max(0, Math.min(100, e.progress));
+    var state = e.progressState === "stopped" ? "complete · stopped" : "complete · in progress";
     return '<div class="learn-progress">' +
       '<div class="learn-rail" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100" ' +
            'aria-label="' + esc(e.title) + ' progress">' +
         '<span class="learn-rail-fill" style="width:' + pct + '%"></span>' +
         '<span class="learn-rail-marker" style="left:' + pct + '%"></span>' +
       '</div>' +
-      '<p class="learn-pct"><strong>' + pct + '%</strong> complete · in progress</p>' +
+      '<p class="learn-pct"><strong>' + pct + '%</strong> ' + state + '</p>' +
     '</div>';
   }
 

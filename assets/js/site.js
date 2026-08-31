@@ -770,9 +770,9 @@
       '<div class="share-row">' +
         '<a class="share-btn" target="_blank" rel="noopener" aria-label="Share on X" href="https://x.com/intent/post?text=' +
           encodeURIComponent(text) + '&url=' + encodeURIComponent(url) + '">' + ICON.x + '</a>' +
-        '<a class="share-btn" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=' +
-          encodeURIComponent(url) + '">' + ICON.li + '<span>LinkedIn</span></a>' +
-        '<button class="share-btn" type="button" id="copyLink">' + ICON.link + '<span>Copy link</span></button>' +
+        '<a class="share-btn" target="_blank" rel="noopener" aria-label="Share on LinkedIn" href="https://www.linkedin.com/sharing/share-offsite/?url=' +
+          encodeURIComponent(url) + '">' + ICON.li + '</a>' +
+        '<button class="share-btn" type="button" id="copyLink" aria-label="Copy post link">' + ICON.link + '</button>' +
       '</div>' +
     '</div>';
   }
@@ -784,13 +784,12 @@
     var btn = $("#copyLink");
     if (!btn) return;
     btn.addEventListener("click", function () {
-      var label = btn.querySelector("span");
       var done  = function (msg) {
         btn.classList.add("copied");
-        label.textContent = msg;
+        btn.setAttribute("aria-label", msg);
         setTimeout(function () {
           btn.classList.remove("copied");
-          label.textContent = "Copy link";
+          btn.setAttribute("aria-label", "Copy post link");
         }, 2000);
       };
       if (navigator.clipboard && window.isSecureContext) {

@@ -1558,12 +1558,12 @@ window.PORTFOLIO = {
         {
           h: "Decision rights matrix",
           type: "table",
-          head: ["AI owns (global)", "Human owns (local)"],
+          head: ["Global AI owns", "Local AI owns", "Local human owns"],
           body: [
-            ["Brand logo usage & visual guidelines", "Cultural tone, humour, regional idioms"],
-            ["Grammar, spelling, formatting", "Festival and event-specific messaging"],
-            ["Content volume & scheduling", "Final approval on sensitive content"],
-            ["SEO optimisation & keywords", "Influencer partnerships & local endorsements"]
+            ["Brand logo usage & visual guidelines", "Local language, idioms and humour", "Cultural judgement and final brand voice"],
+            ["Grammar, spelling and formatting", "Festival and event-specific adaptations", "Final approval on sensitive content"],
+            ["Content volume, scheduling and asset reuse", "Market-specific keywords and local search context", "Influencer partnerships and local endorsements"],
+            ["Global campaign structure and performance patterns", "Local trend signals and cultural relevance scoring", "Original creative direction and escalation decisions"]
           ]
         },
         {

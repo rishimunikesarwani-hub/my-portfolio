@@ -1128,7 +1128,6 @@
   var ABOUT_NAV = [
     { id: "skills",       label: "Skills" },
     { id: "certificates", label: "Certificates" },
-    { id: "reading",      label: "Reading list" },
     { id: "experience",   label: "Experience" }
   ];
 
@@ -1293,10 +1292,6 @@
         cards +
         '<div class="cert-loop" aria-hidden="true">' + cards + '</div>' +
       '</div>' +
-    '</div>' +
-
-    '<div class="wrap">' +
-      '<p class="cert-hint">Hover the rail to stop it · click a certificate to open it full size</p>' +
     '</div>';
   }
 

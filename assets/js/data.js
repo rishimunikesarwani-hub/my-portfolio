@@ -46,7 +46,7 @@ window.PORTFOLIO = {
        self-deprecating half that lets "builds" land as a claim rather
        than as a boast, and it is a description nobody else in the pile
        can use. Added 18 Aug 2026. */
-    tagline: "The sales guy who builds.",
+    tagline: "Self-taught in everything, mentored by curiosity.",
 
     /* No longer rendered in the hero — the tagline and the stat bar took
        that slot on 18 Aug 2026. Kept because llms.txt still describes the

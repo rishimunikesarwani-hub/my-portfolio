@@ -1645,7 +1645,7 @@ window.PORTFOLIO = {
       },
       sections: [
         {
-          h: "The problem, deconstructed",
+          h: "The problem",
           type: "prose",
           body: [
             "McKinsey built Lilli — an internal AI that searches 100,000 documents, past case studies and expert transcripts in seconds. Junior consultants using Lilli produce in two hours what previously took two days.",

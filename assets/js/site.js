@@ -768,8 +768,8 @@
     return '<div class="post-share">' +
       '<p class="share-label">Share this post</p>' +
       '<div class="share-row">' +
-        '<a class="share-btn" target="_blank" rel="noopener" href="https://x.com/intent/post?text=' +
-          encodeURIComponent(text) + '&url=' + encodeURIComponent(url) + '">' + ICON.x + '<span>X</span></a>' +
+        '<a class="share-btn" target="_blank" rel="noopener" aria-label="Share on X" href="https://x.com/intent/post?text=' +
+          encodeURIComponent(text) + '&url=' + encodeURIComponent(url) + '">' + ICON.x + '</a>' +
         '<a class="share-btn" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=' +
           encodeURIComponent(url) + '">' + ICON.li + '<span>LinkedIn</span></a>' +
         '<button class="share-btn" type="button" id="copyLink">' + ICON.link + '<span>Copy link</span></button>' +

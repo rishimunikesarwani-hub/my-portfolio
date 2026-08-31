@@ -1773,10 +1773,7 @@ window.PORTFOLIO = {
           h: "Frameworks applied",
           type: "list",
           body: [
-            "<strong>Concept drift</strong> — A heat wave changes what <em>optimal delivery</em> means. The model did not drift technically; it was never trained on the concept that rider safety is a constraint, not something to optimise.",
-            "<strong>Training–production gap (MLOps)</strong> — Training data assumed normal weather. Production hit a heat wave. Textbook.",
-            "<strong>Ethics of system design</strong> — Delivery partners are gig workers with limited power. An AI that routes them without a safety consideration is a bias baked into the design.",
-            "<strong>Hard-constraint precedent</strong> — Fraud detection models carry non-negotiable thresholds. Delivery assignment needs the same: no assignment above a safety risk threshold, regardless of speed or cost."
+            "<strong>Rider-safety system design</strong> — The system was never designed around rider safety. During a heat wave, live Weather API data must be part of the recommendation logic so safety constraints are applied before speed or cost optimisation."
           ]
         },
         {

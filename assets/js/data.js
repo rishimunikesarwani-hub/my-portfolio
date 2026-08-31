@@ -1587,14 +1587,6 @@ window.PORTFOLIO = {
             "<strong>Month 3</strong> — All 15 markets. Quarterly prompt-library refresh becomes a standing cycle."
           ]
         },
-        {
-          h: "How this actually ships",
-          type: "note",
-          body: [
-            "This ships as a process change, not a product build. The prompt library is a shared doc per market. Confidence scoring is one line added to the system prompt — <em>rate your cultural confidence 1–5</em> — and anything under 3 routes to email. The override mechanism is a form where managers paste edited copy and tag what they changed.",
-            "Total engineering: roughly two days of prompt work plus one day of routing logic. Ship it next week."
-          ]
-        }
       ],
       related: ["swiggy-instamart", "zomato-ops", "job-qualifier"]
     },

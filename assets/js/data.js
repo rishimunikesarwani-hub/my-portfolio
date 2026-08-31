@@ -1519,6 +1519,7 @@ window.PORTFOLIO = {
         "and produced content that was technically correct and culturally flat. Not a model problem. " +
         "A decision-rights problem.",
       tags: ["Governance", "Decision rights", "Prompt engineering", "Human-in-the-loop", "Zero-cost"],
+      showHeroIntro: false,
       stats: [
         { v: "60%",  l: "faster campaign production" },
         { v: "15",   l: "markets affected" },
@@ -1531,7 +1532,7 @@ window.PORTFOLIO = {
       },
       sections: [
         {
-          h: "The problem, deconstructed",
+          h: "The problem",
           type: "prose",
           body: [
             "Nestlé built NesGPT, a private ChatGPT deployed to 30,000 employees, to run content pipelines for Nescafé across 15 markets. Campaign production time dropped 60%. But local brand managers felt sidelined — the AI produced technically correct but culturally flat content.",

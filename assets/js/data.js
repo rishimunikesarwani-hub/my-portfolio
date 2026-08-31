@@ -1854,9 +1854,8 @@ window.PORTFOLIO = {
           h: "Frameworks applied",
           type: "list",
           body: [
-            "<strong>AI enablement</strong> — You cannot have a supported AI programme if internal teams have not emotionally internalised it. Tool access is not enablement.",
-            "<strong>Selling expertise, not hours</strong> — The analyst's value shifts from producing outputs (reports) to producing insight (theses, advisory, risk judgement). The hard part is cerebral and emotional, not technical.",
-            "<strong>Platform standardisation</strong> — Uber built Michelangelo to end siloed, inconsistent ML work. Goldman needs the same for its analyst programme: standardise the AI-augmented workflow so <em>analyst</em> means 100% AI-amplified decision-maker, not 70% AI-replaced worker."
+            "<strong>Selling decisions and insights, not hours</strong> — The analyst's value shifts from producing outputs (reports) to producing insight (theses, advisory, risk judgement). The hard part is cerebral and emotional, not technical.",
+            "<strong>AI-augmented workflow</strong> — Standardise the AI-augmented workflow so <em>analyst</em> means 100% AI-amplified decision-maker, not 70% AI-replaced worker."
           ]
         },
         {

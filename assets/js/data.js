@@ -1960,13 +1960,6 @@ window.PORTFOLIO = {
           ]
         },
         {
-          h: "The constraint: a 10% budget cut",
-          type: "prose",
-          body: [
-            "No new models. No human-in-the-loop monitoring team. No new dashboards. We rewire the existing decision logic with three config-level changes — batch ordering, shelf-life awareness, and inter-store redistribution. All three use data and infrastructure that already exist."
-          ]
-        },
-        {
           h: "Frameworks applied",
           type: "list",
           body: [

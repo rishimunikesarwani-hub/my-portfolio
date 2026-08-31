@@ -1633,6 +1633,7 @@ window.PORTFOLIO = {
         "hours. Everyone read that as a workforce crisis. It is a business model crisis that shows up " +
         "first as a workforce question.",
       tags: ["Business model", "Pricing", "Outcome-based", "Workforce", "AI enablement"],
+      showHeroIntro: false,
       stats: [
         { v: "2 days → 2 hrs", l: "junior research time" },
         { v: "25,000",         l: "employees working with agents" },

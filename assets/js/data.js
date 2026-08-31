@@ -1694,14 +1694,6 @@ window.PORTFOLIO = {
           ]
         },
         {
-          h: "The new pyramid is a diamond",
-          type: "prose",
-          body: [
-            "Old shape: 100 juniors, 30 mid-level, 10 partners. Work flowed down — juniors did volume research, mid-level synthesised, partners sold.",
-            "New shape: 25 agents, 20 juniors on judgement and client interface, 15 mid-level on outcome architecture and quality, 10 partners on relationships and direction. Widest in the middle, where outcome design and client collaboration happen."
-          ]
-        },
-        {
           h: "Rollout",
           type: "list",
           body: [

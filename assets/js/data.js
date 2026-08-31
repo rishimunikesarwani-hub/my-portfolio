@@ -1956,7 +1956,7 @@ window.PORTFOLIO = {
           type: "prose",
           body: [
             "Swiggy Instamart uses AI agents to manage inventory replenishment, demand forecasting and dark store staffing across 500+ locations. During a festival surge, the AI over-ordered perishables in 12 cities based on last year's data. By the time a human noticed, ₹2 crore in stock had spoiled. The system was not wrong — it was working with the data it had.",
-            "The diagnosis: the AI had no spoilage-aware constraint on ordering volume. It treated tomatoes the same as rice. And it had no mechanism to split large orders into smaller batches against real-time sales velocity. A forecasting model without a spoilage-aware ordering strategy."
+            "The diagnosis: the AI had no spoilage-aware constraint on ordering volume. It treated tomatoes the same as rice. And it had no mechanism to split large orders into smaller batches against real-time sales velocity."
           ]
         },
         {

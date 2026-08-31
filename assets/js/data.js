@@ -129,7 +129,7 @@ window.PORTFOLIO = {
     },
     {
       slug: "breakdowns",
-      name: "Product cases",
+      name: "Case studies",
       blurb:
         "A shipped AI product taken apart from its own source rather than from its marketing — what " +
         "it actually does, what it charges for, and where the cost really sits. The product-sense " +
@@ -1162,12 +1162,8 @@ window.PORTFOLIO = {
     {
       group: "AI product — built and shipped",
       tier: "hire",
-      items: ["Agent design & agentic workflows", "RAG architecture & retrieval design", "Evaluation frameworks (golden sets, LLM-as-judge)", "LLM fundamentals & foundation models", "Prompt engineering for production", "Build-vs-buy reasoning"]
-    },
-    {
-      group: "AI product — actively building",
-      tier: "hire",
-      items: ["Deterministic citation checks", "Post-launch monitoring & observability", "LLMOps"]
+      hideGroupLabel: true,
+      items: ["Agent design & agentic workflows", "RAG architecture & retrieval design", "Evaluation frameworks (golden sets, LLM-as-judge)", "Open-source AI usage", "Build-vs-buy reasoning"]
     },
     {
       group: "Core PM craft",
@@ -1375,14 +1371,9 @@ window.PORTFOLIO = {
      open with plain paragraphs before its first heading.
      ----------------------------------------------------------------- */
   posts: [
-    /* ---- Moved out of `items` on 2026-08-12. These five are
-       product-sense cases, not architecture teardowns, so they read
-       as writing rather than as work entries.
-
-       They still carry their work-item fields (org, gate, stats,
-       related). The blog renderer ignores them; they are kept so
-       nothing is lost and so a gate can be surfaced on posts later
-       without rebuilding the content. ---- */
+    /* ---- These five product-sense cases render in Work under Case
+       studies. They remain here to retain their publishing metadata,
+       while site.js routes them through the Work renderer. ---- */
     {
       id: "langsmith-is-the-pm-control-room",
       date: "2026-08-31",

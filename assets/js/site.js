@@ -34,8 +34,16 @@
     var m = /github\.com\/([^\/?#]+)/i.exec(url || "");
     return m ? m[1] : "GitHub";
   }
+  /* Product cases live alongside posts in data.js so they retain their
+     publishing metadata, but belong in Work rather than the Blog. */
+  function workItems() {
+    return P.items.concat((P.posts || []).filter(function (p) {
+      return p.draft !== true && p.category === "breakdowns";
+    }));
+  }
   function itemById(id) {
-    for (var i = 0; i < P.items.length; i++) if (P.items[i].id === id) return P.items[i];
+    var items = workItems();
+    for (var i = 0; i < items.length; i++) if (items[i].id === id) return items[i];
     return null;
   }
   function catBySlug(slug) {
@@ -43,7 +51,7 @@
     return null;
   }
   function itemsIn(slug) {
-    return P.items.filter(function (it) { return it.category === slug; });
+    return workItems().filter(function (it) { return it.category === slug; });
   }
   function catName(slug) { var c = catBySlug(slug); return c ? c.name : slug; }
 
@@ -569,7 +577,7 @@
      ============================================================= */
   function featuredSorted(list) {
     var catOrder = P.categories.map(function (c) { return c.slug; });
-    var dataOrder = P.items.map(function (i) { return i.id; });
+    var dataOrder = workItems().map(function (i) { return i.id; });
     var rank = function (it) {
       var i = catOrder.indexOf(it.category);
       return i < 0 ? catOrder.length : i;   // unknown category sorts last
@@ -587,7 +595,7 @@
 
     var toolbar = '<div class="toolbar">' +
       '<div class="filters" role="group" aria-label="Filter by category">' +
-        '<button class="chip" data-cat="all">All work <span>(' + P.items.length + ')</span></button>' +
+        '<button class="chip" data-cat="all">All work <span>(' + workItems().length + ')</span></button>' +
         P.categories.map(function (c) {
           return '<button class="chip" data-cat="' + c.slug + '">' + esc(c.name) + ' <span>(' + itemsIn(c.slug).length + ')</span></button>';
         }).join("") +
@@ -609,7 +617,7 @@
     $("#workBody").innerHTML = toolbar;
 
     function draw() {
-      var list = P.items.filter(function (it) { return state.cat === "all" || it.category === state.cat; });
+      var list = workItems().filter(function (it) { return state.cat === "all" || it.category === state.cat; });
 
       if (state.sort === "az")     list.sort(function (a, b) { return a.title.localeCompare(b.title); });
       if (state.sort === "org")    list.sort(function (a, b) { return a.org.localeCompare(b.org); });
@@ -621,7 +629,7 @@
         ? list.map(cardHTML).join("")
         : '<div class="empty"><h3>Nothing in that filter yet</h3><p>Try another category, or <a href="work.html">show all work</a>.</p></div>';
 
-      $("#count").innerHTML = 'Showing <b>' + list.length + '</b> of ' + P.items.length +
+      $("#count").innerHTML = 'Showing <b>' + list.length + '</b> of ' + workItems().length +
         (state.cat === "all" ? ' pieces' : ' — ' + esc(catName(state.cat)));
 
       $$(".chip").forEach(function (b) {
@@ -689,7 +697,7 @@
   /* Published posts, newest first. Drafts never leave data.js. */
   function allPosts() {
     return (P.posts || [])
-      .filter(function (p) { return p.draft !== true; })
+      .filter(function (p) { return p.draft !== true && p.category !== "breakdowns"; })
       .slice()
       .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
   }
@@ -980,7 +988,7 @@
   function searchIndex() {
     var idx = [];
 
-    P.items.forEach(function (it) {
+    workItems().forEach(function (it) {
       var text = [it.title, it.org, it.tagline, it.summary, it.industry, it.status]
         .concat(it.tags)
         .concat(it.gate ? [it.gate.rule, it.gate.pass, it.gate.fail] : [])
@@ -1354,7 +1362,7 @@
     out += '<div class="skill-cards">' +
       groupsIn("hire").map(function (s) {
         return '<div class="skill-card">' +
-          '<h4>' + esc(s.group) + '</h4>' +
+          (s.hideGroupLabel ? '' : '<h4>' + esc(s.group) + '</h4>') +
           chips(s.items, "tags-bright") +
         '</div>';
       }).join("") +

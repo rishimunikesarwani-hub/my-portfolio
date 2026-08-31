@@ -1173,7 +1173,7 @@ window.PORTFOLIO = {
     {
       group: "B2B & commercial",
       tier: "craft",
-      items: ["Revenue ownership", "Enterprise & key account management", "Pricing strategy & techno-commercial offers", "Bid management & RFP response", "Revenue cycle & order-to-cash"]
+      items: ["Revenue ownership", "Enterprise & key account management"]
     },
     {
       group: "Tools I use",

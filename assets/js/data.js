@@ -1550,9 +1550,8 @@ window.PORTFOLIO = {
           h: "Frameworks applied",
           type: "list",
           body: [
-            "<strong>Continuous Training (CI/CD/CT/CM)</strong> — NesGPT's cultural flatness is data staleness from a single global training source. <em>The AI Product Manager's Handbook</em> warns that when an iterative process stagnates, it stops being effective.",
-            "<strong>Gartner Decision Intelligence</strong> — NesGPT should not make final calls on culturally sensitive content. It surfaces recommendations with confidence scores and routes low-confidence output to a human.",
-            "<strong>Dominant strategy (SHEIN)</strong> — AI handles volume and consistency; local teams handle cultural responsiveness. The split is clean: AI owns the template, humans own the flavour."
+            "<strong>Local cultural-intelligence model</strong> — Each market owns a living library of language, humour, festivals, social context and approved local examples. Managers correct output, tag why it failed, and use that feedback to maintain and grow cultural sensitivity over time.",
+            "<strong>Culture-by-design system</strong> — Local cultural inputs are not a last-minute review step. They feed into the global content-design system from the start: a shared global brand core, with market-level cultural context applied before content is generated."
           ]
         },
         {

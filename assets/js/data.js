@@ -1963,10 +1963,8 @@ window.PORTFOLIO = {
           h: "Frameworks applied",
           type: "list",
           body: [
-            "<strong>Data drift</strong> — A festival surge renders last year's baseline unreliable. When a major event reshapes the dataset, the foundation you built on stops applying.",
-            "<strong>Continuous monitoring</strong> — The failure mode the textbook warns about exactly: the model operated incorrectly and nobody noticed until the damage was done. CM was absent.",
-            "<strong>Rollback and throttle (MLOps)</strong> — Continuous delivery is not just shipping a package; it is a pipeline that scales back automatically when there is trouble ahead. Swiggy had no throttle when ordering diverged from real-time sales.",
-            "<strong>Gartner Causal AI</strong> — The current model is correlation-based: last year's festival equals this year's demand. A causal approach asks what <em>causes</em> the spike — which products, which regions, which timing — and orders against that, rather than replaying last year's volumes."
+            "<strong>Festival surge resilience (Causal AI + data drift)</strong> — During a festival surge, last year's baseline becomes unreliable. Rather than replaying last year's volumes, analyse what caused the spike — which products, regions and timing drove it — then place orders against those real demand drivers.",
+            "<strong>Continuous monitoring and throttling (MLOps)</strong> — Monitor orders against real-time sales continuously. When ordering diverges from live demand, automatically throttle or adjust the pipeline before excess inventory or stock-outs compound."
           ]
         },
         {

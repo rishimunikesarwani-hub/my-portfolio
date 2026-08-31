@@ -1838,6 +1838,7 @@ window.PORTFOLIO = {
         "analysts a year. You cannot cut junior headcount without cutting your future Managing " +
         "Directors — the labour function and the leadership pipeline were never the same thing.",
       tags: ["Workforce", "AI enablement", "Role design", "Hiring", "Policy change"],
+      showHeroIntro: false,
       stats: [
         { v: "4 hrs → 25 min", l: "per equity research report" },
         { v: "50%",            l: "headcount by year 3" },
@@ -1849,21 +1850,6 @@ window.PORTFOLIO = {
         fail: "Human-essential: judgement, narrative, client advisory"
       },
       sections: [
-        {
-          h: "The problem, deconstructed",
-          type: "prose",
-          body: [
-            "Goldman Sachs' CEO stated AI can now pass the bar exam and produce code that replaces entry-level engineering work. Internally, AI tools cut equity research report time from four hours to 25 minutes per analyst. Goldman still recruits hundreds of analysts every year. If AI does 70% of the work, what are these analysts being hired for? Senior leadership disagrees on whether to cut junior headcount or invest in retraining.",
-            "The real problem: Goldman's analyst programme was always two things at once — a labour force and a leadership pipeline. AI disrupted the labour function. The pipeline function still exists. Cut junior headcount and you cut your future MDs."
-          ]
-        },
-        {
-          h: "The constraint: a 10% budget cut",
-          type: "prose",
-          body: [
-            "No external retraining consultants. No new LMS platform. Use the AI tools that caused the disruption to deliver the retraining. If AI writes equity research in 25 minutes, the remaining three and a half hours of the analyst's day becomes training time — at zero incremental cost."
-          ]
-        },
         {
           h: "Frameworks applied",
           type: "list",

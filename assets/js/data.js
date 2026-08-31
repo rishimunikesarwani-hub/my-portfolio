@@ -1670,14 +1670,6 @@ window.PORTFOLIO = {
           ]
         },
         {
-          h: "The constraint: a 10% budget cut",
-          type: "prose",
-          body: [
-            "No new performance management software. No external consultants to redesign the talent framework. We use Lilli's own data — who searched what, what was useful, what insight came out — to build the new metrics. The tool that caused the problem becomes the tool that measures the solution.",
-            "The reframe: the budget cut is a gift. You cannot afford to maintain the old pyramid and build the new model at the same time. The cut kills the old model faster, which is exactly what needs to happen."
-          ]
-        },
-        {
           h: "New performance metrics",
           type: "table",
           head: ["Old metric", "New metric", "Why"],

@@ -1763,6 +1763,13 @@ window.PORTFOLIO = {
       },
       sections: [
         {
+          type: "prose",
+          body: [
+            "Zomato deployed AI agents to manage delivery partner allocation, dynamic pricing and restaurant ranking in real time — 50 million decisions a day. During a heat wave, the AI optimised for speed and cost but routed delivery partners into unsafe conditions. No human had oversight of the real-time decision.",
+            "The root cause is not that the AI was wrong. Its optimisation function had no safety constraint. Speed and cost were inputs; rider welfare was not. That is a system-architecture problem, not a human-oversight problem."
+          ]
+        },
+        {
           h: "Frameworks applied",
           type: "list",
           body: [

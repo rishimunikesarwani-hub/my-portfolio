@@ -131,10 +131,8 @@ window.PORTFOLIO = {
       slug: "breakdowns",
       name: "Case studies",
       blurb:
-        "A shipped AI product taken apart from its own source rather than from its marketing — what " +
-        "it actually does, what it charges for, and where the cost really sits. The product-sense " +
-        "exercises that used to live here are now on the blog, where they read as thinking rather " +
-        "than as shipped work."
+        "AI product case studies that stress-test a real product challenge — how a system creates " +
+        "value, where it fails, and which design decision changes the outcome."
     }
   ],
 

@@ -1798,14 +1798,6 @@ window.PORTFOLIO = {
             "<strong>Month 2</strong> — All cities. Add the rider-hours constraint. Weekly safety report generates itself."
           ]
         },
-        {
-          h: "How this actually ships",
-          type: "note",
-          body: [
-            "This is not a model retraining job. It is a pre-processing filter. Before the optimiser runs, ask: is the weather safe, is the rider within hours, is the zone accessible? Any <em>no</em> and that assignment is removed from the optimiser's input set. The optimiser never even sees the unsafe option.",
-            "One function — <code>check_safety_constraints()</code> — called before the existing optimisation API. Around fifty lines. Ship it in a sprint."
-          ]
-        }
       ],
       related: ["swiggy-instamart", "nestle-nesgpt", "investor-agent"]
     },

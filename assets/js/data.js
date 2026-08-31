@@ -82,10 +82,9 @@ window.PORTFOLIO = {
        Returned to the home page 18 Aug 2026. */
     stats: [
       { v: "9 yrs",     l: "owning B2B revenue" },
-      { v: "6 shipped", l: "from 1,000 hrs — 20+ more in build" },
+      { v: "7 shipped", l: "from 1,100 hrs AI learning" },
       { v: "1 of 2",    l: "hackathons entered, won" },
-      { v: "100",       l: "AI builders interviewed · 60 days" },
-      { v: "10",        l: "AI events attended · 60 days" }
+      { v: "100",       l: "AI builders interviewed · 60 days" }
     ],
 
     /* Copyright and machine-readable terms. Rendered into the footer,

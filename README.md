@@ -132,6 +132,13 @@ spot, so check any new one in the browser before calling it done.
 `assets/css/style.css` is all the styling. `assets/js/site.js` builds the header,
 breadcrumbs, footer and renders each page.
 
+### Visitor count
+
+The footer shows a site-wide unique-visitor total. It uses CounterAPI because
+this site is static and does not have a database; the count begins when the
+feature is deployed. The request uses `unique=true`, and the counter stays
+hidden if the service is unavailable so it cannot disrupt the site.
+
 ## The design
 
 Dark navy blueprint, cyan signal, Space Grotesk + Inter + JetBrains Mono.

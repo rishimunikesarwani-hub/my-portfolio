@@ -1190,6 +1190,8 @@ td:first-child { color: #b8c8dc; }
   padding-top: 1.4rem;
   font-family: var(--mono); font-size: .7rem; letter-spacing: .06em; color: var(--muted-2);
 }
+.visitor-count { display: inline-flex; align-items: baseline; gap: .45rem; }
+.visitor-count strong { color: var(--cyan); font-weight: 600; }
 
 /* =============================================================
    MOTION — reveal on scroll

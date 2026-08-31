@@ -390,10 +390,41 @@
         '<div class="foot-bot">' +
           '<span>' + esc(L.notice) + '</span>' +
           '<span><a href="copyright.html">Terms of use &amp; AI policy</a></span>' +
+          '<span class="visitor-count" id="visitorCounter" hidden>' +
+            '<span>Unique visitors</span>' +
+            '<strong id="visitorCount" aria-live="polite"></strong>' +
+          '</span>' +
           '<span>' + esc(P.person.location) + '</span>' +
         '</div>' +
       '</div>';
     document.body.appendChild(f);
+    loadVisitorCount();
+  }
+
+  /* The site is static, so the counter lives in a small external service rather
+     than a client-visible database. `unique=true` counts anonymized visitors,
+     not every page refresh. If it is unavailable, the footer stays unchanged. */
+  function loadVisitorCount() {
+    var counter = $("#visitorCounter");
+    var value = $("#visitorCount");
+    if (!counter || !value || !window.fetch) return;
+
+    window.fetch("https://counterapi.com/api/rishi-ships-every-day.vercel.app/view/portfolio-unique-visitors?unique=true")
+      .then(function (response) {
+        if (!response.ok) throw new Error("Visitor counter request failed");
+        return response.json();
+      })
+      .then(function (data) {
+        var total = Number(data && data.value);
+        if (!isFinite(total)) throw new Error("Visitor counter returned no total");
+        var formatted = total.toLocaleString();
+        value.textContent = formatted;
+        counter.setAttribute("aria-label", formatted + " unique visitors");
+        counter.hidden = false;
+      })
+      .catch(function () {
+        /* Analytics must never make the public site look broken. */
+      });
   }
 
   function ctaBand() {
@@ -804,9 +835,11 @@
           '<span>' + postMinutes(p) + ' min read</span>' +
         '</div>' +
         '<h1>' + esc(p.title) + '</h1>' +
-        '<p class="post-hero-sum">' + esc(p.summary) + '</p>' +
-        (p.tags && p.tags.length
-          ? '<div class="post-tags">' + p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("") + '</div>'
+        (p.showHeroIntro !== false
+          ? '<p class="post-hero-sum">' + esc(p.summary) + '</p>' +
+            (p.tags && p.tags.length
+              ? '<div class="post-tags">' + p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("") + '</div>'
+              : '')
           : '') +
       '</div></section>' +
 

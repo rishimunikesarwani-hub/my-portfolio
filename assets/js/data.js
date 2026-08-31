@@ -1385,6 +1385,58 @@ window.PORTFOLIO = {
        nothing is lost and so a gate can be surfaced on posts later
        without rebuilding the content. ---- */
     {
+      id: "langsmith-is-the-pm-control-room",
+      date: "2026-08-31",
+      draft: false,
+      title: "LangSmith Is the PM Control Room for AI Products",
+      summary:
+        "A PM-readable note on why AI observability matters: traces explain failures, metrics expose cost and latency, and eval datasets stop teams from shipping regressions.",
+      tags: ["LangSmith", "Observability", "Evals", "AI PM", "RAG"],
+      sections: [
+        {
+          h: "The useful question",
+          type: "prose",
+          body: [
+            "Most people ask the wrong question about AI products: <em>is the AI good?</em> That is too vague to manage. The better question is: <em>which step made it bad, slow, expensive, or unsafe?</em>",
+            "That is what LangSmith gives a product team. It is an observability and evaluation layer for LLM apps. Observability means the system leaves evidence behind: prompts, retrieved documents, tool calls, model responses, errors, latency, token usage, and cost. Evaluation means the team can test whether a new version is actually better before it reaches users."
+          ]
+        },
+        {
+          h: "Traces turn mystery into diagnosis",
+          type: "prose",
+          body: [
+            "A trace is the flight recorder for one user request. If a customer support agent gives a bad billing answer, the trace lets the team inspect the chain: what did the user ask, which documents were retrieved, which prompt was sent, which model answered, which tool ran, how long each step took, and what it cost.",
+            "Without traces, the team argues from vibes. With traces, the conversation becomes specific: retrieval pulled the wrong policy, the prompt buried the key instruction, the tool timed out, or the model ignored the source. Those are different fixes."
+          ]
+        },
+        {
+          h: "Cost and latency are product decisions",
+          type: "prose",
+          body: [
+            "Every AI feature has a trade-off between quality, speed, and money. A large reasoning model may be worth it for refunds, legal risk, clinical facts, or angry customers. It is probably wasteful for routine FAQs. In a RAG assistant, retrieving twenty chunks may improve coverage, but it also increases tokens, latency, and noise. Five high-quality chunks might beat twenty average ones.",
+            "A PM should not ask engineering for <em>the best model</em>. The sharper request is: route easy work to deterministic logic, normal work to a cheaper model, and high-risk judgment to a stronger model. Then measure cost per successful task, not cost per model call."
+          ]
+        },
+        {
+          h: "Evals turn failures into launch gates",
+          type: "prose",
+          body: [
+            "The best use of production failures is not blame; it is a dataset. When the product fails, save the example, label what good would have looked like, and add it to the regression set. Regression means an old failure should not come back in a new version.",
+            "Different judges fit different jobs. Use code evaluators for objective rules, like rejecting jobs that require US work authorization. Use LLM-as-judge for qualitative calls, like whether a role genuinely matches agentic AI PM work. Use pairwise evaluation when choosing the better of two drafts is easier than scoring one in isolation. Use a composite score when launch depends on several signals at once: relevance, faithfulness, latency, and cost."
+          ]
+        },
+        {
+          h: "The dashboard I would ask for",
+          type: "note",
+          body: [
+            "For any serious AI product, I want five numbers visible before launch: P50 latency, P99 latency, error rate, fallback rate, and cost per successful task. Then I want a quality score beside them, especially faithfulness for RAG products. The launch rule should be explicit: do not ship if latency crosses the threshold, faithfulness drops, or cost rises without a quality gain.",
+            "LangSmith is not just a dashboard. It is the evidence layer that lets a PM choose deliberately where the product should be fast, where it should be cheap, and where it must slow down to be right."
+          ]
+        }
+      ]
+    },
+
+    {
       id: "ai-agents-need-control-systems",
       date: "2026-08-31",
       draft: false,

@@ -22,6 +22,18 @@
       <category>Governance</category>
     </item>
     <item>
+      <title>LangSmith Is the PM Control Room for AI Products</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=langsmith-is-the-pm-control-room</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=langsmith-is-the-pm-control-room</guid>
+      <pubDate>Mon, 31 Aug 2026 09:00:00 GMT</pubDate>
+      <description>A PM-readable note on why AI observability matters: traces explain failures, metrics expose cost and latency, and eval datasets stop teams from shipping regressions.</description>
+      <category>LangSmith</category>
+      <category>Observability</category>
+      <category>Evals</category>
+      <category>AI PM</category>
+      <category>RAG</category>
+    </item>
+    <item>
       <title>NesGPT &amp; the Nescafé Content Engine</title>
       <link>https://rishi-ships-every-day.vercel.app/post.html?id=nestle-nesgpt</link>
       <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=nestle-nesgpt</guid>

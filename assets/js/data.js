@@ -120,6 +120,12 @@ window.PORTFOLIO = {
         "and it says so."
     },
     {
+      slug: "tool-breakdowns",
+      name: "Tools Breakdown",
+      blurb:
+        "Tools deconstructed to reveal the product strategy, agent architecture and business model beneath the interface."
+    },
+    {
       slug: "agents",
       name: "Agents I've Built",
       blurb:
@@ -232,7 +238,7 @@ window.PORTFOLIO = {
       id: "mission-control-hq",
       title: "Mission Control HQ — What They're Actually Selling",
       org: "MissionControlHQ",
-      category: "breakdowns",
+      category: "tool-breakdowns",
       industry: "Dev Tools · Multi-Agent · Unit Economics",
       year: "2026",
       status: "Breakdown",

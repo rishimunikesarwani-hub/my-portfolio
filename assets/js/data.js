@@ -1750,6 +1750,7 @@ window.PORTFOLIO = {
         "riders into unsafe conditions. The AI was not wrong — its objective function simply had no " +
         "safety constraint in it.",
       tags: ["Safety constraints", "Concept drift", "Gig workers", "Ethics", "Pre-processing"],
+      showHeroIntro: false,
       stats: [
         { v: "50M",   l: "decisions per day" },
         { v: "42°C",  l: "heat index cut-off" },
@@ -1761,14 +1762,6 @@ window.PORTFOLIO = {
         fail: "Removed before the optimiser ever sees it"
       },
       sections: [
-        {
-          h: "The problem, deconstructed",
-          type: "prose",
-          body: [
-            "Zomato deployed AI agents to manage delivery partner allocation, dynamic pricing and restaurant ranking in real time — 50 million decisions a day. During a heat wave, the AI optimised for speed and cost but routed delivery partners into unsafe conditions. No human had oversight of the real-time decision.",
-            "The root cause is not that the AI was wrong. The AI's optimisation function had no safety constraint. Speed and cost were inputs; rider welfare was not. That is a model architecture problem, not a human oversight problem."
-          ]
-        },
         {
           h: "The constraint: a 10% budget cut",
           type: "prose",
@@ -1875,7 +1868,8 @@ window.PORTFOLIO = {
           body: [
             "<strong>Year 1</strong> — Cut new analyst intake 30%. Not firing; natural attrition. Redirect the saving into the training budget.",
             "<strong>Year 2</strong> — A further 20%. Those who remain are AI-augmented analysts with higher per-person output. Revenue per analyst should double.",
-            "<strong>Year 3</strong> — Stabilise at 50% of original headcount, each producing 3× output. Division output holds or rises. Payroll down roughly 40% over three years."
+            "<strong>Year 3</strong> — Stabilise at 50% of original headcount, each producing 3× output. Division output holds or rises. Payroll down roughly 40% over three years.",
+            "<strong>Token-cost check</strong> — Before changing headcount, track token cost per dollar of value delivered. Scale only when AI creates more value in revenue, time saved or risk avoided than it consumes in model spend."
           ]
         },
         {
@@ -1883,7 +1877,7 @@ window.PORTFOLIO = {
           type: "note",
           body: [
             "Current cost: 200 analysts × ₹80 LPA = ₹160 Cr a year. Year 3: 100 analysts × ₹1.2 Cr — higher salary for a higher-skilled role — = ₹120 Cr a year. Saving of ₹40 Cr a year at the same or better output.",
-            "The line to say out loud: <em>we are not cutting analysts, we are upgrading the analyst programme from labour to leverage.</em>"
+            "<em>AI replaces job descriptions, not jobs. It should create more opportunity and more roles—not fewer.</em>"
           ]
         },
         {
@@ -1896,13 +1890,6 @@ window.PORTFOLIO = {
             "<strong>Year 2–3</strong> — Scale. Track revenue per analyst quarterly and adjust headcount on measured productivity, not projections."
           ]
         },
-        {
-          h: "How this actually ships",
-          type: "note",
-          body: [
-            "A memo, a curriculum, and a rubric — no technology build. The VP of Talent redefines what <em>analyst</em> means this week. The existing AI tools team builds the 40-hour curriculum using the tools themselves, in two weeks. HR rewrites the job description and interview rubric to test judgement, synthesis and communication rather than Excel speed and research stamina, in one week. First new-criteria hire happens next cycle."
-          ]
-        }
       ],
       related: ["mckinsey-lilli", "zomato-ops", "job-qualifier"]
     },

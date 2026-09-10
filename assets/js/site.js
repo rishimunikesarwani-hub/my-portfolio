@@ -453,6 +453,7 @@
     return '<article class="card">' +
       '<div class="card-top">' +
         '<span class="card-org">' + esc(it.org) + '</span>' +
+        (it.starred ? '<span class="card-star" title="Featured new addition" aria-label="Featured new addition">★</span>' : '') +
         '<span class="tag-status" data-s="' + esc(it.status) + '">' + esc(it.status) + '</span>' +
       '</div>' +
       '<h3><a href="' + href + '">' + esc(it.title) + '</a></h3>' +
@@ -566,23 +567,31 @@
   /* =============================================================
      FEATURED ORDER
 
-     Category first, in the order the categories are declared in
-     data.js — today that is Tools I've Built, then Agents I've Built,
-     then AI Product Breakdowns. Position within data.js only breaks
-     ties inside a category.
-
-     This is deliberately derived rather than hand-maintained: add a
-     new tool anywhere in `items` and it lands in the top band on its
-     own. Reordering the bands is a matter of reordering `categories`.
+     New work comes first across every category. Each new item should set
+     `addedAt: "YYYY-MM-DD"`; the newest valid date wins. Items without an
+     addedAt date retain the old category/data order as a safe migration
+     fallback, so existing entries do not jump around until they are dated.
      ============================================================= */
   function featuredSorted(list) {
     var catOrder = P.categories.map(function (c) { return c.slug; });
     var dataOrder = workItems().map(function (i) { return i.id; });
+    var addedTime = function (it) {
+      if (!it.addedAt) return null;
+      var value = Date.parse(String(it.addedAt).length === 10 ? it.addedAt + "T00:00:00Z" : it.addedAt);
+      return isNaN(value) ? null : value;
+    };
     var rank = function (it) {
       var i = catOrder.indexOf(it.category);
       return i < 0 ? catOrder.length : i;   // unknown category sorts last
     };
     return list.slice().sort(function (a, b) {
+      var aTime = addedTime(a);
+      var bTime = addedTime(b);
+      if (aTime !== null || bTime !== null) {
+        if (aTime === null) return 1;
+        if (bTime === null) return -1;
+        if (bTime !== aTime) return bTime - aTime;
+      }
       return (rank(a) - rank(b)) || (dataOrder.indexOf(a.id) - dataOrder.indexOf(b.id));
     });
   }

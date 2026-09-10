@@ -143,7 +143,8 @@ window.PORTFOLIO = {
   ],
 
   /* ---------------------------------------------------------------
-     Items. Section `type` is one of: prose | list | table | note
+     Items. Section `type` is one of: prose | list | table | note.
+     New work must set `addedAt: "YYYY-MM-DD"`; featured order is newest first.
      --------------------------------------------------------------- */
   items: [
 
@@ -970,6 +971,8 @@ window.PORTFOLIO = {
       category: "builds",
       industry: "AI product discovery · Multi-agent systems · Evaluation design",
       year: "2026",
+      addedAt: "2026-09-10",
+      starred: true,
       status: "Designed, not built",
       effortDays: 0,
       effortLabel: "Architecture package published; application code next",

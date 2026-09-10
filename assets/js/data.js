@@ -962,6 +962,92 @@ window.PORTFOLIO = {
       related: ["what-is-hot", "tablink", "mission-control-hq"]
     },
 
+    /* ============ SIGNALWISE MVP ============ */
+    {
+      id: "signalwise-mvp",
+      title: "SignalWise — Evidence Before Opinion",
+      org: "SignalWise MVP",
+      category: "builds",
+      industry: "AI product discovery · Multi-agent systems · Evaluation design",
+      year: "2026",
+      status: "Designed, not built",
+      effortDays: 0,
+      effortLabel: "Architecture package published; application code next",
+      tagline: "A CSV does not become a recommendation until it passes a gate.",
+      summary:
+        "A docs-first MVP for turning safe CSV uploads into auditable evidence and product recommendations. " +
+        "The public package fixes the workflow, agent boundaries, registries, protocol contracts and security " +
+        "before implementation. The architecture is shipped; the runtime is not claimed as built yet.",
+      tags: ["Multi-agent", "Evidence gates", "MCP", "Synthetic data", "Designed"],
+      stats: [
+        { v: "6",  l: "A3 engineering sheets" },
+        { v: "5",  l: "blueprint documents" },
+        { v: "0",  l: "application lines written" }
+      ],
+      repo: {
+        name: "rishimunikesarwani-hub/signalwise-mvp",
+        url: "https://github.com/rishimunikesarwani-hub/signalwise-mvp",
+        public: true
+      },
+      links: [
+        { k: "GitHub", t: "Public architecture and product package", url: "https://github.com/rishimunikesarwani-hub/signalwise-mvp" },
+        { k: "A3 blueprint", t: "Merged six-sheet engineering drawing", url: "https://github.com/rishimunikesarwani-hub/signalwise-mvp/blob/main/docs/02_TECHNICAL_BLUEPRINT.html" }
+      ],
+      gate: {
+        rule: "Can the evidence bundle be validated before any model call?",
+        pass: "Valid, privacy-checked evidence reaches bounded workers and deterministic gates",
+        fail: "Malformed, insufficient, stale or unsafe data is stopped and explained"
+      },
+      sections: [
+        {
+          h: "What is actually shipped",
+          type: "prose",
+          body: [
+            "The public repository contains the PRD, technical blueprint, security and access design, frontend specification, feature tickets and a six-sheet A3 architecture drawing set. It is a specification handoff, not a disguised demo: the application code, backend and deployment are still to be built.",
+            "That distinction is deliberate. A model call can be made quickly; a trustworthy product needs the contracts around it first: what evidence is allowed in, who may do what, which outputs are authoritative and where a human must decide."
+          ]
+        },
+        {
+          h: "The architecture in four boundaries",
+          type: "table",
+          head: ["Boundary", "Owns", "Cannot do"],
+          body: [
+            ["Orchestrator", "Pins versions, dispatches tasks and joins validated artifacts", "Invent evidence, waive gates or accept for the PM"],
+            ["Deterministic services", "Intake, analysis, validation, gates, ranking and persistence", "Delegate authority to a model response"],
+            ["Bounded agent workers", "Research, hypotheses, challenge, independent quality and explanation", "Read raw CSV, call peers or mutate decisions"],
+            ["Human PM", "Reviews evidence, edits candidates and accepts or rejects", "Treat a fluent answer as proof"]
+          ]
+        },
+        {
+          h: "The non-negotiable rule",
+          type: "note",
+          body: [
+            "Agents receive a small, typed Evidence Pack rather than ambient access to uploaded files. Their prose returns as an untrusted artifact: schema-validated, lineage-checked and subject to deterministic gates before it can affect the review. No direct agent-to-agent calls, arbitrary SQL, secret access, raw CSV access or decision-store mutation.",
+            "The system is allowed to say <strong>insufficient evidence</strong>. That is a product outcome, not an error to hide."
+          ]
+        },
+        {
+          h: "MCP and A2A, used for different jobs",
+          type: "prose",
+          body: [
+            "MCP is planned as the governed agent-to-tool and resource boundary: every call is re-authenticated and re-authorized against a task-scoped capability grant. The internal V1 handoff stays simpler and explicit — the orchestrator sends a versioned <code>TaskEnvelope</code> and receives a validated <code>ArtifactEnvelope</code>.",
+            "A2A is not being added as decoration. It remains a future adapter for a genuinely independent external agent. The internal workers do not need a peer-to-peer bus when the orchestrator already owns the workflow and the audit trail."
+          ]
+        },
+        {
+          h: "What comes next",
+          type: "list",
+          body: [
+            "Re-baseline the A1–A6 title blocks against PRD v1.1.",
+            "Implement the data contract, evidence-pack reduction and deterministic gate tests.",
+            "Build the server-side worker path with model credentials kept out of browser code.",
+            "Add eval cases for insufficient evidence, conflicting sources, stale artifacts and prompt injection before calling the MVP production-ready."
+          ]
+        }
+      ],
+      related: ["strategy-room", "mission-control-hq", "eval-framework"]
+    },
+
     /* ============ THE STRATEGY ROOM ============
        Written 2026-08-12 from the project's own LOG.md decision log.
        Status is deliberately "Designed, not built" — zero code exists

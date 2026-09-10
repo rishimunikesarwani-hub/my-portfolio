@@ -1151,6 +1151,167 @@ window.PORTFOLIO = {
   ],
 
   /* ---------------------------------------------------------------
+     Work briefs. These are the plain-English layer shown before the
+     long decision log. Keep claims bounded: proof and deployment say
+     what a visitor can verify today, while planned work stays labelled.
+     --------------------------------------------------------------- */
+  workBriefs: {
+    "healthcare-agent": {
+      problem: "Clinicians can miss slow, subtle deterioration because a missing feed may look like a normal value and name-based rules miss synonyms.",
+      solution: "A deterministic early-warning agent checks eight bedside signals, marks incomplete evidence as unknown, and escalates only when the evidence gate passes.",
+      proof: { status: "Live demo", note: "The browser demo is scripted and shows the measured evaluation cases.", links: [{ k: "Live demo", t: "Open the three-bed demo", url: "https://rishi-ships-every-day.vercel.app/projects/healthcare-agent/demo.html" }] },
+      architecture: { summary: "Browser input flows through a deterministic scoreboard, safety gate, explanation and audit output; no LLM or GPU is required.", components: ["Typed bedside input", "Deterministic priors and scoreboard", "Evidence-completeness gate", "Explanation and audit trail"] },
+      tradeoffs: ["Rules are repeatable and cheap, but they do not learn from new cases without an explicit update.", "The demo is transparent and testable, but it is not a clinical production service."],
+      pm: { decision: "Treat missing evidence as unknown instead of quietly calling it normal.", next: "Validate the gate against a larger, clinically reviewed dataset." },
+      deployment: { status: "Live demo", provider: "Vercel static portfolio", runtime: "Browser-only scripted demo", note: "Not connected to hospital systems." }
+    },
+    "mission-control-hq": {
+      problem: "Solo founders do not need another model; they need coordination, cost control and a clear point where an AI workflow stops.",
+      solution: "A product breakdown that explains the coordination layer, decision rights and unit economics behind an agent product.",
+      proof: { status: "Analysis only", note: "This is a product teardown, not a runnable copy of the analysed tool." },
+      architecture: { summary: "The model is framed as a control layer around agents, tools, policy checks, observability and human approval.", components: ["Orchestrator", "Agent and tool boundaries", "Policy and approval gates", "Cost and observability loop"] },
+      tradeoffs: ["More control points make failures easier to inspect, but add latency and implementation work.", "The teardown is useful for product judgement, not proof that the analysed vendor uses this exact design."],
+      pm: { decision: "Explain what is being sold as coordination, not pretend the model is the whole product.", next: "Turn the four decisions into a measurable product scorecard." },
+      deployment: { status: "Not applicable", provider: "Portfolio page", runtime: "Static analysis", note: "No customer runtime is claimed here." }
+    },
+    "alars": {
+      problem: "A founder can describe a product in one messy sentence, but a team still needs a ranked backlog without invented market facts.",
+      solution: "Five specialist agents turn the sentence into questions, evidence-backed hypotheses and a traceable backlog; the analyst must say when a number is missing.",
+      proof: { status: "Live product page", note: "The public page is the customer-facing proof; the source repository remains private.", links: [{ k: "Live product", t: "Open ALARS", url: "https://alars.vercel.app/" }] },
+      architecture: { summary: "A supervisor delegates bounded discovery tasks to a product, design, research, data and planning team, then joins their artefacts.", components: ["Supervisor/orchestrator", "Five specialist workers", "Evidence and question boundary", "Traceable backlog output"] },
+      tradeoffs: ["Delegating by role gives clearer ownership, but repeated context increases token cost.", "The agent refuses to guess, so the user may receive questions instead of a polished backlog."],
+      pm: { decision: "Make missing evidence visible rather than rewarding confident invention.", next: "Measure backlog usefulness with founder edits and accepted tickets." },
+      deployment: { status: "Live", provider: "Vercel", runtime: "Public web experience", note: "The portfolio links to the live page; backend details are not claimed here." }
+    },
+    "job-qualifier": {
+      problem: "A fluent job answer can cite a source that exists but does not support the sentence, so plausibility is not enough.",
+      solution: "A corpus-grounded reasoning loop checks citation existence and faithfulness before an answer is treated as usable.",
+      proof: { status: "Shipped project", note: "The portfolio records the design and evaluation results; no public live URL is currently linked." },
+      architecture: { summary: "Retrieval supplies evidence, an agent drafts the answer, deterministic checks verify citations, and an evaluation judge tests faithfulness.", components: ["Grounded corpus", "Reasoning loop", "Citation-existence guard", "Faithfulness evaluation"] },
+      tradeoffs: ["Two validation layers cost more than a single model call, but catch different failure modes.", "A corpus boundary improves trust but limits answers outside the source material."],
+      pm: { decision: "Separate citation existence from citation support; passing one is not passing both.", next: "Expand the golden set with conflicting and insufficient-evidence cases." },
+      deployment: { status: "Not publicly linked", provider: "Local project", runtime: "Evaluation project", note: "Ask Rishi for a demo or source access." }
+    },
+    "investor-agent": {
+      problem: "Investor outreach takes research and personalisation, but the cost of a wrong fit or an unsentifiable claim is high.",
+      solution: "A two-agent workflow researches fit, drafts a message and routes each lead through a human approval boundary based on confidence.",
+      proof: { status: "Pre-deployment", note: "The architecture is described in the breakdown; a public live product is not claimed." },
+      architecture: { summary: "Research and drafting are separated; a fit score controls how much autonomy the system receives before a human sends anything.", components: ["Research worker", "Drafting worker", "Fit-score router", "Human approval gate"] },
+      tradeoffs: ["Human approval protects reputation, but removes the speed of fully automatic sending.", "A fit score is a routing signal, not proof that a recipient will reply."],
+      pm: { decision: "Keep the send action human-owned even when research and drafting are automated.", next: "Test fit-score thresholds against real approval and rejection decisions." },
+      deployment: { status: "Not deployed", provider: "Local design", runtime: "Pre-deployment workflow", note: "No outreach is sent by this portfolio." }
+    },
+    "eval-framework": {
+      problem: "A judge can reward a plausible citation even when the cited source does not support the claim.",
+      solution: "A reusable evaluation framework combines golden cases, an LLM-as-judge rubric and deterministic citation guards.",
+      proof: { status: "Methodology in build", note: "The framework is a build artifact, not a customer-facing service." },
+      architecture: { summary: "Evaluation data, deterministic checks and model-based review produce a scored report without granting the judge decision authority.", components: ["Golden set", "Deterministic citation check", "Scoped judge", "Failure report"] },
+      tradeoffs: ["A judge catches semantic failures that rules miss, but it can still be biased or inconsistent.", "Deterministic checks are narrow, but their failures are easier to reproduce."],
+      pm: { decision: "Use the judge as one signal inside an evaluation system, not as the final truth.", next: "Add adversarial cases for unsupported but fluent answers." },
+      deployment: { status: "In build", provider: "Local evaluation project", runtime: "Offline test suite", note: "No hosted evaluation API is claimed." }
+    },
+    "what-is-hot": {
+      problem: "Signals from news, repositories and communities use different units, so a reader cannot compare them without a normalised view.",
+      solution: "A scheduled scraper ranks 16 sources, uses one editorial model pass and renders a print-like daily broadsheet.",
+      proof: { status: "Shipped", note: "The public repository is the current proof; no hosted demo is linked in the portfolio." },
+      architecture: { summary: "Source adapters collect items, deterministic ranking normalises them, one constrained model edits the copy, and a renderer creates the page.", components: ["Sixteen source adapters", "Normalisation and ranking", "Single editorial model call", "Static broadsheet renderer"] },
+      tradeoffs: ["Using one model call keeps cost and failure surface small, but limits editorial depth.", "A print layout is calm and fast, but it gives up interactive exploration."],
+      pm: { decision: "Design out unnecessary model calls before trying to make the model smarter.", next: "Measure repeat readership and source-level ranking quality." },
+      deployment: { status: "Shipped", provider: "Public repository", runtime: "Scheduled scraper and static renderer", note: "Open the repository for the current implementation." }
+    },
+    "tablink": {
+      problem: "Editing desktop files from a tablet is useful, but Wi-Fi, cloud copies and persistent network shares add attack surface and sync risk.",
+      solution: "A USB-C-only loopback tunnel lets the tablet edit the real desktop files without copying them or opening a network service.",
+      proof: { status: "Shipped project", note: "The public repository contains the scripts and security decision; the connection is local hardware-dependent." },
+      architecture: { summary: "The tablet reaches a desktop loopback service over USB, while SFTP edits the original file and leaves no persistent share.", components: ["USB tether", "Loopback-only service", "SFTP edit path", "No-copy file boundary"] },
+      tradeoffs: ["USB-only is safer and simpler, but it gives up wireless convenience.", "Editing in place avoids sync conflicts, but there is no cloud backup in the tunnel."],
+      pm: { decision: "Prefer no reachable port over a firewall rule that must remain correct.", next: "Add a recovery walkthrough and a safe local test harness." },
+      deployment: { status: "Local", provider: "Windows desktop and Android tablet", runtime: "USB-connected local workflow", note: "It is not a hosted web service." }
+    },
+    "portfolio-site": {
+      problem: "A portfolio with repeated page-specific content drifts: cards, search, filters and detail pages stop agreeing.",
+      solution: "One JavaScript data object feeds the HTML shells, cards, search, filters and detail pages with no build step.",
+      proof: { status: "Live", note: "This is the page you are reading.", links: [{ k: "Live site", t: "Open the portfolio", url: "https://rishi-ships-every-day.vercel.app/" }] },
+      architecture: { summary: "Static HTML shells load one data object and one renderer; Vercel serves the files and CounterAPI supplies the anonymised visitor total.", components: ["HTML page shells", "Single data object", "Shared renderer", "Vercel static hosting", "CounterAPI visitor counter"] },
+      tradeoffs: ["No framework or build step makes edits easy to inspect, but the data file grows long.", "Static hosting is cheap and resilient, but it cannot run a background notification agent without a backend."],
+      pm: { decision: "Optimise for truthful, easy-to-edit project evidence before adding framework complexity.", next: "Add a server-side analytics and notification path only when the signal is worth the operational cost." },
+      deployment: { status: "Live", provider: "Vercel", runtime: "Static HTML/CSS/JavaScript", note: "This repository contains no AWS runtime, database or server API." }
+    },
+    "signalwise-mvp": {
+      problem: "PMs cannot safely turn a raw CSV into a recommendation when the file may be malformed, unsafe, stale or too thin; an agent can still sound confident without enough evidence.",
+      solution: "SignalWise validates the upload, reduces it to a typed Evidence Pack, delegates bounded work to specialist agents, checks their outputs with deterministic gates and can return insufficient evidence.",
+      proof: { status: "Architecture published; runtime not built", note: "The public package is a specification handoff, not a live customer application.", links: [{ k: "GitHub", t: "Public architecture and product package", url: "https://github.com/rishimunikesarwani-hub/signalwise-mvp" }, { k: "A3 blueprint", t: "Merged six-sheet engineering drawing", url: "https://github.com/rishimunikesarwani-hub/signalwise-mvp/blob/main/docs/02_TECHNICAL_BLUEPRINT.html" }, { k: "PRD", t: "Product requirements", url: "https://github.com/rishimunikesarwani-hub/signalwise-mvp/blob/main/docs/01_PRD.md" }] },
+      architecture: { summary: "The supervisor/orchestrator owns workflow, versioning and audit; an agent registry selects bounded workers; tools sit behind governed MCP access; deterministic services and the PM own the gates.", components: ["Supervisor/orchestrator", "Agent registry", "Delegated worker swarm", "MCP tool boundary", "Evidence Pack and ArtifactEnvelope", "Deterministic gates and PM review"] },
+      tradeoffs: ["Explicit TaskEnvelope and ArtifactEnvelope contracts are slower to design than direct agent-to-agent calls, but they make the workflow auditable.", "A2A stays a future adapter for independent external agents; internal workers do not need a peer-to-peer bus.", "The application is not deployed yet, so AWS is a target option, not a current runtime claim."],
+      pm: { decision: "Keep raw CSV away from workers and allow the product to say insufficient evidence.", next: "Implement the data contract, deterministic gates and server-side worker path before adding a customer URL." },
+      deployment: { status: "Not deployed", provider: "Target: server-side runtime (AWS not configured)", runtime: "Blueprint only; no public backend", note: "The current public proof is the GitHub package and its architecture drawing." }
+    },
+    "nestle-nesgpt": {
+      problem: "A global AI can produce correct content quickly while still sounding wrong in a local market and leaving local brand owners without a decision right.",
+      solution: "Use global AI for scale, local AI for market context and local humans for cultural judgement, with explicit ownership at each layer.",
+      proof: { status: "Case study", note: "A product analysis based on the public company story; not a Nestlé implementation." },
+      architecture: { summary: "A 70/20/10 decision model separates global consistency, local adaptation and human cultural judgement.", components: ["Global AI", "Local AI", "Local human review", "Brand governance"] },
+      tradeoffs: ["Global consistency improves scale, but local teams lose room if ownership is not explicit.", "Human review protects nuance, but adds a deliberate step to the workflow."],
+      pm: { decision: "Treat cultural judgement as a product boundary, not as a prompt tweak.", next: "Measure local acceptance and rework, not just production speed." },
+      deployment: { status: "Case study only", provider: "Portfolio page", runtime: "Static analysis", note: "No Nestlé system is being claimed or reproduced." }
+    },
+    "mckinsey-lilli": {
+      problem: "When an internal AI compresses research from days to hours, an hourly consulting model loses the unit it used to bill for.",
+      solution: "Move the value conversation from time spent to decisions, outcomes and the quality of advice enabled by the system.",
+      proof: { status: "Case study", note: "A product and business-model analysis, not an implementation of Lilli." },
+      architecture: { summary: "The product boundary is the research workflow; the commercial boundary is the metric used to price the outcome.", components: ["Grounded document search", "Research workflow", "Consultant judgement", "Outcome-based pricing"] },
+      tradeoffs: ["Faster research creates capacity, but makes utilisation-based economics harder to defend.", "Outcome pricing can capture more value, but requires clearer measurement and risk-sharing."],
+      pm: { decision: "Treat AI productivity as a business-model design problem, not only a headcount problem.", next: "Test an outcome metric that both client and firm can audit." },
+      deployment: { status: "Case study only", provider: "Portfolio page", runtime: "Static analysis", note: "No vendor runtime is claimed here." }
+    },
+    "zomato-ops": {
+      problem: "An operations optimiser can meet its speed and cost targets while routing delivery workers into unsafe conditions during extreme weather.",
+      solution: "Put safety constraints and live weather signals inside the optimisation function before speed and cost are considered.",
+      proof: { status: "Case study", note: "A safety architecture analysis, not a Zomato production system." },
+      architecture: { summary: "Weather and welfare constraints enter the recommendation path, with a human delivery manager handling exceptions.", components: ["Live weather input", "Safety policy", "Operations optimiser", "Human exception handling"] },
+      tradeoffs: ["Safety constraints may reduce short-term throughput, but they protect people and long-term trust.", "A human exception path costs operations time, but avoids pretending every context is machine-readable."],
+      pm: { decision: "Make rider welfare a hard system constraint, not a reminder in a policy document.", next: "Measure unsafe-route prevention and override quality during heat events." },
+      deployment: { status: "Case study only", provider: "Portfolio page", runtime: "Static analysis", note: "No live Zomato integration is claimed." }
+    },
+    "goldman-analysts": {
+      problem: "AI can compress research work from hours to minutes, but removing junior analysts also removes part of the leadership pipeline built through that work.",
+      solution: "Redesign roles around insight, judgement and AI-enabled leverage instead of treating efficiency as a simple headcount cut.",
+      proof: { status: "Case study", note: "A workforce and operating-model analysis, not a Goldman Sachs implementation." },
+      architecture: { summary: "AI handles repeatable research steps while analysts and senior leaders own thesis, risk judgement and client decisions.", components: ["AI research assistant", "Analyst judgement", "Senior review", "Talent pipeline design"] },
+      tradeoffs: ["Automation can increase analyst leverage, but only if learning and ownership are redesigned too.", "Keeping a development path costs more than deleting the junior layer, but protects future capability."],
+      pm: { decision: "Measure the leadership pipeline as part of the product outcome, not as an HR afterthought.", next: "Pilot a role design with explicit skill-building and judgement metrics." },
+      deployment: { status: "Case study only", provider: "Portfolio page", runtime: "Static analysis", note: "No Goldman system is being claimed." }
+    },
+    "swiggy-instamart": {
+      problem: "A forecast trained on normal days can over-order perishables during a festival surge, creating waste before a human sees the pattern.",
+      solution: "Combine causal signals, spoilage-aware ordering and continuous monitoring so the system can detect drift and change course.",
+      proof: { status: "Case study", note: "A supply-chain product analysis, not a Swiggy production system." },
+      architecture: { summary: "Demand signals feed a constrained ordering policy, while monitoring watches for drift and spoilage risk across dark stores.", components: ["Demand and event signals", "Causal forecast", "Spoilage-aware policy", "Drift monitoring and human review"] },
+      tradeoffs: ["A richer causal model costs more data and review, but reduces blind reliance on last year's pattern.", "Continuous monitoring adds operational work, but catches failures before waste compounds."],
+      pm: { decision: "Treat freshness and drift as first-class product metrics alongside forecast accuracy.", next: "Run a surge-season holdout with spoilage and intervention measures." },
+      deployment: { status: "Case study only", provider: "Portfolio page", runtime: "Static analysis", note: "No Swiggy integration is claimed." }
+    },
+    "strategy-room": {
+      problem: "A strategy discussion can become a stack of agent monologues without a shared stopping rule or a clear owner for the decision.",
+      solution: "A supervisor chairs a bounded boardroom of specialist roles; each round requires a new contribution or PASS, and the meeting stops at consensus or a hard cap.",
+      proof: { status: "Designed, not built", note: "The decision log and architecture are the proof; no runtime is claimed." },
+      architecture: { summary: "The Engagement Lead owns the transcript and routing, specialists work in parallel first and sequentially later, and the Risk Officer challenges the emerging decision.", components: ["Supervisor / Engagement Lead", "Specialist worker roles", "Shared transcript", "PASS and round-cap stopping rule", "Human interjection"] },
+      tradeoffs: ["Debate can surface better decisions, but costs more tokens than a straight pipeline.", "A hard stop prevents endless discussion, but a weak first question can end with an incomplete answer."],
+      pm: { decision: "Make stopping a product rule, not an accidental model behaviour.", next: "Build one narrow sprint mode and measure whether users accept the resulting decision brief." },
+      deployment: { status: "Not deployed", provider: "Design artifact", runtime: "No application code", note: "The portfolio intentionally says this is still on paper." }
+    }
+  },
+
+  /* Site-wide signals. Only the visitor counter is live today; the other
+     metrics stay explicit until a named analytics source is connected. */
+  portfolioSignals: {
+    uniqueVisitors: { label: "Unique visitors", source: "CounterAPI", status: "live" },
+    clickThroughs: { label: "Outbound clicks", source: "Not connected", status: "not-instrumented" },
+    averageEngagedTime: { label: "Average time per user", source: "Not connected", status: "not-instrumented" },
+    notifications: { label: "Owner notifications", status: "planned", channel: "Email or Telegram", note: "A static site needs a server-side endpoint before an agent can notify Rishi." }
+  },
+
+  /* ---------------------------------------------------------------
      Experience — for the About page.
      --------------------------------------------------------------- */
   /* -----------------------------------------------------------------

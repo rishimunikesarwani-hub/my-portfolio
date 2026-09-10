@@ -41,6 +41,9 @@
       return p.draft !== true && p.category === "breakdowns";
     }));
   }
+  function briefFor(it) {
+    return (P.workBriefs && P.workBriefs[it.id]) || {};
+  }
   function itemById(id) {
     var items = workItems();
     for (var i = 0; i < items.length; i++) if (items[i].id === id) return items[i];
@@ -415,7 +418,12 @@
   function loadVisitorCount() {
     var counter = $("#visitorCounter");
     var value = $("#visitorCount");
-    if (!counter || !value || !window.fetch) return;
+    var workValue = $("#workVisitorCount");
+    if ((!counter || !value) && !workValue) return;
+    if (!window.fetch) {
+      if (workValue) workValue.textContent = "Unavailable";
+      return;
+    }
 
     window.fetch("https://counterapi.com/api/rishi-ships-every-day.vercel.app/view/portfolio-unique-visitors?unique=true")
       .then(function (response) {
@@ -426,12 +434,16 @@
         var total = Number(data && data.value);
         if (!isFinite(total)) throw new Error("Visitor counter returned no total");
         var formatted = total.toLocaleString();
-        value.textContent = formatted;
-        counter.setAttribute("aria-label", formatted + " unique visitors");
-        counter.hidden = false;
+        if (value) value.textContent = formatted;
+        if (counter) {
+          counter.setAttribute("aria-label", formatted + " unique visitors");
+          counter.hidden = false;
+        }
+        if (workValue) workValue.textContent = formatted;
       })
       .catch(function () {
         /* Analytics must never make the public site look broken. */
+        if (workValue) workValue.textContent = "Unavailable";
       });
   }
 
@@ -450,6 +462,9 @@
      ============================================================= */
   function cardHTML(it) {
     var href = "breakdown.html?id=" + encodeURIComponent(it.id);
+    var brief = briefFor(it);
+    var problem = brief.problem || "Open the breakdown to see the problem this work examines.";
+    var solution = brief.solution || it.summary;
     return '<article class="card">' +
       '<div class="card-top">' +
         '<span class="card-org">' + esc(it.org) + '</span>' +
@@ -458,6 +473,10 @@
       '</div>' +
       '<h3><a href="' + href + '">' + esc(it.title) + '</a></h3>' +
       '<p class="card-tagline">' + esc(it.tagline) + '</p>' +
+      '<div class="card-brief" aria-label="Project brief">' +
+        '<div><span class="k">Problem</span><p>' + esc(problem) + '</p></div>' +
+        '<div><span class="k">Solution</span><p>' + esc(solution) + '</p></div>' +
+      '</div>' +
       '<ul class="tags">' + it.tags.slice(0, 3).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' +
       '<a class="card-link" href="' + href + '">Read the breakdown' + ICON.arrow + '</a>' +
     '</article>';
@@ -599,8 +618,29 @@
   /* =============================================================
      PAGE: WORK — filter + sort
      ============================================================= */
+  function workSignalsHTML() {
+    var s = P.portfolioSignals || {};
+    var visitors = s.uniqueVisitors || {};
+    var clicks = s.clickThroughs || {};
+    var time = s.averageEngagedTime || {};
+    var notifications = s.notifications || {};
+    return '<section class="work-signals" aria-label="Portfolio signals">' +
+      '<div class="signal-item"><strong id="workVisitorCount">Loading...</strong><span>' + esc(visitors.label || "Unique visitors") + '</span><small>' + esc(visitors.source || "Live counter") + '</small></div>' +
+      '<div class="signal-item"><strong>' + esc(clicks.value || "Not connected") + '</strong><span>' + esc(clicks.label || "Outbound clicks") + '</span><small>' + esc(clicks.source || "Source not connected") + '</small></div>' +
+      '<div class="signal-item"><strong>' + esc(time.value || "Not connected") + '</strong><span>' + esc(time.label || "Average time per user") + '</span><small>' + esc(time.source || "Source not connected") + '</small></div>' +
+      '<div class="signal-note"><span class="k">' + esc(notifications.label || "Owner notifications") + '</span><p>' + esc(notifications.status === "planned" ? "Planned, not wired" : (notifications.status || "Not connected")) + '</p><small>' + esc(notifications.note || "A server-side endpoint is required before an agent can notify Rishi.") + '</small></div>' +
+    '</section>';
+  }
+
   function renderWork() {
     var state = { cat: param("cat") || "all", sort: "featured" };
+
+    var intro = '<div class="work-intro">' +
+      '<p class="eyebrow">Work / decision briefs</p>' +
+      '<h1>What I built, what I learned, and where the system stops</h1>' +
+      '<p>Every entry starts with the problem, names the solution, shows the proof, and then explains the architecture and trade-offs. You should not need to guess why a tool exists.</p>' +
+      workSignalsHTML() +
+    '</div>';
 
     var toolbar = '<div class="toolbar">' +
       '<div class="filters" role="group" aria-label="Filter by category">' +
@@ -623,7 +663,7 @@
     '<p class="result-count" id="count" role="status"></p>' +
     '<div class="card-grid" id="results"></div>';
 
-    $("#workBody").innerHTML = toolbar;
+    $("#workBody").innerHTML = intro + toolbar;
 
     function draw() {
       var list = workItems().filter(function (it) { return state.cat === "all" || it.category === state.cat; });
@@ -889,6 +929,45 @@
   /* =============================================================
      PAGE: BREAKDOWN detail
      ============================================================= */
+  function briefDetailHTML(it) {
+    var b = briefFor(it);
+    if (!b.problem && !b.solution) return "";
+
+    var proof = b.proof || {};
+    var architecture = b.architecture || {};
+    var deployment = b.deployment || {};
+    var pm = b.pm || {};
+    var tradeoffs = b.tradeoffs || [];
+    var components = architecture.components || [];
+    var proofLinks = proof.links || [];
+
+    return '<section class="project-brief" aria-label="Project brief">' +
+      '<div class="brief-grid brief-grid-two">' +
+        '<div class="brief-panel"><p class="eyebrow">Why this exists</p><h2>The problem</h2><p>' + esc(b.problem || "Not written yet.") + '</p></div>' +
+        '<div class="brief-panel"><p class="eyebrow">What I offer</p><h2>The solution</h2><p>' + esc(b.solution || "Not written yet.") + '</p></div>' +
+      '</div>' +
+      '<div class="brief-grid brief-grid-three">' +
+        '<div class="brief-panel"><h3>Proof today</h3><p class="brief-status">' + esc(proof.status || it.status) + '</p><p>' + esc(proof.note || "Open the links and the long breakdown for the evidence.") + '</p>' +
+          (proofLinks.length ? '<ul class="brief-links">' + proofLinks.map(function (lk) { return '<li><a href="' + esc(lk.url) + '" target="_blank" rel="noopener"><span class="k">' + esc(lk.k) + '</span>' + esc(lk.t) + ICON.arrow + '</a></li>'; }).join("") + '</ul>' : '') +
+        '</div>' +
+        '<div class="brief-panel"><h3>Where it runs</h3><p class="brief-status">' + esc(deployment.status || "Not stated") + '</p><p><strong>' + esc(deployment.provider || "Runtime not stated") + '</strong><br>' + esc(deployment.runtime || "") + '</p><p>' + esc(deployment.note || "") + '</p></div>' +
+        '<div class="brief-panel"><h3>How it works</h3><p>' + esc(architecture.summary || "Architecture is described in the detailed sections below.") + '</p>' +
+          (components.length ? '<ul class="brief-list">' + components.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join("") + '</ul>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="brief-grid brief-grid-two">' +
+        '<div class="brief-panel"><h3>Architecture trade-offs</h3>' + (tradeoffs.length ? '<ul class="brief-list">' + tradeoffs.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' : '<p>Trade-offs are recorded in the decision log below.</p>') + '</div>' +
+        '<div class="brief-panel"><h3>PM judgement</h3><p><strong>Decision:</strong> ' + esc(pm.decision || "See the decision log below.") + '</p><p><strong>Next:</strong> ' + esc(pm.next || "Validate the next riskiest assumption.") + '</p></div>' +
+      '</div>' +
+      '<div class="brief-connect"><div><p class="eyebrow">PM contact</p><h3>Connect with Rishi</h3><p>Want to discuss the product decision, architecture or trade-off?</p></div><div class="brief-connect-links">' +
+        '<a href="' + esc(P.person.linkedin) + '" target="_blank" rel="noopener">LinkedIn' + ICON.arrow + '</a>' +
+        (P.person.github ? '<a href="' + esc(P.person.github) + '" target="_blank" rel="noopener">GitHub' + ICON.arrow + '</a>' : '') +
+        '<a href="' + esc(P.person.resume) + '" target="_blank" rel="noopener">Résumé' + ICON.arrow + '</a>' +
+        '<a href="contact.html">Contact' + ICON.arrow + '</a>' +
+      '</div></div>' +
+    '</section>';
+  }
+
   function renderDetail() {
     var it = itemById(param("id"));
 
@@ -933,6 +1012,7 @@
 
       '<section class="section tight"><div class="wrap"><div class="detail-body">' +
         '<div class="detail-main">' +
+          briefDetailHTML(it) +
           (it.gate ?
             '<section><h2>The decision gate</h2>' +
               '<div class="gate">' +
@@ -998,9 +1078,15 @@
     var idx = [];
 
     workItems().forEach(function (it) {
+      var brief = briefFor(it);
       var text = [it.title, it.org, it.tagline, it.summary, it.industry, it.status]
         .concat(it.tags)
         .concat(it.gate ? [it.gate.rule, it.gate.pass, it.gate.fail] : [])
+        .concat(brief.problem || "")
+        .concat(brief.solution || "")
+        .concat(brief.architecture ? [brief.architecture.summary].concat(brief.architecture.components || []) : [])
+        .concat(brief.tradeoffs || [])
+        .concat(brief.pm ? [brief.pm.decision, brief.pm.next] : [])
         .concat(it.sections.map(function (s) {
           var b;
           if (s.type === "table")       b = s.head.join(" ") + " " + s.body.map(function (r) { return r.join(" "); }).join(" ");

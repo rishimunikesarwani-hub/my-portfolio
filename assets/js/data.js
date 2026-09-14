@@ -1734,6 +1734,96 @@ window.PORTFOLIO = {
      open with plain paragraphs before its first heading.
      ----------------------------------------------------------------- */
   posts: [
+    {
+      id: "the-enterprise-interface-is-becoming-an-agent",
+      date: "2026-09-13",
+      draft: false,
+      title: "The Future of UI Is Designing It for Observability",
+      heroEyebrow: "Research note / Enterprise AI",
+      heroThesis: "Agents change how work begins. Observability decides whether people can trust what happens next.",
+      summary:
+        "Voice is the first visible use case, but the deeper shift is enterprise software becoming callable through agents inside a context layer. The UI is changing from navigation to observability.",
+      tags: ["Enterprise AI", "Voice AI", "Agentic systems", "AI PM", "Context engineering"],
+      sections: [
+        {
+          h: "The interface is changing before it disappears",
+          type: "prose",
+          body: [
+            "In the last few months, I have heard versions of the same story from people working across contact centres, cloud platforms, enterprise search and databases. A voice agent is taking the first customer call. An employee can ask for a laptop instead of navigating a service catalogue. These can look like separate product categories, but I think they are converging on one change: <strong>the primary interface is shifting from navigation to intent.</strong>",
+            "Instead of people learning where each screen lives, the system is asked to understand the goal, retrieve the relevant context, take action, and show what it did. The deeper shift is enterprise software becoming callable through an agent living inside an enterprise context layer.",
+            "That is a more demanding idea than <em>chat is the new UI</em>. A chat box can hide the complexity of a system; it cannot make the system trustworthy. A real agent interface has to bring the important complexity back into view after the request: which customer context it used, which business rule it followed, which tool it called, what changed, and what still needs a human decision.",
+            "So I do not think UI is being replaced. I think its job is being redesigned. The agent becomes the path from intent to action. The UI becomes the place where that path is observable."
+          ]
+        },
+        {
+          h: "Voice is the first production wedge",
+          type: "prose",
+          body: [
+            "Voice makes this shift visible because a phone call begins with intent, not navigation. A customer does not want to find the right menu, ticket form, or internal team. They want their problem understood and moved forward. Voice is therefore the first serious UI test for agents: there is no dashboard to hide behind, only a spoken request and the quality of the resolution.",
+            "My judgment is that BPOs will not be transformed by a more human-sounding voice alone. They will be transformed when voice agents become the first resolution layer for known requests and the operation can observe everything that happens behind the call. The valuable interface is not only the conversation with the customer. It is also the operator view of intent, retrieved context, tool activity, handoff state, recurring failure, and the point at which a person had to step in.",
+            "That changes what happens next. Human teams will spend less time moving a routine request between queues and more time improving the agent’s decision path: finding where it misunderstood a customer, where context was missing, where a tool failed, and where a policy needs an explicit human override. Voice is not just an automation story. It is the cleanest early case of UI becoming an observable operating system for service.",
+            "The important shift is where the interface moves. It moves from the customer repeating choices to the operations team seeing the system’s choices. A supervisor should be able to see that an agent heard <em>billing dispute</em>, retrieved a particular account state, attempted a permitted action, and escalated because the policy threshold was exceeded. That is the UX that makes voice safe enough to grow beyond a demo.",
+            "I expect the strongest voice products to compete on this operational view, not only on latency or the realism of the voice. The agent that handles a routine call is useful. The system that shows a team exactly why the call was handled, transferred, or failed is the one a large service organisation can improve every week."
+          ]
+        },
+        {
+          h: "The context layer is the real enterprise race",
+          type: "prose",
+          body: [
+            "Most companies do not have a lack-of-data problem. They have a <em>usable-context</em> problem. Customer information lives in a CRM. The commercial rule sits in a policy document. The current case is in a ticketing system. A transaction is owned by an ERP. The important signal may be hiding in call transcripts, product logs, contracts, or a search index. Each system has different permissions, update timing, semantics, and failure modes.",
+            "This is why the phrase <em>build a context layer on top of the database</em> needs sharpening. A database can store facts; it cannot decide which facts this caller is allowed to see, whether the information is current, which policy takes precedence, or which action is permitted. Context is not a document dump. It is the interaction design for an agent.",
+            "For an agent to act inside a company, its context layer has to assemble identity and permissions, relevant live data, domain definitions, interaction state, policy constraints, approved tools, and an audit trail. The agent does not become the system of record. It becomes a controlled way to work across systems of record.",
+            "This is also why an enterprise agent is harder than a consumer assistant. The question is not only whether the response sounds useful. It is <strong>what was the agent allowed to know, do, and show at this exact moment?</strong>",
+            "The word <em>current</em> matters. A brilliant explanation built on yesterday’s inventory, the wrong customer tier, or a policy that was superseded this morning is not a small language-model mistake. It is a broken interface between the agent and the company. Context design has to make freshness, source, permission, and uncertainty visible at the moment they affect an action."
+          ]
+        },
+        {
+          h: "Google and Elastic are building agent harnesses around managed services",
+          type: "prose",
+          body: [
+            "The engineers I met from Google and Elastic made this more concrete for me. Both companies are taking managed services that customers already use and building the harness for customers to create their own agents around them.",
+            "Google’s ADK gives teams a way to define agent logic and connect it to approved enterprise capabilities through APIs, integration workflows, connectors, or Model Context Protocol tools. <a href=\"https://cloud.google.com/blog/products/ai-machine-learning/build-and-manage-multi-system-agents-with-vertex-ai\" target=\"_blank\" rel=\"noopener\">Google documents ADK together with managed deployment, evaluation, security and integration capabilities.</a> The product move is clear: customers should be able to build an agent for their own workflow rather than wait for a generic assistant to understand their company.",
+            "Elastic is making a parallel move from the data side. Its Agent Builder lets customers compose agents, skills, and tools over Elasticsearch data and make them available through a chat UI, APIs, MCP, or A2A. <a href=\"https://www.elastic.co/docs/explore-analyze/ai-features/elastic-agent-builder\" target=\"_blank\" rel=\"noopener\">That gives customers a harness for agents grounded in the managed search, observability, and security data they already trust.</a> The implication is not that Google or Elastic will build every customer workflow. It is that their managed services are becoming agent-ready foundations on which customers can build the interaction that fits their own requirements.",
+            "This is a notable platform shift. Yesterday, a managed service exposed data, an API, and a dashboard. Now it can also expose an agent-building surface: a way for customers to package their data, domain instructions, and approved actions into a worker. The value moves from giving every customer the same user interface to helping each customer create the interface for their own operating model."
+          ]
+        },
+        {
+          h: "UI is changing from navigation to observability",
+          type: "prose",
+          body: [
+            "Observability means a person can see what an agent understood, what it attempted, what evidence it used, and why it stopped or escalated. That is the new design brief for enterprise UI. Routine work can begin with a spoken or typed goal, but consequential work must become more visible—not less—once the agent is acting.",
+            "Observability cannot be an audit log buried after launch. It has to be designed into the surface: a readable timeline of the bounded task, the tools used, the policy outcome, the evidence behind a recommendation, and a clear point where a person can intervene. An agent cannot leave these moments behind a friendly transcript:"
+          ]
+        },
+        {
+          h: "The moments that must stay observable",
+          type: "list",
+          body: [
+            "A manager approving a credit exception needs the policy, the customer context, the proposed action, and the consequence of approval in one inspectable view.",
+            "A clinician reviewing a recommendation needs the evidence, uncertainty, and the option to correct the system before an action affects care.",
+            "A support lead handling a vulnerable customer needs the interaction history, the steps already attempted, and a clean route to take over.",
+            "An analyst investigating an incident needs the evidence trail, the tools used, and the ability to challenge the agent’s conclusion."
+          ]
+        },
+        {
+          h: "What I think happens next",
+          type: "prose",
+          body: [
+            "The winners will not be the products that remove every screen. They will be the products that remove meaningless navigation while designing better surfaces for supervision, correction, and learning. Their UI will show an agent’s state rather than only its final answer.",
+            "Voice agents are the first visible edge of this change. Context layers make the action possible. Agent harnesses from platforms such as Google and Elastic make the foundations available to customers. But observability is what turns all of that into an enterprise product people can actually rely on.",
+            "That is the future of UI I am watching: not a world with no interface, but a world where the interface is designed around the questions that matter after an agent starts working—<strong>what did it understand, what did it do, and can I intervene?</strong>",
+            "For an AI product manager, that is the strategic opportunity. Do not begin by asking how natural the agent sounds. Begin by deciding which work should become easier to start, which decisions must stay visible, and which user needs the power to interrupt the machine. That is how an agent interface earns the right to become the default way people work."
+          ]
+        },
+        {
+          h: "Research sources and evidence boundary",
+          type: "note",
+          body: [
+            "This is a research-backed point of view, not a claim that every enterprise, BPO, or database product has reached this state. Product capabilities are cited as examples, not market-wide benchmarks. Sources: <a href=\"https://cloud.google.com/blog/products/ai-machine-learning/build-and-manage-multi-system-agents-with-vertex-ai\" target=\"_blank\" rel=\"noopener\">Google Cloud on ADK and enterprise integration</a>; <a href=\"https://cloud.google.com/blog/topics/developers-practitioners/how-to-build-onboarding-agents-with-gemini-enterprise\" target=\"_blank\" rel=\"noopener\">Google Cloud’s grounded-workflow example</a>; and <a href=\"https://www.elastic.co/docs/explore-analyze/ai-features/elastic-agent-builder\" target=\"_blank\" rel=\"noopener\">Elastic Agent Builder documentation</a>."
+          ]
+        }
+      ]
+    },
     /* ---- These five product-sense cases render in Work under Case
        studies. They remain here to retain their publishing metadata,
        while site.js routes them through the Work renderer. ---- */

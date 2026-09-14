@@ -1147,6 +1147,106 @@ window.PORTFOLIO = {
         }
       ],
       related: ["alars", "investor-agent", "what-is-hot"]
+    },
+
+    /* ============ AGENTIC LOAN PROCESSING ============
+       A plain-language adaptation of the book case study cited below.
+       It is an architecture exercise, not a claim about a live lender. */
+    {
+      id: "agentic-loan-processing",
+      title: "The Loan Decision Is Not a Chatbot Problem",
+      org: "Loan Processing",
+      category: "breakdowns",
+      industry: "FinTech · Lending · Agentic AI",
+      year: "2026",
+      status: "Architecture case study",
+      effortDays: 0,
+      effortLabel: "Source-based architecture, not a live deployment",
+      tagline: "The agents can make a loan file ready. They should not make a consequential decision opaque.",
+      summary:
+        "A plain-language, product-led adaptation of an agentic loan-processing case study: specialist agents collect evidence, verify credit and policy conditions, assess risk, and build a reviewable decision packet. The architecture is the lesson; no bank implementation is being claimed.",
+      tags: ["FinTech", "Agentic architecture", "Decision gates", "Human approval", "Case study"],
+      stats: [
+        { v: "6", l: "specialist agent roles" },
+        { v: "3", l: "decision outcomes" },
+        { v: "1", l: "accountable approval boundary" }
+      ],
+      gate: {
+        rule: "Is the evidence complete, policy-checked and clear enough for an accountable person to approve?",
+        pass: "A reviewable decision packet reaches the authorised loan approver",
+        fail: "The case is paused, routed for clarification or declined with a recorded reason"
+      },
+      sections: [
+        {
+          h: "The problem is not loan paperwork. It is a chain of decisions.",
+          type: "prose",
+          body: [
+            "A loan application looks like a form until you follow what happens next. Identity has to be verified. Documents need to be read. Credit history has to be checked. Income, repayment capacity and the requested amount have to make sense together. Then policy, fraud and regulatory conditions have to be cleared before money moves.",
+            "Most of this work is not one giant intelligence problem. It is a sequence of small, high-consequence decisions. That is exactly where an agentic system becomes useful: not as a friendly chatbot that says <em>your loan is approved</em>, but as a coordinated operating system that gets the right evidence to the right decision-maker at the right moment.",
+            "The important distinction is easy to miss. Automation can make a decision faster. A good lending product must also make the decision inspectable: what evidence was used, what contradicted it, which rule applied, what failed, and who was allowed to decide. Speed without that trail is not product quality. It is faster uncertainty."
+          ]
+        },
+        {
+          h: "Six agents, each with a job that can be inspected",
+          type: "table",
+          head: ["Agent", "Owns", "Must hand off"],
+          body: [
+            ["Intake Agent", "Collects the application, documents and missing-information requests", "A complete, structured applicant record"],
+            ["Credit Check Agent", "Retrieves permitted credit data and flags anomalies", "Verified credit evidence and discrepancies"],
+            ["Risk Assessment Agent", "Assesses repayment risk against the loan context", "A risk view with reasons and uncertainty"],
+            ["Compliance Agent", "Checks identity, anti-money-laundering and applicable policy conditions", "A pass, fail or escalation result with rule evidence"],
+            ["Approval Agent", "Joins the evidence into a decision packet", "A recommendation, not an unexplainable black-box verdict"],
+            ["Disbursement or Appeals Agent", "Releases funds after approval, or offers an alternative route", "A recorded outcome and next action" ]
+          ]
+        },
+        {
+          h: "What makes it agentic, not just a workflow",
+          type: "prose",
+          body: [
+            "Each agent has the same basic anatomy. It has a goal, sees only the information needed for that goal, reasons over evidence and rules, plans its next step, uses approved tools, remembers useful state, and coordinates with the next agent. The book’s case study maps this anatomy directly onto lending: forms and documents become inputs; credit-bureau, CRM, KYC and OCR services become tools; short-term applicant context and longer-term risk patterns become memory; structured agent-to-agent tasks keep the hand-offs clear.",
+            "That does not mean every agent should have access to every system. The Intake Agent may ask for a missing payslip. The Credit Check Agent may query an approved bureau. The Compliance Agent may read the jurisdictional policy. But none of them needs a blank cheque to browse customer data or change the final record. Agentic does not mean unlimited. It means each step has an owner, a boundary and a trace."
+          ]
+        },
+        {
+          h: "The lifecycle: from application to a decision someone can defend",
+          type: "list",
+          body: [
+            "<strong>1. Intake:</strong> The customer submits an application. The Intake Agent extracts the information, stores the case context and asks only for what is missing.",
+            "<strong>2. Credit verification:</strong> The Credit Check Agent calls approved services, validates the response and surfaces mismatches instead of smoothing them over.",
+            "<strong>3. Risk view:</strong> The Risk Assessment Agent brings credit, income, loan amount and repayment context together. It produces a reasoned assessment, not a magic number without a story.",
+            "<strong>4. Policy and compliance:</strong> The Compliance Agent checks the conditions that cannot be negotiated away. A missing or failed check stops the journey; it does not become a paragraph the next agent ignores.",
+            "<strong>5. Approval boundary:</strong> The Approval Agent builds the full packet: evidence, contradictions, risk view, policy results and recommended outcome. An authorised person owns consequential exceptions and the final release rule.",
+            "<strong>6. Outcome:</strong> Funds are disbursed only after the approval gate. A rejection can instead trigger an alternative-product or appeal path, with a clear recorded reason."
+          ]
+        },
+        {
+          h: "Where the system must stop deciding",
+          type: "table",
+          head: ["Situation", "System response", "Why"],
+          body: [
+            ["Evidence is complete and policy conditions pass", "Prepare a recommendation and route it through the authorised approval path", "A recommendation is useful; accountable authority still matters"],
+            ["Income, identity or credit data conflicts", "Pause and request clarification or human review", "The system should expose contradictions, not average them away"],
+            ["A policy, fraud or compliance rule fails", "Stop the case and log the condition", "Hard constraints belong outside model persuasion"],
+            ["The customer needs a different product", "Offer a permitted alternative or appeals route", "A decline is an outcome, not the end of product thinking"]
+          ]
+        },
+        {
+          h: "My product judgement",
+          type: "note",
+          body: [
+            "The seductive version of this story is: five agents approve loans while a human drinks coffee. I do not think that is the product to build. Lending is where a system’s mistakes become somebody’s debt, denied opportunity or regulatory problem. The better ambition is more demanding: remove repetitive work, surface the exact evidence and contradiction, reduce turnaround time, and leave the decision legible enough that an accountable person can challenge it.",
+            "<strong>The agents should make the file ready. The institution must still make the decision accountable.</strong>"
+          ]
+        },
+        {
+          h: "Source and evidence boundary",
+          type: "note",
+          body: [
+            "This is an original, plain-language adaptation of the illustrative <em>Agentic Loan Processing System</em> case study in <em>Agentic Architectural Patterns for Building Multi-Agent Systems</em> by Ali Arsanjani and Juan Pablo Bustos (Packt, 2026), PDF pages 168–173. It preserves the architecture’s specialist-agent flow while adding an explicit product boundary around human accountability. It is not a bank deployment, customer case study, legal interpretation or financial recommendation."
+          ]
+        }
+      ],
+      related: ["signalwise-mvp", "eval-framework", "ai-agents-need-control-systems"]
     }
   ],
 
@@ -1299,6 +1399,15 @@ window.PORTFOLIO = {
       tradeoffs: ["Debate can surface better decisions, but costs more tokens than a straight pipeline.", "A hard stop prevents endless discussion, but a weak first question can end with an incomplete answer."],
       pm: { decision: "Make stopping a product rule, not an accidental model behaviour.", next: "Build one narrow sprint mode and measure whether users accept the resulting decision brief." },
       deployment: { status: "Not deployed", provider: "Design artifact", runtime: "No application code", note: "The portfolio intentionally says this is still on paper." }
+    },
+    "agentic-loan-processing": {
+      problem: "A loan journey requires connected evidence checks, risk assessment, policy controls and an accountable outcome; a fluent chat reply cannot safely replace that chain.",
+      solution: "Specialist agents prepare a structured, reviewable decision packet while deterministic policy checks and an authorised approval boundary retain control over consequential outcomes.",
+      proof: { status: "Architecture case study", note: "An original plain-language adaptation of an illustrative book case study; no lender integration, customer data or live decisioning is claimed." },
+      architecture: { summary: "Intake, credit, risk and compliance agents use scoped tools and structured hand-offs to assemble evidence for approval, disbursement or an alternate route.", components: ["Intake Agent", "Credit Check Agent", "Risk Assessment Agent", "Compliance Agent", "Approval boundary", "Disbursement or Appeals Agent"] },
+      tradeoffs: ["Specialist agents clarify ownership and evidence, but introduce hand-offs that must be monitored and tested.", "More automation can reduce turnaround time, but high-consequence lending decisions need explicit authority, policy checks and a defensible audit trail."],
+      pm: { decision: "Use agents to prepare and explain the decision; keep consequential approval authority explicit and accountable.", next: "Define a golden set of complete, incomplete, conflicting and policy-fail applications before any live integration." },
+      deployment: { status: "Architecture case study only", provider: "Portfolio page", runtime: "Static analysis", note: "No lending system is connected, reproduced or claimed." }
     }
   },
 

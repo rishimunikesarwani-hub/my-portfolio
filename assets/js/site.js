@@ -283,6 +283,72 @@
       s += dgNote(25, 372, 1070, 46,
         "Nothing crosses a dashed line. The catch: an idle machine still costs them money.", DG.violet);
       return s + "</svg>";
+    },
+
+    /* 5 - the control plane between intent and action */
+    "control-plane": function (alt) {
+      var s = dgOpen(1120, 430, alt);
+      s += dgBox(20, 62, 135, 72, { label: ["Request"], sub: "prompt + files", accent: DG.cyan, dashed: true, n: 1 });
+      s += dgBox(205, 62, 160, 72, { label: ["Input boundary"], sub: "untrusted by default", accent: DG.amber, n: 2 });
+      s += dgBox(415, 62, 160, 72, { label: ["Policy engine"], sub: "rules + thresholds", accent: DG.cyan, n: 3 });
+      s += dgBox(625, 62, 160, 72, { label: ["Agent runtime"], sub: "LLM + tools", accent: DG.violet, n: 4 });
+      s += dgBox(835, 62, 265, 72, { label: ["Action boundary"], sub: "email / API / records", accent: DG.amber, n: 5 });
+      s += dgArrow([[155, 98], [205, 98]], "ingest", { ly: 89 });
+      s += dgArrow([[365, 98], [415, 98]], "validate", { ly: 89 });
+      s += dgArrow([[575, 98], [625, 98]], "permit", { ly: 89 });
+      s += dgArrow([[785, 98], [835, 98]], "propose", { ly: 89 });
+
+      s += dgStore(210, 235, 175, 90, { label: ["Audit trail"], sub: "append-only evidence", accent: DG.amber });
+      s += dgStore(470, 235, 175, 90, { label: ["Telemetry"], sub: "trace / cost / latency", accent: DG.blue });
+      s += dgStore(730, 235, 175, 90, { label: ["Eval set"], sub: "failures become tests", accent: DG.violet });
+      s += dgArrow([[285, 134], [285, 235]], "record", { lx: 325, ly: 190 });
+      s += dgArrow([[705, 134], [555, 235]], "trace", { lx: 670, ly: 192 });
+      s += dgArrow([[967, 134], [817, 235]], "outcome", { lx: 925, ly: 192 });
+      s += dgArrow([[645, 280], [730, 280]], "sample", { ly: 271 });
+      s += dgArrow([[817, 235], [817, 178], [495, 178], [495, 134]], "improve policy", { lx: 656, ly: 169, both: true, dashed: true });
+      return s + "</svg>";
+    },
+
+    /* 6 - deterministic first, semantic second */
+    "scan-pipeline": function (alt) {
+      var s = dgOpen(1120, 360, alt);
+      s += dgBox(22, 70, 160, 78, { label: ["Untrusted input"], sub: "prompt / file / code", accent: DG.cyan, dashed: true, n: 1 });
+      s += dgBox(245, 70, 190, 78, { label: ["Static scan"], sub: "regex / keywords", accent: DG.amber, n: 2 });
+      s += dgBox(498, 70, 190, 78, { label: ["Semantic pass"], sub: "LLM / context", accent: DG.violet, n: 3 });
+      s += dgBox(751, 70, 150, 78, { label: ["Risk gate"], sub: "allow / block", accent: DG.cyan, n: 4 });
+      s += dgBox(964, 70, 135, 78, { label: ["Action"], sub: "tool call", accent: DG.amber, n: 5 });
+      s += dgArrow([[182, 109], [245, 109]], "fast", { ly: 100 });
+      s += dgArrow([[435, 109], [498, 109]], "clean?", { ly: 100 });
+      s += dgArrow([[688, 109], [751, 109]], "risk", { ly: 100 });
+      s += dgArrow([[901, 109], [964, 109]], "permit", { ly: 100 });
+      s += dgStore(275, 230, 170, 72, { label: ["Finding"], sub: "rule / severity", accent: DG.amber });
+      s += dgStore(700, 230, 170, 72, { label: ["Audit log"], sub: "actor / decision", accent: DG.cyan });
+      s += dgArrow([[340, 148], [340, 230]], "match", { lx: 380, ly: 190 });
+      s += dgArrow([[826, 148], [785, 230]], "write", { lx: 860, ly: 190 });
+      s += dgArrow([[785, 230], [785, 185], [826, 148]], "every branch", { lx: 905, ly: 178, dashed: true });
+      s += dgNote(22, 320, 1077, 28,
+        "Static rules give precision. The semantic pass supplies context. Together they reduce both misses and false alarms.", DG.violet);
+      return s + "</svg>";
+    },
+
+    /* 7 - from production trace to a reversible change */
+    "feedback-loop": function (alt) {
+      var s = dgOpen(1120, 390, alt);
+      s += dgStore(32, 68, 170, 82, { label: ["Trace"], sub: "what happened", accent: DG.blue, n: 1 });
+      s += dgBox(260, 68, 170, 82, { label: ["Evaluator"], sub: "KPI / threshold", accent: DG.cyan, n: 2 });
+      s += dgBox(488, 68, 170, 82, { label: ["Hypothesis"], sub: "change one thing", accent: DG.amber, n: 3 });
+      s += dgBox(716, 68, 170, 82, { label: ["Human gate"], sub: "approve / reject", accent: DG.violet, n: 4 });
+      s += dgBox(944, 68, 145, 82, { label: ["Release"], sub: "versioned", accent: DG.cyan, n: 5 });
+      s += dgArrow([[202, 109], [260, 109]], "measure", { ly: 100 });
+      s += dgArrow([[430, 109], [488, 109]], "miss", { ly: 100 });
+      s += dgArrow([[658, 109], [716, 109]], "propose", { ly: 100 });
+      s += dgArrow([[886, 109], [944, 109]], "ship?", { ly: 100 });
+      s += dgArrow([[1017, 150], [1017, 250], [117, 250], [117, 150]], "observe again", { lx: 560, ly: 241, both: true, dashed: true });
+      s += dgStore(340, 285, 440, 62, { label: ["Eval history"], sub: "old version stays available for rollback", accent: DG.violet });
+      s += dgArrow([[573, 150], [573, 285]], "compare", { lx: 620, ly: 220 });
+      s += dgNote(32, 360, 1057, 28,
+        "Self-improvement is safe only when it is tested, approved, versioned and reversible.", DG.amber);
+      return s + "</svg>";
     }
   };
 
@@ -704,6 +770,125 @@
      `h` is optional. Work items always carry one, so their output is
      unchanged; posts use headless sections to open with plain prose.
      ============================================================= */
+  var REGEX_LIBRARY = [
+    {
+      name: "Prompt injection",
+      pattern: "/ignore\\s+(all\\s+)?previous\\s+instructions/i",
+      use: "Flags attempts to replace the system or developer instructions."
+    },
+    {
+      name: "System override",
+      pattern: "/\\bsystem\\s*:\\s*(override|new\\s+instructions?)\\b/i",
+      use: "Finds fake system messages embedded in user-controlled text."
+    },
+    {
+      name: "Identity spoofing",
+      pattern: "/\\b(?:you\\s+are\\s+now|act\\s+as)\\s+(?:an?\\s+)?(?:admin|root|superuser)\\b/i",
+      use: "Detects attempts to make the agent adopt a privileged identity."
+    },
+    {
+      name: "Shell or tool hijacking",
+      pattern: "/\\b(?:execute|run)\\s+(?:shell|cmd|bash)\\b/i",
+      use: "Catches direct instructions to execute a command interpreter."
+    },
+    {
+      name: "Destructive command",
+      pattern: "/\\b(?:rm\\s+-rf|curl\\s+https?:\\/\\/|wget\\s+https?:\\/\\/)\\b/i",
+      use: "Flags common destructive or exfiltration-shaped command patterns."
+    },
+    {
+      name: "Script injection",
+      pattern: "/<script\\b[^>]*>/i",
+      use: "Finds script tags that should never pass through as trusted input."
+    },
+    {
+      name: "Template injection",
+      pattern: "/\\{\\{[\\s\\S]*?\\}\\}/i",
+      use: "Flags template expressions that may be interpreted downstream."
+    },
+    {
+      name: "Insecure URL",
+      pattern: "/\\bhttp:\\/\\/[^\\s]+/i",
+      use: "Finds plain HTTP links that should be reviewed or upgraded to HTTPS."
+    }
+  ];
+
+  function regexLibraryHTML() {
+    return '<div class="popover-head"><div><span class="popover-kicker">STATIC SCAN / REGEX LIBRARY</span><h3>Patterns worth starting with</h3></div>' +
+      '<button class="popover-close" type="button" aria-label="Close regex library">×</button></div>' +
+      '<p class="popover-intro">A small, explainable first-pass library for agent input and tool-boundary checks.</p>' +
+      '<div class="regex-list">' + REGEX_LIBRARY.map(function (r) {
+        return '<article class="regex-item"><div class="regex-item-top"><strong>' + esc(r.name) + '</strong><code>' + esc(r.pattern) + '</code></div><p>' + esc(r.use) + '</p></article>';
+      }).join('') + '</div>' +
+      '<p class="popover-warning"><strong>Important:</strong> regexes catch known shapes. Pair them with schema validation, permissions, rate limits and a semantic review; do not treat a clean scan as proof that input is safe.</p>';
+  }
+
+  function regoPopupHTML() {
+    return '<div class="popover-head"><div><span class="popover-kicker">POLICY ENGINE / REGO</span><h3>Rules as data, not scattered code</h3></div>' +
+      '<button class="popover-close" type="button" aria-label="Close Rego explanation">&times;</button></div>' +
+      '<p class="popover-intro">Rego is a declarative policy language used by Open Policy Agent (OPA) to define rules such as “deny an action when sensitive data reaches a public API.” You describe the rule and expected result; the policy engine evaluates it.</p>' +
+      '<pre class="rego-example"><code>package agent.security\n\ndefault allow := false\n\nallow if {\n  input.data_class != "sensitive"\n  input.destination == "internal"\n}</code></pre>' +
+      '<p class="popover-warning"><strong>ELI10:</strong> Rego is a computer-enforced rulebook: you write what must be true, and OPA decides whether the action passes.</p>';
+  }
+
+  function popoverHTML(kind) {
+    return kind === 'rego' ? regoPopupHTML() : regexLibraryHTML().replace(/>[^<]{1,2}<\/button><\/div>/, '>&times;</button></div>');
+  }
+
+  function wireTermPopovers() {
+    var buttons = $$('.term-popover-trigger');
+    if (!buttons.length) return;
+    var activeButton = null;
+    var panel = null;
+
+    function close() {
+      if (panel) panel.remove();
+      panel = null;
+      if (activeButton) activeButton.setAttribute('aria-expanded', 'false');
+      activeButton = null;
+    }
+
+    function place() {
+      if (!panel || !activeButton) return;
+      var anchor = activeButton.getBoundingClientRect();
+      var width = Math.min(560, window.innerWidth - 32);
+      var left = Math.max(16, Math.min(anchor.left, window.innerWidth - width - 16));
+      panel.style.width = width + 'px';
+      panel.style.left = left + 'px';
+      var top = anchor.bottom + 12;
+      if (top + panel.offsetHeight > window.innerHeight - 16) top = Math.max(16, anchor.top - panel.offsetHeight - 12);
+      panel.style.top = top + 'px';
+    }
+
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function (event) {
+        event.stopPropagation();
+        if (activeButton === button) { close(); return; }
+        close();
+        activeButton = button;
+        activeButton.setAttribute('aria-expanded', 'true');
+        panel = document.createElement('aside');
+        panel.className = 'term-popover';
+        panel.setAttribute('role', 'dialog');
+        var kind = activeButton.dataset.popover || 'regex-library';
+        panel.setAttribute('aria-label', kind === 'rego' ? 'Rego explanation' : 'Regex library');
+        panel.innerHTML = popoverHTML(kind);
+        document.body.appendChild(panel);
+        panel.querySelector('.popover-close').addEventListener('click', close);
+        place();
+      });
+    });
+
+    document.addEventListener('click', function (event) {
+      if (panel && !panel.contains(event.target) && event.target !== activeButton) close();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && panel) { var button = activeButton; close(); if (button) button.focus(); }
+    });
+    window.addEventListener('resize', place);
+    window.addEventListener('scroll', place, { passive: true });
+  }
+
   function sectionsHTML(sections) {
     if (!sections || !sections.length) return "";
     return sections.map(function (s) {
@@ -711,6 +896,15 @@
       if (s.type === "prose") inner = s.body.map(function (t) { return "<p>" + t + "</p>"; }).join("");
       else if (s.type === "list") inner = "<ul>" + s.body.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>";
       else if (s.type === "note") inner = '<div class="note-block">' + s.body.map(function (t) { return "<p>" + t + "</p>"; }).join("") + "</div>";
+      else if (s.type === "code") inner = '<pre class="code-block"><code>' + esc(s.body) + '</code></pre>';
+      else if (s.type === "compare") inner = '<div class="compare-grid">' + s.body.map(function (c) {
+        return '<article class="compare-card ' + esc(c.tone || '') + '">' +
+          '<div class="compare-label">' + esc(c.label) + '</div>' +
+          '<h3>' + esc(c.title) + '</h3>' +
+          '<p>' + c.summary + '</p>' +
+          (c.items && c.items.length ? '<ul>' + c.items.map(function (i) { return '<li>' + i + '</li>'; }).join('') + '</ul>' : '') +
+        '</article>';
+      }).join('') + '</div>';
       else if (s.type === "figure") {
         inner = s.body.map(function (f) {
           var draw = FIGURE[f.key];
@@ -771,7 +965,9 @@
       var text;
       if (s.type === "table")       text = s.head.join(" ") + " " + s.body.map(function (r) { return r.join(" "); }).join(" ");
       else if (s.type === "figure") text = s.body.map(function (f) { return f.name + " " + f.cap; }).join(" ");
-      else                          text = s.body.join(" ");
+      else if (s.type === "compare") text = s.body.map(function (c) { return [c.label, c.title, c.summary].concat(c.items || []).join(" "); }).join(" ");
+      else if (s.type === "code")    text = s.body;
+      else                            text = s.body.join(" ");
       return n + String(text).replace(/<[^>]+>/g, " ").split(/\s+/).length;
     }, 0);
     return Math.max(1, Math.round(words / 200));
@@ -865,6 +1061,8 @@
   function renderPost() {
     var p = postById(param("id"));
 
+    $("#postBody").classList.remove("control-post");
+
     if (!p) {
       document.title = "Not found — " + P.person.name;
       buildCrumbs([{ label: "Blog", href: "blog.html" }, { label: "Not found" }]);
@@ -878,26 +1076,44 @@
     document.title = p.title + " — Blog — " + P.person.name;
     buildCrumbs([{ label: "Blog", href: "blog.html" }, { label: p.title }]);
 
+    var isControlPost = p.id === "ai-agents-need-control-systems";
+    if (isControlPost) $("#postBody").classList.add("control-post");
+
     var posts = allPosts();
     var idx   = posts.findIndex(function (x) { return x.id === p.id; });
     var newer = idx > 0 ? posts[idx - 1] : null;
     var older = idx < posts.length - 1 ? posts[idx + 1] : null;
 
-    $("#postBody").innerHTML =
-      '<section class="post-hero"><div class="wrap">' +
-        '<div class="post-meta">' +
-          '<span>' + esc(postDate(p.date)) + '</span>' +
-          '<span class="sep" aria-hidden="true">/</span>' +
-          '<span>' + postMinutes(p) + ' min read</span>' +
-        '</div>' +
-        '<h1>' + esc(p.title) + '</h1>' +
-        (p.showHeroIntro !== false
-          ? '<p class="post-hero-sum">' + esc(p.summary) + '</p>' +
-            (p.tags && p.tags.length
-              ? '<div class="post-tags">' + p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("") + '</div>'
-              : '')
-          : '') +
-      '</div></section>' +
+    var hero = isControlPost
+      ? '<section class="post-hero control-hero"><div class="wrap">' +
+          '<div class="control-hero-copy">' +
+            '<div class="post-meta"><span>' + esc(postDate(p.date)) + '</span><span class="sep" aria-hidden="true">/</span><span>' + postMinutes(p) + ' min read</span></div>' +
+            '<p class="eyebrow plain">' + esc(p.heroEyebrow || "Technical note / Agent control systems") + '</p>' +
+            '<h1>' + esc(p.title) + '</h1>' +
+            '<p class="post-hero-sum">' + esc(p.summary) + '</p>' +
+            (p.tags && p.tags.length ? '<div class="post-tags">' + p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("") + '</div>' : '') +
+          '</div>' +
+          '<aside class="control-hero-panel" aria-label="Control system thesis">' +
+            '<div class="panel-kicker">THE THESIS</div>' +
+            '<p>' + esc(p.heroThesis || "Bound model autonomy with policy, budgets and evidence.") + '</p>' +
+          '</aside>' +
+        '</div></section>'
+      : '<section class="post-hero"><div class="wrap">' +
+          '<div class="post-meta">' +
+            '<span>' + esc(postDate(p.date)) + '</span>' +
+            '<span class="sep" aria-hidden="true">/</span>' +
+            '<span>' + postMinutes(p) + ' min read</span>' +
+          '</div>' +
+          '<h1>' + esc(p.title) + '</h1>' +
+          (p.showHeroIntro !== false
+            ? '<p class="post-hero-sum">' + esc(p.summary) + '</p>' +
+              (p.tags && p.tags.length
+                ? '<div class="post-tags">' + p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join("") + '</div>'
+                : '')
+            : '') +
+        '</div></section>';
+
+    $("#postBody").innerHTML = hero +
 
       '<section class="section tight"><div class="wrap">' +
         '<article class="post-prose">' + sectionsHTML(p.sections) + '</article>' +
@@ -924,6 +1140,7 @@
       '</div></section>';
 
     wireShare();
+    wireTermPopovers();
   }
 
   /* =============================================================

@@ -1749,50 +1749,46 @@ window.PORTFOLIO = {
           h: "The interface is changing before it disappears",
           type: "prose",
           body: [
-            "In the last few months, I have heard versions of the same story from people working across contact centres, cloud platforms, enterprise search and databases. A voice agent is taking the first customer call. An employee can ask for a laptop instead of navigating a service catalogue. These can look like separate product categories, but I think they are converging on one change: <strong>the primary interface is shifting from navigation to intent.</strong>",
-            "Instead of people learning where each screen lives, the system is asked to understand the goal, retrieve the relevant context, take action, and show what it did. The deeper shift is enterprise software becoming callable through an agent living inside an enterprise context layer.",
-            "That is a more demanding idea than <em>chat is the new UI</em>. A chat box can hide the complexity of a system; it cannot make the system trustworthy. A real agent interface has to bring the important complexity back into view after the request: which customer context it used, which business rule it followed, which tool it called, what changed, and what still needs a human decision.",
-            "So I do not think UI is being replaced. I think its job is being redesigned. The agent becomes the path from intent to action. The UI becomes the place where that path is observable."
+            "Across contact centres, cloud platforms, enterprise search and databases, I keep hearing the same story: a voice agent takes the first customer call; an employee asks for a laptop instead of navigating a service catalogue. <strong>The primary interface is shifting from navigation to intent.</strong>",
+            "Instead of people learning where each screen lives, the system is asked to understand the goal, retrieve relevant context, take action, and show what it did. The deeper shift is enterprise software becoming callable through an agent inside an enterprise context layer.",
+            "That is more demanding than <em>chat is the new UI</em>. A chat box can hide complexity; it cannot make an action trustworthy. UI is not being replaced. Its job is being redesigned: the agent moves from intent to action, while the UI makes that path observable."
           ]
         },
         {
           h: "Voice is the first production wedge",
           type: "prose",
           body: [
-            "Voice makes this shift visible because a phone call begins with intent, not navigation. A customer does not want to find the right menu, ticket form, or internal team. They want their problem understood and moved forward. Voice is therefore the first serious UI test for agents: there is no dashboard to hide behind, only a spoken request and the quality of the resolution.",
-            "My judgment is that BPOs will not be transformed by a more human-sounding voice alone. They will be transformed when voice agents become the first resolution layer for known requests and the operation can observe everything that happens behind the call. The valuable interface is not only the conversation with the customer. It is also the operator view of intent, retrieved context, tool activity, handoff state, recurring failure, and the point at which a person had to step in.",
-            "That changes what happens next. Human teams will spend less time moving a routine request between queues and more time improving the agent’s decision path: finding where it misunderstood a customer, where context was missing, where a tool failed, and where a policy needs an explicit human override. Voice is not just an automation story. It is the cleanest early case of UI becoming an observable operating system for service.",
-            "The important shift is where the interface moves. It moves from the customer repeating choices to the operations team seeing the system’s choices. A supervisor should be able to see that an agent heard <em>billing dispute</em>, retrieved a particular account state, attempted a permitted action, and escalated because the policy threshold was exceeded. That is the UX that makes voice safe enough to grow beyond a demo.",
-            "I expect the strongest voice products to compete on this operational view, not only on latency or the realism of the voice. The agent that handles a routine call is useful. The system that shows a team exactly why the call was handled, transferred, or failed is the one a large service organisation can improve every week."
+            "Voice is the first serious UI test because a phone call begins with intent, not navigation. A customer does not want the right menu or ticket form; they want the problem moved forward. There is no dashboard to hide behind, only the spoken request and the quality of the resolution.",
+            "That changes the work of the BPO as well. The valuable operating surface is no longer only a queue of calls and average handling time. It is the ability to see which intents are safely automated, where the agent is repeatedly confused, which handoffs are justified, and what must be fixed in policy, knowledge or workflow.",
+            "BPOs will not be transformed by a more human-sounding voice alone. The shift comes when voice agents become the first resolution layer for known requests and the operation can see intent, retrieved context, tool activity, handoff state, and recurring failure. The interface moves from customers repeating choices to teams inspecting the system’s choices."
           ]
         },
         {
           h: "The context layer is the real enterprise race",
           type: "prose",
           body: [
-            "Most companies do not have a lack-of-data problem. They have a <em>usable-context</em> problem. Customer information lives in a CRM. The commercial rule sits in a policy document. The current case is in a ticketing system. A transaction is owned by an ERP. The important signal may be hiding in call transcripts, product logs, contracts, or a search index. Each system has different permissions, update timing, semantics, and failure modes.",
-            "This is why the phrase <em>build a context layer on top of the database</em> needs sharpening. A database can store facts; it cannot decide which facts this caller is allowed to see, whether the information is current, which policy takes precedence, or which action is permitted. Context is not a document dump. It is the interaction design for an agent.",
-            "For an agent to act inside a company, its context layer has to assemble identity and permissions, relevant live data, domain definitions, interaction state, policy constraints, approved tools, and an audit trail. The agent does not become the system of record. It becomes a controlled way to work across systems of record.",
-            "This is also why an enterprise agent is harder than a consumer assistant. The question is not only whether the response sounds useful. It is <strong>what was the agent allowed to know, do, and show at this exact moment?</strong>",
-            "The word <em>current</em> matters. A brilliant explanation built on yesterday’s inventory, the wrong customer tier, or a policy that was superseded this morning is not a small language-model mistake. It is a broken interface between the agent and the company. Context design has to make freshness, source, permission, and uncertainty visible at the moment they affect an action."
+            "Most companies do not have a lack-of-data problem; they have a <em>usable-context</em> problem. Customer data, policy, tickets, transactions, logs and contracts live in different systems with different permissions and update timing.",
+            "A database stores facts. It cannot decide what this caller may see, whether the information is current, which policy wins, or which action is permitted. Context is not a document dump; it is the interaction design for an agent.",
+            "This is why enterprise agents are harder than public chatbots. A helpful answer is not enough when the next step could expose an account record, issue a refund, change an entitlement or create a case. The system needs the right context at the right moment, with a boundary around what it may retrieve, recommend and execute.",
+            "The context layer assembles identity, permissions, live data, interaction state, policy constraints, approved tools and an audit trail. The agent is not the system of record. It is a controlled way to work across systems of record."
           ]
         },
         {
           h: "Google and Elastic are building agent harnesses around managed services",
           type: "prose",
           body: [
-            "The engineers I met from Google and Elastic made this more concrete for me. Both companies are taking managed services that customers already use and building the harness for customers to create their own agents around them.",
-            "Google’s ADK gives teams a way to define agent logic and connect it to approved enterprise capabilities through APIs, integration workflows, connectors, or Model Context Protocol tools. <a href=\"https://cloud.google.com/blog/products/ai-machine-learning/build-and-manage-multi-system-agents-with-vertex-ai\" target=\"_blank\" rel=\"noopener\">Google documents ADK together with managed deployment, evaluation, security and integration capabilities.</a> The product move is clear: customers should be able to build an agent for their own workflow rather than wait for a generic assistant to understand their company.",
-            "Elastic is making a parallel move from the data side. Its Agent Builder lets customers compose agents, skills, and tools over Elasticsearch data and make them available through a chat UI, APIs, MCP, or A2A. <a href=\"https://www.elastic.co/docs/explore-analyze/ai-features/elastic-agent-builder\" target=\"_blank\" rel=\"noopener\">That gives customers a harness for agents grounded in the managed search, observability, and security data they already trust.</a> The implication is not that Google or Elastic will build every customer workflow. It is that their managed services are becoming agent-ready foundations on which customers can build the interaction that fits their own requirements.",
-            "This is a notable platform shift. Yesterday, a managed service exposed data, an API, and a dashboard. Now it can also expose an agent-building surface: a way for customers to package their data, domain instructions, and approved actions into a worker. The value moves from giving every customer the same user interface to helping each customer create the interface for their own operating model."
+            "The engineers I met from Google and Elastic made this concrete. Both are building harnesses around managed services so customers can create agents for their own requirements.",
+            "The important product point is not that every company will use the same agent framework. It is that infrastructure vendors are treating agents as a first-class way to consume their service. The dashboard, search screen and API remain; the new layer lets a customer express an outcome and govern the path to it.",
+            "Google’s ADK lets teams define agent logic and connect it to approved capabilities through APIs, integration workflows, connectors and MCP tools. <a href=\"https://cloud.google.com/blog/products/ai-machine-learning/build-and-manage-multi-system-agents-with-vertex-ai\" target=\"_blank\" rel=\"noopener\">Google documents ADK with managed deployment, evaluation, security and integration.</a>",
+            "Elastic makes the parallel move from data: Agent Builder lets customers compose agents, skills and tools over Elasticsearch data through chat, APIs, MCP or A2A. <a href=\"https://www.elastic.co/docs/explore-analyze/ai-features/elastic-agent-builder\" target=\"_blank\" rel=\"noopener\">Their managed services are becoming agent-ready foundations, not just dashboards and APIs.</a>"
           ]
         },
         {
           h: "UI is changing from navigation to observability",
           type: "prose",
           body: [
-            "Observability means a person can see what an agent understood, what it attempted, what evidence it used, and why it stopped or escalated. That is the new design brief for enterprise UI. Routine work can begin with a spoken or typed goal, but consequential work must become more visible—not less—once the agent is acting.",
-            "Observability cannot be an audit log buried after launch. It has to be designed into the surface: a readable timeline of the bounded task, the tools used, the policy outcome, the evidence behind a recommendation, and a clear point where a person can intervene. An agent cannot leave these moments behind a friendly transcript:"
+            "A final answer alone is a poor control surface. A person needs enough evidence to judge whether the agent is acting on the right customer, the right source and the right constraint. That is different from exposing internal reasoning: the product should reveal accountable actions and evidence, not a private stream of thought.",
+            "Observability means seeing what an agent understood, attempted, used as evidence, and why it stopped or escalated. It must be designed into the surface as a readable task timeline, tool record, policy outcome and intervention point—not buried in an audit log."
           ]
         },
         {
@@ -1809,17 +1805,16 @@ window.PORTFOLIO = {
           h: "What I think happens next",
           type: "prose",
           body: [
-            "The winners will not be the products that remove every screen. They will be the products that remove meaningless navigation while designing better surfaces for supervision, correction, and learning. Their UI will show an agent’s state rather than only its final answer.",
-            "Voice agents are the first visible edge of this change. Context layers make the action possible. Agent harnesses from platforms such as Google and Elastic make the foundations available to customers. But observability is what turns all of that into an enterprise product people can actually rely on.",
-            "That is the future of UI I am watching: not a world with no interface, but a world where the interface is designed around the questions that matter after an agent starts working—<strong>what did it understand, what did it do, and can I intervene?</strong>",
-            "For an AI product manager, that is the strategic opportunity. Do not begin by asking how natural the agent sounds. Begin by deciding which work should become easier to start, which decisions must stay visible, and which user needs the power to interrupt the machine. That is how an agent interface earns the right to become the default way people work."
+            "There is a practical sequence here. Start with a bounded, high-volume intent where success and safe escalation can be measured. Connect only the approved data and tools. Design the human handoff before automation expands. Then use the trace of real work to strengthen the context layer, the policy boundaries and the interface itself.",
+            "The winners will not remove every screen. They will remove meaningless navigation and design stronger surfaces for supervision, correction and learning. Their UI will show an agent’s state, not only its final answer.",
+            "Voice agents are the visible edge; context makes action possible; agent harnesses make the foundation available. Observability turns all three into an enterprise product people can rely on. The future UI is built around three questions: <strong>what did it understand, what did it do, and can I intervene?</strong>"
           ]
         },
         {
           h: "Research sources and evidence boundary",
           type: "note",
           body: [
-            "This is a research-backed point of view, not a claim that every enterprise, BPO, or database product has reached this state. Product capabilities are cited as examples, not market-wide benchmarks. Sources: <a href=\"https://cloud.google.com/blog/products/ai-machine-learning/build-and-manage-multi-system-agents-with-vertex-ai\" target=\"_blank\" rel=\"noopener\">Google Cloud on ADK and enterprise integration</a>; <a href=\"https://cloud.google.com/blog/topics/developers-practitioners/how-to-build-onboarding-agents-with-gemini-enterprise\" target=\"_blank\" rel=\"noopener\">Google Cloud’s grounded-workflow example</a>; and <a href=\"https://www.elastic.co/docs/explore-analyze/ai-features/elastic-agent-builder\" target=\"_blank\" rel=\"noopener\">Elastic Agent Builder documentation</a>."
+            "This is a research-backed point of view, not a market-wide claim. Sources: <a href=\"https://cloud.google.com/blog/products/ai-machine-learning/build-and-manage-multi-system-agents-with-vertex-ai\" target=\"_blank\" rel=\"noopener\">Google Cloud on ADK</a> and <a href=\"https://www.elastic.co/docs/explore-analyze/ai-features/elastic-agent-builder\" target=\"_blank\" rel=\"noopener\">Elastic Agent Builder documentation</a>."
           ]
         }
       ]
@@ -1830,7 +1825,7 @@ window.PORTFOLIO = {
     {
       id: "langsmith-is-the-pm-control-room",
       date: "2026-08-31",
-      draft: false,
+      draft: true,
       title: "LangSmith Is the PM Control Room for AI Products",
       summary:
         "A PM-readable note on why AI observability matters: traces explain failures, metrics expose cost and latency, and eval datasets stop teams from shipping regressions.",
@@ -1880,12 +1875,243 @@ window.PORTFOLIO = {
     },
 
     {
+      id: "the-work-before-the-agent",
+      date: "2026-09-01",
+      draft: false,
+      title: "AI Agents Will Do the Work. Who Defines the Work?",
+      summary:
+        "A story-led reflection on persistent AI coworkers, ambition, trusted decisions, and why the PM must define the work before the agent can do it.",
+      tags: ["AI agents", "Product management", "Codex", "AI coworkers", "Evals"],
+      sections: [
+        {
+          h: "The question I could not ignore",
+          type: "prose",
+          body: [
+            "I started with the flattering question: <em>what work can an AI agent do for me?</em>",
+            "That question is already too small. The more important question is: <strong>what work should exist in the first place, and who is responsible for defining it?</strong>",
+            "The conversation between Lenny Rachitsky and Tara Seshan pushed me toward that distinction. I came away thinking less about AI as a faster typist and more about AI as a persistent coworker: something that can hold context, take execution off my plate, and keep moving after I leave the room."
+          ]
+        },
+        {
+          h: "What is the actual problem?",
+          type: "prose",
+          body: [
+            "The <strong>explicit problem</strong> is easy to see: a team has too much work, too many decisions, and not enough hours. An agent can research, write code, summarize a discussion, run a test, or prepare the next action.",
+            "The <strong>implicit problem</strong> is harder: most teams have not defined what good work means. They have a task, but not a finish line. They have a model, but not a decision rule. They have an output, but not enough evidence to trust it.",
+            "An agent does not remove that ambiguity. It accelerates it. If the work is poorly defined, the agent gives us a faster way to produce the wrong thing."
+          ]
+        },
+        {
+          h: "What if the coworker remembers?",
+          type: "prose",
+          body: [
+            "A persistent coworker is different from a chat window that forgets me after every conversation. It can retain the project context, remember the decisions already made, notice what changed, and return with a useful next step.",
+            "For me, OpenAI Codex is the clearest example of this direction. It feels less like autocomplete and more like a worker that can operate against a real codebase, produce an output, and leave something I can inspect.",
+            "But persistence creates a new product obligation. The coworker needs memory boundaries, permissions, an audit trail, and a clear owner. A system that remembers everything but cannot explain why it acted is not a coworker. It is an unreviewable process with a personality."
+          ]
+        },
+        {
+          h: "Can the agent define the work?",
+          type: "prose",
+          body: [
+            "Here is the turn for me: <strong>agents may do the work, but people still have to make the work legible.</strong>",
+            "That means defining the objective, constraints, decision rights, completion condition, and evidence of success. If an agent is asked to improve onboarding, what does improve mean? More activation? Fewer support tickets? Faster time to value? A good agent cannot rescue a product brief that refuses to answer the question.",
+            "This is where product management changes. I am not only writing requirements for people to execute. I am designing a contract that a persistent system can execute, test, report, and hand back to me when judgment is required."
+          ]
+        },
+        {
+          h: "What if we build for today's model?",
+          type: "prose",
+          body: [
+            "The safest product instinct is to build for what the model can do today. The problem is that the product may ship after the model has moved on.",
+            "The useful horizon is two or three months ahead: not science fiction, not a fantasy roadmap, but the next credible step in capability. That changes the design question. I should not only ask whether the agent can finish the task now. I should ask what becomes possible when the model gets slightly better, and whether the product boundary is ready for it.",
+            "This is ambition as a product skill. The internal questions are uncomfortable and useful: <em>Are we being ambitious enough? Is this maximally accelerated? Are we using the product deeply enough to know where it breaks?</em>"
+          ]
+        },
+        {
+          h: "What if nobody trusts the decision?",
+          type: "prose",
+          body: [
+            "People may accept an AI-generated draft before they accept an AI-made decision. That gap matters. Nobody wants an agent to approve a refund, change a customer record, or redirect a product roadmap without understanding why.",
+            "Management will be augmented, not erased. As execution becomes cheaper, management moves toward setting direction, clarifying ownership, and making decisions trustworthy. Someone still has to own the outcome, even when the roles around the work become fluid.",
+            "Trust is not a tone-of-voice problem. It is a product mechanism: show the evidence, make the decision inspectable, collect rollout feedback, and keep a human accountable for the boundary."
+          ]
+        },
+        {
+          h: "Why code is the easy case",
+          type: "prose",
+          body: [
+            "Code is output-oriented. We can run it, test it, compare the result, and often see exactly where it failed. That does not mean code is automatically correct; it means the feedback loop is visible.",
+            "Knowledge work is different. The writing, customer conversations, experiments, and market reactions are part of how we discover whether the answer deserves trust. A polished final document can hide a weak journey.",
+            "So I want agents to expose the work in progress: the assumptions, evidence, alternatives, and unresolved questions. The market is still debating how much reasoning belongs inside the model. I would rather build feedback into the product than win that debate in a strategy document."
+          ]
+        },
+        {
+          h: "What should never be automated?",
+          type: "prose",
+          body: [
+            "We can automate writing-as-reporting: status updates, summaries, meeting notes, and the first pass of a rollout report.",
+            "We should be careful with writing-as-thinking. I cannot outsource the writing that helps me decide what I believe. I can ask AI for research, counterarguments, structure, and pressure-testing. But I need to start the important document and end it myself.",
+            "The difference is not romantic. Thinking creates the hypothesis. Reporting records what happened. If I automate both, I may get a very efficient system that has never decided what it is trying to learn."
+          ]
+        },
+        {
+          h: "The PM decision",
+          type: "note",
+          body: [
+            "I would build the persistent coworker around a narrow, observable outcome: define the job, give the agent the context and tools to execute it, test the output, collect rollout feedback, and route judgment back to the owner. The design of the program must meet the messiness of the internet: changing context, untrusted inputs, and consequences outside the codebase.",
+            "The PM's job is not to make the agent look autonomous. It is to make the outcome trustworthy enough that autonomy can grow.",
+            "<strong>My takeaway:</strong> the future PM is not the person who writes the most instructions; it is the person who makes the right work impossible to misunderstand.",
+            "Context: these are my takeaways from <a href=\"https://www.lennysnewsletter.com/p/ais-third-era-the-rise-of-persistent\" target=\"_blank\" rel=\"noopener\">Lenny Rachitsky's conversation with Tara Seshan</a>, product lead for Codex and ChatGPT Work at OpenAI."
+          ]
+        }
+      ]
+    },
+
+    {
       id: "ai-agents-need-control-systems",
       date: "2026-08-31",
       draft: false,
       title: "AI Agents Need Control Systems, Not Just Better Prompts",
+      heroEyebrow: "Technical note / Agent control systems",
+      heroThesis: "Bound model autonomy with policy, budgets and evidence.",
       summary:
-        "A PM note on what turns an agent from a demo into a product: cost limits, threat checks, compliance gates, evals, and traces that prove where the system failed.",
+        "A production agent is a closed-loop system: it senses input, checks policy, reasons over context, acts through tools, records evidence, and improves against measured failures.",
+      tags: ["AI agents", "Control systems", "Zero trust", "Compliance", "Evals"],
+      sections: [
+        {
+          h: "The concept: bounded autonomy",
+          type: "prose",
+          body: [
+            "The interesting question about an agent is not whether it can act. A model can already call a tool, write to a database, or send an email. The product question is <strong>what constrains the action before it becomes an incident?</strong>",
+            "I think about an agent as a control system around a probabilistic model. The model supplies reasoning; the control plane supplies limits. It measures spend, treats every input as untrusted, enforces policy, records what happened, and turns failures into eval cases. Autonomy is earned inside those boundaries, not granted by a better prompt.",
+            "That changes the PM brief. Instead of asking only for a smarter answer, define the operating contract: what may run automatically, what must be checked, what gets blocked, what needs a human, and which evidence proves the system behaved as designed."
+          ]
+        },
+        {
+          h: "The architecture: control before action",
+          type: "figure",
+          body: [
+            {
+              key: "control-plane",
+              tag: "ARCHITECTURE / 01",
+              name: "The control plane sits between intent and action"
+            }
+          ]
+        },
+        {
+          h: "Control loop 1: safety starts with zero trust",
+          type: "prose",
+          body: [
+            "A prompt is not automatically safe because it came from a user. A file is not safe because it was retrieved by the system. A tool instruction is not safe because it appears inside a trusted workflow. The boundary should treat all three as <mark>untrusted input</mark> until they pass checks.",
+            "The first layer is deterministic sanitization. An <code>InputValidator.sanitize()</code> pass can scan for prompt injection, identity spoofing, indirect instructions, shell commands and suspicious URLs. It is fast, reproducible and testable: the same string should produce the same finding every time.",
+            "The second layer is schema enforcement. <code>enforce_schema()</code> verifies that the object has the expected keys and types before downstream code uses it. The third is rate limiting, such as a sliding window of <code>10 requests / 60 seconds</code> per user. These layers address different failure modes; one cannot substitute for the others."
+          ]
+        },
+        {
+          h: "Static + semantic: two passes, different jobs",
+          type: "compare",
+          body: [
+            {
+              label: "PASS 01 / DETERMINISTIC",
+              title: "Keyword and pattern scan",
+              tone: "amber",
+              summary: "A static pass checks known signatures with <button class='term-popover-trigger' type='button' data-popover='regex-library' aria-expanded='false'>regexes</button> and exact keywords. It should be cheap enough to run on every request and predictable enough to explain in a test.",
+              items: ["prompt injection: ignore previous instructions", "tool hijacking: execute shell / curl / rm", "suspicious URL: http://" ]
+            },
+            {
+              label: "PASS 02 / SEMANTIC",
+              title: "LLM context review",
+              tone: "violet",
+              summary: "An LLM pass looks for meaning that a keyword cannot see: a function that claims to anonymize data but keeps identifiable fields, or PII hidden inside a structure.",
+              items: ["reads relationships, not just tokens", "can explain why a pattern is risky", "must return structured risk, not free-form confidence" ]
+            }
+          ]
+        },
+        {
+          h: "Make the contract executable",
+          type: "code",
+          body: "result = input_validator.sanitize(raw_input)\nif not result.valid:\n    return block(reason=result.findings)\n\nstatic = policy_engine.evaluate(code_or_action)\nsemantic = llm_review(context, static.findings)\ndecision = risk_gate(static, semantic)\naudit_trail.append(decision)"
+        },
+        {
+          h: "Control loop 2: compliance is a runtime gate",
+          type: "prose",
+          body: [
+            "Compliance becomes operational only when it can make a decision inside the workflow. The useful abstraction is a <code>PolicyRule</code>: a rule id, keywords or patterns, severity, regulation, and remediation hint. Rules are data, closer to a declarative policy language such as <button class='term-popover-trigger' type='button' data-popover='rego' aria-expanded='false'>Rego</button> than to scattered conditionals hidden across the codebase.",
+            "<code>PolicyEngine.evaluate()</code> runs the deterministic rule set against every relevant line. A line that already contains a safe remediation such as <code>sha256</code>, <code>https://</code> or <code>redact</code> should not re-trigger its own violation. That small detail matters: remediation must move the system toward a passing state, not create a loop.",
+            "<code>ComplianceScanner.full_scan()</code> then performs the semantic pass. The LLM is not the source of truth for exact policy matches; it hunts for gaps the rule engine cannot word-match. The output should be a structured finding with the affected location, severity, evidence, and recommended next action."
+          ]
+        },
+        {
+          h: "A decision matrix for the scanner",
+          type: "table",
+          head: ["Layer", "Input", "Output", "Why it exists"],
+          body: [
+            ["Static policy", "source line + PolicyRule", "match / no match", "Fast, exact, reproducible"],
+            ["Semantic review", "code + data flow + static findings", "risk + rationale", "Catches meaning and implicit PII/PHI"],
+            ["Risk gate", "combined findings", "ALLOW / REDACT / BLOCK / HITL", "Converts analysis into an operational decision"],
+            ["Audit trail", "decision + actor + timestamp", "append-only JSON", "Creates evidence for review and rollback"]
+          ]
+        },
+        {
+          h: "Control loop 3: evidence, remediation and traceability",
+          type: "prose",
+          body: [
+            "Every scan, violation, remediation and human override should become an <code>AuditTrail.append()</code> event. The trail is append-only: action, actor, details and timestamp are written for later inspection rather than overwritten by the latest state. That is what turns a compliance claim into evidence.",
+            "Remediation should be deterministic where the fix is known: <code>sha1</code> to <code>sha256</code>, <code>http</code> to <code>https</code>, or a direct redaction. If the fix requires interpretation, the LLM can propose one, but the proposal still passes the same risk gate and approval path.",
+            "A <code>DataFlowAnalyzer</code> adds another useful signal by tracing PII and PHI variables into loggers, print statements, analytics calls or API responses. This is the difference between checking whether the word <em>patient</em> appears and checking whether patient data actually reaches an unsafe sink."
+          ]
+        },
+        {
+          h: "The scan pipeline",
+          type: "figure",
+          body: [
+            {
+              key: "scan-pipeline",
+              tag: "CONTROL LOOP / 02",
+              name: "Deterministic first. Semantic second. Decision always logged.",
+              cap: "A known violation can be blocked immediately. An ambiguous finding gets context from the semantic pass. Both routes converge on the same risk gate and audit record."
+            }
+          ]
+        },
+        {
+          h: "Control loop 4: quality becomes a feedback signal",
+          type: "prose",
+          body: [
+            "Safety and compliance stop bad actions. Observability explains the actions that still happen. A trace should connect the request to prompts, retrieval, tool calls, model calls, latency, token use, cost, errors and the final decision. Without that chain, <em>the AI was wrong</em> is a symptom, not a diagnosis.",
+            "The production trace becomes a dataset. A retrieval miss becomes an eval case. A tool error becomes a recovery test. A cost spike becomes a routing threshold. The control loop closes when the next version is measured against those failures instead of judged from a fresh demo."
+          ]
+        },
+        {
+          h: "Self-improvement must be reversible",
+          type: "figure",
+          body: [
+            {
+              key: "feedback-loop",
+              tag: "CONTROL LOOP / 03",
+              name: "Trace -> evaluate -> propose -> approve -> version",
+              cap: "The safe improvement loop keeps the old version available. A system may propose a prompt, retrieval or routing change, but it should not silently promote its own hypothesis."
+            }
+          ]
+        },
+        {
+          h: "The PM operating contract",
+          type: "note",
+          body: [
+            "Define the thresholds before you define the demo: budget ceiling, rate limit, risk bands, human-review trigger, latency target, quality bar and rollback rule. A demo proves that an agent can act once. A control system proves that it can act repeatedly without surprising the business.",
+            "<strong>ELI10:</strong> let the AI think, but put a security guard at the door, a speed limit on the road, a receipt in the file, and a human brake for risky turns."
+          ]
+        }
+      ]
+    },
+
+    {
+      id: "ai-agents-need-control-systems-legacy",
+      date: "2026-08-31",
+      draft: true,
+      title: "AI Agents Need Control Systems, Not Just Better Prompts",
+      summary:
+        "Four control subsystems, each answering one question an agent hits in production: how much am I allowed to spend? Is this input attacking me? Does this code break a regulation? And is what I’m doing actually working? — Cost tracking · Threat Detection · Compliance Engine · Self-Improvement Loop",
       tags: ["AI agents", "Observability", "Evals", "Product management", "Governance"],
       sections: [
         {
@@ -1900,8 +2126,9 @@ window.PORTFOLIO = {
           h: "Control loop 1: cost",
           type: "prose",
           body: [
-            "Every model call has a price. A production agent should record tokens, model choice, timestamp, and cost for each call, then degrade gracefully when the budget is hit. Graceful degradation means the product switches to a cheaper or narrower mode instead of silently burning money or failing in front of the user.",
-            "For a PM, this changes the roadmap conversation. The question is not <em>can the model answer?</em> It is <em>which requests deserve the expensive answer?</em> Customer refunds, security issues, and clinical facts may justify a larger model. Routine FAQ work probably does not."
+            "<strong>Record every call.</strong> <code>CostTracker.record(model, tokens, cost)</code> logs one entry per inference call: model name, tokens used, cost, and timestamp. Running totals and per-record history make the spend visible instead of estimated after the fact.",
+            "<strong>Budget ceiling.</strong> The default ceiling is <strong>$1.00</strong>. Once cumulative spend reaches it, <code>check_budget()</code> flips from <code>ok</code> to <code>degraded</code>—graceful degradation means switching to a cheaper or narrower mode instead of silently burning money or failing in front of the user.",
+            "<strong>Cost dashboard.</strong> <code>summary()</code> groups every record by model into a table: calls, tokens, cost per model, a total row, and the current OK/DEGRADED status. For a PM, that makes model routing a product decision: which requests deserve the expensive answer, and which do not?"
           ]
         },
         {
@@ -2384,6 +2611,34 @@ window.PORTFOLIO = {
         }
       ],
       related: ["zomato-ops", "nestle-nesgpt", "investor-agent"]
+    },
+
+    {
+      id: "aws-agentic-ai-pm-decision-guide",
+      date: "2026-09-18",
+      draft: false,
+      title: "The AWS Agentic AI Decisions an AI PM Should Be Able to Defend",
+      heroEyebrow: "Learning artifact / AWS Agentic AI",
+      heroThesis: "The model proposes. Deterministic software authorizes and executes.",
+      summary: "A full, source-linked decision guide for reviewing enterprise RAG and agent systems on AWS: architecture boundaries, governance, observability, failure diagnosis, and the questions a product manager should ask.",
+      tags: ["AWS", "Agentic AI", "Enterprise RAG", "AI PM", "Observability"],
+      sections: [
+        {
+          h: "A full decision guide, published without compressing the evidence",
+          type: "prose",
+          body: [
+            "I built this as a one-day working guide for the moments when an AI product manager must review an AWS RAG-and-agent design, challenge an unnecessary component, ask for proof, or diagnose a production failure without pretending to be the implementation engineer.",
+            "The published guide preserves its 18 decisions, 64 concept placements, decision tables, architecture boundaries, failure detector, and primary source links. It is a learning artifact, not a claim that I deployed an AWS production system."
+          ]
+        },
+        {
+          h: "Read the guide",
+          type: "note",
+          body: [
+            "<a href=\"aws-agentic-ai-pm-decision-guide.html\">Open the full AWS Agentic AI and Enterprise RAG decision guide</a>. It covers current AgentCore direction, RAG and vector-store choices, API and MCP boundaries, identity and policy, evaluation, observability, and end-of-day architecture review questions."
+          ]
+        }
+      ]
     },
 
     {

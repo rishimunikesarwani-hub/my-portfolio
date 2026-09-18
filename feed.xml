@@ -8,30 +8,54 @@
     <language>en</language>
     <copyright>© 2026 Rishi Muni Kesarwani. All rights reserved. Read it, quote it, cite it — with attribution and a link back. Do not republish it whole, and do not train a model on it without asking first.</copyright>
     <managingEditor>rishi.rte@gmail.com (Rishi Muni Kesarwani)</managingEditor>
-    <lastBuildDate>Mon, 31 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 18 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <item>
+      <title>The AWS Agentic AI Decisions an AI PM Should Be Able to Defend</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=aws-agentic-ai-pm-decision-guide</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=aws-agentic-ai-pm-decision-guide</guid>
+      <pubDate>Fri, 18 Sep 2026 09:00:00 GMT</pubDate>
+      <description>A full, source-linked decision guide for reviewing enterprise RAG and agent systems on AWS: architecture boundaries, governance, observability, failure diagnosis, and the questions a product manager should ask.</description>
+      <category>AWS</category>
+      <category>Agentic AI</category>
+      <category>Enterprise RAG</category>
+      <category>AI PM</category>
+      <category>Observability</category>
+    </item>
+    <item>
+      <title>The Future of UI Is Designing It for Observability</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=the-enterprise-interface-is-becoming-an-agent</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=the-enterprise-interface-is-becoming-an-agent</guid>
+      <pubDate>Sun, 13 Sep 2026 09:00:00 GMT</pubDate>
+      <description>Voice is the first visible use case, but the deeper shift is enterprise software becoming callable through agents inside a context layer. The UI is changing from navigation to observability.</description>
+      <category>Enterprise AI</category>
+      <category>Voice AI</category>
+      <category>Agentic systems</category>
+      <category>AI PM</category>
+      <category>Context engineering</category>
+    </item>
+    <item>
+      <title>AI Agents Will Do the Work. Who Defines the Work?</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=the-work-before-the-agent</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=the-work-before-the-agent</guid>
+      <pubDate>Tue, 01 Sep 2026 09:00:00 GMT</pubDate>
+      <description>A story-led reflection on persistent AI coworkers, ambition, trusted decisions, and why the PM must define the work before the agent can do it.</description>
+      <category>AI agents</category>
+      <category>Product management</category>
+      <category>Codex</category>
+      <category>AI coworkers</category>
+      <category>Evals</category>
+    </item>
     <item>
       <title>AI Agents Need Control Systems, Not Just Better Prompts</title>
       <link>https://rishi-ships-every-day.vercel.app/post.html?id=ai-agents-need-control-systems</link>
       <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=ai-agents-need-control-systems</guid>
       <pubDate>Mon, 31 Aug 2026 09:00:00 GMT</pubDate>
-      <description>A PM note on what turns an agent from a demo into a product: cost limits, threat checks, compliance gates, evals, and traces that prove where the system failed.</description>
+      <description>A production agent is a closed-loop system: it senses input, checks policy, reasons over context, acts through tools, records evidence, and improves against measured failures.</description>
       <category>AI agents</category>
-      <category>Observability</category>
+      <category>Control systems</category>
+      <category>Zero trust</category>
+      <category>Compliance</category>
       <category>Evals</category>
-      <category>Product management</category>
-      <category>Governance</category>
-    </item>
-    <item>
-      <title>LangSmith Is the PM Control Room for AI Products</title>
-      <link>https://rishi-ships-every-day.vercel.app/post.html?id=langsmith-is-the-pm-control-room</link>
-      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=langsmith-is-the-pm-control-room</guid>
-      <pubDate>Mon, 31 Aug 2026 09:00:00 GMT</pubDate>
-      <description>A PM-readable note on why AI observability matters: traces explain failures, metrics expose cost and latency, and eval datasets stop teams from shipping regressions.</description>
-      <category>LangSmith</category>
-      <category>Observability</category>
-      <category>Evals</category>
-      <category>AI PM</category>
-      <category>RAG</category>
     </item>
     <item>
       <title>NesGPT &amp; the Nescafé Content Engine</title>

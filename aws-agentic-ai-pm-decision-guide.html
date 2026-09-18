@@ -1,0 +1,1704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AWS Agentic AI &amp; Enterprise RAG — Rishi Muni Kesarwani</title>
+<style>
+  /* ============================================================
+     FROZEN STYLESHEET — the single source of truth for this skill.
+     Copy this FILE into the build (Phase 4, pass 1); never retype or
+     paste the CSS. template.html documents the markup patterns only.
+
+     NOTE FOR EDITORS: verify.ps1 scans the finished document for
+     literal element names. Never write a literal
+     HTML tag inside a comment in this file — it ships verbatim into
+     every build and turns into a false "hard defect". Name elements in
+     prose instead ("the mark element", "an SVG text element").
+     ============================================================ */
+
+  * { box-sizing:border-box; }
+
+  body { margin:0; background:#e8e2d5; color:#1d2732; font-family:Georgia,'Times New Roman',serif; font-size:18px; line-height:1.65; }
+  .study-note { max-width:1080px; margin:0 auto; padding:48px 52px 80px; background:#fff9ef; overflow-wrap:anywhere; }
+  .note-part { position:relative; margin-bottom:32px; }
+  @media print { body { background:white; } .study-note { max-width:none; padding:0; } }
+  h1 { margin:0; color:#102c72; text-align:center; font-size:66px; line-height:1.05; letter-spacing:1px; }
+  .kicker { margin:20px 0 26px; text-align:center; color:#8b393b; font-size:22px; font-weight:700; letter-spacing:2px; }
+  .intro { border:3px dashed #4f6c91; border-radius:20px; padding:17px 28px; text-align:center; font-size:23px; line-height:1.45; background:#fffdf7; }
+  h2 { margin:44px 0 16px; color:#173b66; font-size:29px; line-height:1.15; }
+  h2 .num { display:inline-block; background:#173b66; color:#fff9ef; border-radius:50%; width:38px; height:38px; line-height:38px; text-align:center; font-size:20px; margin-right:12px; }
+  h2 .dur { display:inline-block; margin-left:14px; vertical-align:2px; background:#f6ddd1; border:2px solid #a85a50; color:#8b393b; font-weight:700; font-size:16px; border-radius:12px; padding:2px 14px; letter-spacing:1px; }
+
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  .card { border:3px dashed #4f6c91; border-radius:20px; background:#fffdf7; padding:20px 24px; }
+  .card-head { display:flex; align-items:center; gap:14px; margin-bottom:10px; border-bottom:2px solid #d5d8d4; padding-bottom:10px; }
+  .card-head .art { flex:0 0 56px; width:56px; height:56px; }
+  .card-head.big .art { flex:0 0 72px; width:72px; height:72px; }
+  h3 { margin:0; color:#173b66; font-size:22px; line-height:1.15; }
+  .card-head.big h3 { font-size:26px; }
+  .cap { margin:8px 0; font-size:18px; line-height:1.4; }
+  .cap b { color:#173b66; }
+  .example { margin-top:10px; padding-top:9px; border-top:2px dashed #d5d8d4; color:#7b3437; font-size:17px; font-weight:700; line-height:1.35; }
+
+  ul.list { margin:8px 0 0; padding-left:24px; }
+  ul.list li { font-size:18px; line-height:1.42; margin-bottom:7px; }
+  ul.list li b { color:#173b66; }
+  ul.list.q li { color:#7b3437; font-weight:700; }
+
+  .shift { margin-top:10px; padding-top:10px; border-top:2px dashed #d5d8d4; font-size:17px; line-height:1.45; }
+  .shift p { margin:0 0 7px; }
+  .lab { display:inline-block; font-weight:700; font-size:13px; border-radius:10px; padding:1px 10px; border:2px solid #4f6c91; background:#dbe7f5; color:#173b66; margin-right:8px; letter-spacing:1px; }
+  .lab.now { border-color:#a85a50; background:#f6ddd1; color:#8b393b; }
+
+  .flow { display:flex; align-items:stretch; gap:0; }
+  .flow-step { border:3px dashed #4f6c91; border-radius:20px; background:#fffdf7; padding:18px 14px; flex:1; text-align:center; }
+  .flow-step .art { width:56px; height:56px; margin:0 auto 8px; }
+  .flow-step h3 { font-size:18px; margin-bottom:6px; }
+  .flow-step p { font-size:15px; line-height:1.34; margin:0; }
+  .flow-step .tag { display:inline-block; margin-bottom:6px; background:#f6ddd1; border:2px solid #a85a50; color:#8b393b; font-weight:700; font-size:13px; border-radius:10px; padding:1px 10px; }
+  .flow-step .tag.blue { background:#dbe7f5; border-color:#4f6c91; color:#173b66; }
+  .arrow { flex:0 0 46px; display:flex; align-items:center; justify-content:center; font-size:32px; color:#a85a50; }
+  .arrow.par { font-size:26px; color:#4f6c91; flex-direction:column; line-height:1; }
+  .arrow.par span { font-size:12px; font-weight:700; letter-spacing:1px; }
+  .flow.wide .flow-step { padding:18px 22px; }
+  .flow.wide .flow-step h3 { font-size:20px; }
+  .flow.wide .flow-step p { font-size:17px; }
+
+  .badge-row { display:flex; flex-wrap:wrap; gap:12px; }
+  .badge { display:inline-block; vertical-align:middle; line-height:1.2; border:2px solid #4f6c91; border-radius:14px; background:#dbe7f5; color:#173b66; font-weight:700; font-size:17px; padding:4px 14px; }
+  .badge-row .badge { padding:8px 18px; }
+  .badge.red { border-color:#a85a50; background:#f6ddd1; color:#8b393b; }
+  .badge.green { border-color:#4f8a63; background:#dcecd8; color:#2f6b45; }
+
+  .note { margin-top:16px; border:2px dashed #a85a50; border-radius:16px; background:#fdf3ec; color:#7b3437; font-size:18px; font-weight:700; padding:12px 20px; text-align:center; }
+  .note.blue { border-color:#4f6c91; background:#eef4fb; color:#173b66; }
+  .note.green { border-color:#4f8a63; background:#eaf5e6; color:#2f6b45; }
+
+  .remember { margin-top:36px; padding-top:14px; border-top:3px solid #a85a50; color:#8b393b; text-align:center; font-size:22px; font-weight:700; }
+
+  /* Code — VERBATIM, never paraphrased, and excluded from the density metric.
+     pre-wrap + break-word: a long unbroken line (a JSON string, a URL) wraps
+     onto the next visual line instead of running past the box — overflow-x
+     was auto here before, which is scrollable in a live browser but reads as
+     silently clipped in a screenshot, a print, or a reader who never notices
+     the scrollbar. Every character is still verbatim; only where the line
+     breaks on screen changes. */
+  pre { margin:12px 0 0; background:#1d2732; color:#e8e2d5; border-radius:12px;
+        padding:16px 20px; overflow-x:auto; white-space:pre-wrap; word-break:break-word;
+        overflow-wrap:anywhere; font-family:'Consolas','Courier New',monospace;
+        font-size:16px; line-height:1.45; }
+  pre code { font-family:inherit; }
+  code { font-family:'Consolas','Courier New',monospace; font-size:0.94em;
+         background:#efe9dc; border-radius:5px; padding:1px 6px; }
+  pre code { background:none; padding:0; }
+
+  /* Inline gloss beside a marked term */
+  .gloss { font-size:0.9em; color:#7b3437; font-weight:700; }
+  .gloss::before { content:"— "; }
+
+  /* Jargon highlighter. The mark element = a TERM OF ART on FIRST USE ONLY.
+     Bold = emphasis. Never mix the two, or the page stops being skimmable. */
+  mark { background:#fceeaa; color:#4a3c08; padding:1px 6px; border-radius:5px; font-weight:700;
+         -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+
+  /* Cross-link chips — the connective layer at the foot of a card */
+  .xlink { margin-top:10px; padding-top:8px; border-top:2px dotted #c8cfd8; font-size:15px; color:#4f6c91; font-weight:700; }
+  .xlink a { color:#4f6c91; text-decoration:none; border-bottom:2px dotted #4f6c91; }
+
+  /* Thread trails — one recurring idea and every place it surfaces */
+  .threads { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .thread { border:3px dashed #a85a50; border-radius:20px; background:#fdf3ec; padding:18px 22px; }
+  .thread h3 { color:#8b393b; font-size:21px; }
+  .thread p { margin:8px 0 0; font-size:17px; line-height:1.4; }
+  .thread .stops { margin-top:12px; display:flex; flex-wrap:wrap; gap:8px; }
+  .thread .stops a { background:#fffdf7; border:2px solid #a85a50; border-radius:12px; padding:4px 12px; font-size:15px; font-weight:700; color:#8b393b; text-decoration:none; }
+
+  /* Coverage report + build stamp — printed in the artefact, not just claimed in chat */
+  .coverage { margin-top:40px; border:3px dashed #4f8a63; border-radius:20px; background:#f4faf1; padding:24px 30px; }
+  .coverage h3 { color:#2f6b45; font-size:26px; margin-bottom:10px; }
+  .coverage table { width:100%; border-collapse:collapse; margin-top:10px; font-size:17px; }
+  .coverage td, .coverage th { text-align:left; padding:7px 10px; border-bottom:2px dotted #b9d3ba; }
+  .coverage th { color:#2f6b45; }
+  .coverage .drop { color:#8b393b; font-weight:700; }
+  .stamp { margin-top:18px; display:flex; flex-wrap:wrap; gap:12px; }
+  .stamp span { background:#dcecd8; border:2px solid #4f8a63; border-radius:12px; padding:6px 14px; font-size:16px; font-weight:700; color:#2f6b45; }
+
+  h2[id] { scroll-margin-top:20px; }
+
+  /* ============================================================
+     DIAGRAMS ARE HTML BOXES, NOT SVG TEXT.
+     An SVG text element does not wrap and must be hand-positioned,
+     so it overflows its box, collides with neighbours, and needs a
+     second font to stay legible. HTML wraps, inherits the page font,
+     and cannot escape its container. Use SVG for wordless icons and
+     arrows only.
+     ============================================================ */
+  .diagram { border:3px dashed #4f6c91; border-radius:20px; background:#fffdf7; padding:28px 32px; margin-top:16px; }
+  .diagram .fig { margin:0 0 22px; text-align:center; color:#173b66; font-size:25px; font-weight:700; line-height:1.2; }
+  .diagram .figcap { margin:22px 0 0; padding-top:14px; border-top:2px dashed #d5d8d4; text-align:center; color:#7b3437; font-size:18px; font-weight:700; line-height:1.4; }
+
+  /* A labelled box inside a diagram */
+  .dbox { border:3px solid #173b66; border-radius:14px; background:#dbe7f5; padding:14px 18px; }
+  .dbox.red { border-color:#a85a50; background:#f6ddd1; }
+  .dbox.green { border-color:#3d7a52; background:#dcecd8; }
+  .dbox.plain { border-style:dashed; border-color:#4f6c91; background:#fffdf7; }
+  .dbox h4 { margin:0; font-size:21px; line-height:1.2; color:#173b66; }
+  .dbox.red h4 { color:#8b393b; }
+  .dbox.green h4 { color:#2f6b45; }
+  .dbox p { margin:7px 0 0; font-size:17px; line-height:1.4; }
+  .dbox p.sub { color:#7b3437; }
+  .dbox p.code { font-family:'Consolas','Courier New',monospace; font-size:16px; }
+  .dbox.tall { display:flex; flex-direction:column; justify-content:center; min-height:120px; }
+
+  /* Arrows between boxes — a glyph, never a hand-placed SVG line */
+  .darrow { text-align:center; color:#a85a50; font-size:32px; font-weight:700; line-height:1; padding:8px 0; }
+  .darrow.side { display:flex; align-items:center; justify-content:center; font-size:36px; padding:0 12px; }
+
+  /* Vertical pipeline: stack of boxes with down-arrows */
+  .dstack { display:flex; flex-direction:column; }
+
+  /* Horizontal columns with arrows between them */
+  .drow { display:flex; align-items:stretch; }
+  .dcol { flex:1; min-width:0; }
+  .dcol.narrow { flex:0 0 auto; }
+  .dcol h5 { margin:0 0 4px; font-size:23px; line-height:1.15; color:#173b66; }
+  .dcol .sub { margin:0 0 14px; font-size:16px; line-height:1.35; color:#7b3437; font-weight:700; }
+  .dcol .dbox { margin-bottom:10px; }
+
+  /* 2x2 matrix: header row + header column + four cells */
+  .dmatrix { display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:14px; }
+  .dmatrix .head { display:flex; align-items:center; justify-content:center; text-align:center; }
+
+  /* Decision tree: start box spans the rows; condition -> arrow -> outcome */
+  .dtree { display:grid; grid-template-columns:230px 54px 270px 54px 1fr; gap:22px 0; align-items:center; }
+  .dtree .start { grid-column:1; grid-row:1 / span 3; }
+
+  svg { width:100%; height:100%; overflow:visible; }
+  /* Icons are clipped to their viewBox so a stray shape can never print over neighbouring text */
+  .art, .art svg { overflow:hidden; }
+  .ink { stroke:#173b66; stroke-width:5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .red { stroke:#a85a50; stroke-width:4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .green { stroke:#3d7a52; stroke-width:4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .fillblue { fill:#dbe7f5; stroke:#173b66; stroke-width:4; }
+  .fillred { fill:#f6ddd1; stroke:#a85a50; stroke-width:4; }
+  .fillgreen { fill:#dcecd8; stroke:#3d7a52; stroke-width:4; }
+
+  /* Continuous reading and application components. */
+  h1 { font-size:clamp(32px,5vw,54px); line-height:1.15; text-align:left; }
+  h2 { scroll-margin-top:24px; line-height:1.3; }
+  h3 { line-height:1.35; }
+  p { max-width:76ch; }
+  .intro { font-size:19px; text-align:left; }
+  .kicker { text-align:left; font-size:16px; letter-spacing:1px; }
+  .grid2,.grid3 { grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); }
+  .card { min-width:0; }
+  .problem,.dialogue,.worked-example,.challenge,.build-task { padding:20px 24px; margin:20px 0; border-radius:12px; }
+  .problem { background:#f6ddd1; border-left:4px solid #a85a50; }
+  .dialogue { background:#eef4fb; border-left:4px solid #4f6c91; }
+  .worked-example { border:1px solid #d5d8d4; background:#fffdf7; }
+  .challenge { background:#f3efe3; }
+  .build-task { border:2px solid #4f8a63; background:#eaf5e6; }
+  .source-ref { font-size:14px; color:#655b4e; }
+  .code-explanation { font-size:17px; }
+  details { margin:16px 0; padding:12px 16px; background:#fffdf7; border:1px solid #b8bfb8; border-radius:8px; }
+  summary { cursor:pointer; font-weight:bold; color:#173b66; }
+  a { color:#173b66; text-underline-offset:3px; }
+  :focus-visible { outline:3px solid #a85a50; outline-offset:3px; }
+  nav { margin:24px 0; }
+  img { max-width:100%; height:auto; }
+  table { width:100%; border-collapse:collapse; margin:24px 0; table-layout:fixed; }
+  caption { text-align:left; font-weight:bold; margin-bottom:10px; }
+  th,td { text-align:left; vertical-align:top; border-bottom:1px solid #c9c4b7; padding:12px; overflow-wrap:anywhere; }
+  th { background:#eef4fb; }
+  .flow,.drow { flex-wrap:wrap; gap:12px; }
+  .flow-step,.dcol { min-width:180px; }
+  .dtree { display:flex; flex-wrap:wrap; gap:12px; }
+  @media (max-width:650px) {
+    .study-note { padding:28px 18px 64px; }
+    h2 { font-size:26px; }
+    .intro,.card,.diagram,.problem,.dialogue,.worked-example,.challenge,.build-task { padding:16px; }
+    .flow,.drow { display:block; }
+    .flow-step,.dbox { margin-bottom:12px; }
+    .dcol.narrow { width:auto; }
+    .dmatrix { display:block; }
+    .dmatrix > * { margin-bottom:10px; }
+    .diagram .fig { font-size:19px; }
+    th,td { padding:8px; font-size:15px; }
+  }
+
+
+  /* custom html-css-design stylesheet */
+  body {
+    background:
+      radial-gradient(circle at 8% 2%, rgba(181, 104, 87, .13), transparent 27rem),
+      radial-gradient(circle at 92% 10%, rgba(55, 86, 122, .12), transparent 31rem),
+      #f3efe5;
+  }
+
+  .study-note { max-width: 1180px; }
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 28px;
+    padding: clamp(28px, 5vw, 64px);
+    border: 1px solid #cfd5d1;
+    border-radius: 28px;
+    background: linear-gradient(145deg, #fffdf7 0%, #f8efe4 68%, #e8edf2 100%);
+    box-shadow: 0 24px 60px rgba(28, 43, 58, .12);
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    right: -62px;
+    top: -70px;
+    border: 34px solid rgba(168, 90, 80, .13);
+    border-radius: 50%;
+  }
+
+  .kicker,
+  .eyebrow {
+    color: #8f4b43;
+    font: 800 12px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    max-width: 820px;
+    margin: 12px 0 14px;
+    color: #172b3d;
+    font-size: clamp(38px, 6vw, 72px);
+    line-height: .98;
+    letter-spacing: -.04em;
+  }
+
+  .hero-deck {
+    max-width: 790px;
+    margin: 0;
+    color: #3c4853;
+    font-size: clamp(19px, 2.4vw, 27px);
+    line-height: 1.4;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 32px 0 22px;
+  }
+
+  .hero-grid .card {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 18px;
+    border-color: rgba(55, 86, 122, .25);
+    background: rgba(255, 253, 247, .76);
+  }
+
+  .hero-grid .card b { color: #8f4b43; }
+  .hero-grid .card span { color: #26394a; line-height: 1.45; }
+
+  .source-meta {
+    padding-top: 14px;
+    border-top: 1px solid rgba(55, 86, 122, .22);
+    color: #5e625f;
+    font-size: 14px;
+  }
+
+  .source-meta p { margin: 5px 0; }
+
+  .toc {
+    padding: 24px;
+    border: 1px solid #c9d2d8;
+    border-radius: 20px;
+    background: #172b3d;
+    color: #f8f1e6;
+    box-shadow: 0 14px 34px rgba(23, 43, 61, .14);
+  }
+
+  .toc p { margin-top: 0; }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px 14px;
+  }
+
+  .toc-grid a {
+    display: block;
+    padding: 9px 11px;
+    border-radius: 8px;
+    color: #f8f1e6;
+    font-size: 14px;
+    line-height: 1.35;
+    text-decoration: none;
+    background: rgba(255, 255, 255, .055);
+  }
+
+  .toc-grid a:hover,
+  .toc-grid a:focus-visible { background: #a85a50; outline: none; }
+
+  .eyebrow {
+    display: inline-block;
+    margin-top: 56px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #f4ddd2;
+  }
+
+  h2 {
+    margin-top: 12px;
+    scroll-margin-top: 28px;
+    border-top: 0;
+    font-size: clamp(27px, 3.2vw, 42px);
+    letter-spacing: -.025em;
+  }
+
+  h3 { margin-top: 34px; color: #294963; }
+  h2 + p { font-size: 1.06em; color: #384956; }
+
+  .table-wrap {
+    margin: 22px 0;
+    overflow-x: auto;
+    border: 1px solid #d5d8d4;
+    border-radius: 14px;
+    background: #fffdf7;
+    box-shadow: 0 10px 26px rgba(28, 43, 58, .055);
+  }
+
+  .table-wrap table { margin: 0; border: 0; min-width: 760px; }
+  .table-wrap th { background: #203a50; color: #fffaf0; }
+  .table-wrap tr:nth-child(even) td { background: #f6f1e8; }
+
+  pre {
+    border: 1px solid #35536b;
+    border-radius: 16px;
+    background: #13283a;
+    color: #f6f0e4;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07);
+  }
+
+  .problem,
+  .worked-example,
+  .intro {
+    box-shadow: 0 9px 24px rgba(28, 43, 58, .07);
+  }
+
+  .closing-note {
+    margin: 64px 0 20px;
+    padding: 26px 30px;
+    border-radius: 18px;
+    background: #203a50;
+    color: #fff8ed;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 820px) {
+    .hero-grid,
+    .toc-grid { grid-template-columns: 1fr; }
+    .hero { border-radius: 20px; }
+    .hero h1 { font-size: 42px; }
+    .eyebrow { margin-top: 42px; }
+  }
+
+</style>
+
+<meta name="description" content="A source-linked AWS Agentic AI and enterprise RAG decision guide for AI product managers.">
+<link rel="canonical" href="https://rishi-ships-every-day.vercel.app/aws-agentic-ai-pm-decision-guide.html">
+<style>
+  :root { --ink:#142d3d; --cyan:#2ec5d3; --navy:#0f3142; --paper:#f7fafb; --muted:#527080; }
+  body { background:var(--paper); color:var(--ink); font-family:Inter,Arial,sans-serif; font-size:17px; line-height:1.65; }
+  .portfolio-bar { background:var(--navy); color:#fff; padding:14px max(24px, calc((100vw - 1120px)/2)); display:flex; align-items:center; justify-content:space-between; gap:18px; font-family:'Space Grotesk',Arial,sans-serif; }
+  .portfolio-bar a { color:#fff; text-decoration:none; font-weight:700; }
+  .portfolio-bar nav { display:flex; gap:18px; font-size:14px; }
+  .portfolio-bar nav a { color:#cceff3; }
+  .study-note { max-width:1120px; background:#fff; padding:48px max(24px, 5vw) 72px; }
+  h1,h2,h3,h4 { font-family:'Space Grotesk',Arial,sans-serif; color:var(--navy); }
+  h1 { font-size:clamp(36px,5vw,60px); }
+  h2 .num, .eyebrow { background:var(--navy); color:#fff; }
+  .kicker, .hero-deck, .source-meta, .cap, .shift, .xlink { color:var(--muted); }
+  .intro, .card, .diagram, .flow-step, .dbox.plain, .toc { border-color:#91ced6; background:#f8fdfe; }
+  .note, .note.blue, .note.green { border-color:var(--cyan); background:#effcff; color:var(--ink); }
+  .portfolio-footer { max-width:1120px; margin:0 auto; padding:26px max(24px,5vw) 48px; color:var(--muted); font-size:14px; }
+  .portfolio-footer a { color:#176b79; }
+  @media (max-width:640px) { .portfolio-bar { padding:13px 18px; } .portfolio-bar nav { gap:12px; } .study-note { padding:34px 18px 52px; } }
+</style>
+</head>
+<body><header class="portfolio-bar"><a href="/index.html">Rishi Muni Kesarwani</a><nav aria-label="Portfolio"><a href="/work.html">Work</a><a href="/blog.html">Writing</a><a href="/about.html">About</a></nav></header>
+<main class="study-note">
+
+<div class="note-part">
+<section class="hero" aria-labelledby="hero-title">
+  <p class="kicker">AWS-FIRST · PM DECISION SYSTEM · RESEARCHED 2026-09-17</p>
+  <h1 id="hero-title">Enterprise RAG and Agentic AI on AWS</h1>
+  <p class="hero-deck">A one-day architecture, risk, and observability guide for making better product decisions without pretending to be the implementation engineer.</p>
+  <div class="hero-grid">
+    <div class="card"><b>Target capability</b><span>Review, challenge, and diagnose an enterprise RAG-and-agent system.</span></div>
+    <div class="card"><b>Core stance</b><span>The model proposes; deterministic software authorizes and executes.</span></div>
+    <div class="card"><b>Proof</b><span>Defend one architecture and diagnose one trace without notes.</span></div>
+  </div>
+  <div class="source-meta"><p><strong>Research date:</strong> 2026-09-17<br />
+<strong>Audience:</strong> AI Product Manager who must challenge architecture, scope risk, define evidence, and diagnose failures without becoming the implementation engineer.<br />
+<strong>Working outcome:</strong> By the end of the day, you should be able to review an AWS enterprise RAG-and-agents design, identify where each decision belongs, ask for the right evidence, and reject unnecessary complexity.</p>
+</div>
+</section>
+<nav class="toc" aria-label="Decision map">
+  <p><b>Decision map</b> · jump by the architecture question you need to answer.</p>
+  <div class="toc-grid"><a href="#s1">01 · Read this correction before the job description</a><a href="#s2">02 · The one system problem that organizes the day</a><a href="#s3">03 · FCOT: the one-day learning plan</a><a href="#s4">04 · The service map: what each AWS component actually owns</a><a href="#s5">05 · RAG: the depth a PM actually needs</a><a href="#s6">06 · Vector databases: what to decide, not how to tune an index</a><a href="#s7">07 · Agents and AgentCore: understand the production boundary</a><a href="#s8">08 · Enterprise integrations: API, tool calling, and MCP</a><a href="#s9">09 · How the traditional AWS services fit around the AI</a><a href="#s10">10 · Frameworks: learn their decision value, not their syntax</a><a href="#s11">11 · Production-ready means a control system, not a deployment</a><a href="#s12">12 · Observability: the PM's fastest route to technical depth</a><a href="#s13">13 · Architecture review: the top-1% PM questions</a><a href="#s14">14 · Failure detector: symptom → layer → PM response</a><a href="#s15">15 · Your end-of-day proof</a><a href="#s16">16 · YouTube path: watch only what changes a decision</a><a href="#s17">17 · Primary reading library</a><a href="#s18">18 · One-page memory card</a></div>
+</nav>
+<span class="eyebrow">Decision 01</span><h2 id="s1" tabindex="-1">0. Read this correction before the job description</h2>
+<p>The JD is directionally useful but partly stale.</p>
+<ul>
+<li><strong>Amazon Bedrock Agents is now Amazon Bedrock Agents Classic and is no longer open to new customers.</strong> Existing customers can continue, but AWS directs new builds toward AgentCore. Learn the old supervisor/collaborator model only so you can understand existing systems and older interview material. Do not make it the centre of a new 2026 architecture. <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/agents-multi-agent-collaboration.html" rel="noopener noreferrer" target="_blank">AWS: Bedrock Agents Classic and multi-agent collaboration</a></li>
+<li><strong>Amazon Bedrock AgentCore is not “Amazon Agent pool.”</strong> AgentCore is the current modular platform for hosting, securing, connecting, remembering, observing, evaluating, and governing agents. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" rel="noopener noreferrer" target="_blank">AWS: What is AgentCore?</a></li>
+<li><strong>“Mango” is almost certainly MongoDB.</strong> MongoDB Atlas is a supported Bedrock Knowledge Bases vector-store option. Amazon DocumentDB is an AWS MongoDB-compatible database with vector-search use cases, but it is not listed on the current Bedrock Knowledge Bases supported-vector-store page. Keep “MongoDB-compatible database” and “direct Knowledge Bases integration” as separate claims. <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-data.html" rel="noopener noreferrer" target="_blank">AWS: Turning data into a knowledge base</a> and <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/choosing-an-aws-vector-database-for-rag-use-cases/choosing-an-aws-vector-database-for-rag-use-cases.pdf" rel="noopener noreferrer" target="_blank">AWS: Choosing an AWS vector database</a></li>
+<li><strong>“IM Identity Access Management” means AWS Identity and Access Management (IAM).</strong> IAM controls AWS identities and service permissions. AgentCore Identity additionally brokers user/agent access to external identity providers and SaaS tools. These are complementary, not substitutes. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" rel="noopener noreferrer" target="_blank">AWS: AgentCore overview</a></li>
+</ul>
+<p>This first correction is top-1%-PM behaviour: do not memorize the employer's nouns before checking whether the product map has moved.</p>
+<span class="eyebrow">Decision 02</span><h2 id="s2" tabindex="-1">1. The one system problem that organizes the day</h2>
+<p>Assume a company wants an internal operations assistant on AWS. It must:</p>
+<ol>
+<li>answer employee questions from SharePoint, Confluence, PDFs, policies, and selected operational records;</li>
+<li>cite the evidence used;</li>
+<li>read current order or customer data through enterprise APIs;</li>
+<li>propose a refund or case update;</li>
+<li>require approval for high-impact actions;</li>
+<li>execute only within the user's authority;</li>
+<li>survive retries and partial failures without duplicate side effects;</li>
+<li>expose enough traces, quality scores, latency, and cost data for a PM to diagnose failure.</li>
+</ol>
+<p>This is deliberately one system. RAG, tools, MCP, agents, Lambda, API Gateway, Step Functions, S3, DynamoDB, IAM, AgentCore, and observability are learned as boundaries inside it—not as unrelated products.</p>
+<h3>The architecture in one view</h3>
+<pre><code class="language-text">Employee UI
+   |
+   v
+Application entry boundary
+API Gateway / authenticated backend
+   |
+   v
+Agent execution boundary
+AgentCore Runtime + chosen agent framework
+   |                     |                         |
+   | retrieve            | discover/call tools     | durable business process
+   v                     v                         v
+Bedrock Managed KB   AgentCore Gateway         Step Functions
+   |                 + Identity + Policy           |
+   v                     |                         v
+S3 / SharePoint /     Lambda / OpenAPI /       Lambda + enterprise APIs
+Confluence / Drive    API Gateway / MCP        + DynamoDB idempotency
+   |
+   v
+managed vector layer or customer-managed vector store
+
+Across every boundary:
+IAM + KMS + Secrets Manager + Guardrails + CloudTrail/CloudWatch
++ AgentCore Observability/Evaluations (and optionally Langfuse)
+</code></pre>
+<p class="intro">The product principle is: <strong>the model may propose; deterministic software must authorize and execute.</strong> A prompt is not an access-control system, a retry policy, or a financial approval rule.</p>
+<span class="eyebrow">Decision 03</span><h2 id="s3" tabindex="-1">2. FCOT: the one-day learning plan</h2>
+<p>“FCOT” is used here as an observable <strong>fractional decision plan</strong>, not a disclosure of private chain-of-thought. Each fraction has five public parts: the decision, the minimum mechanism, the evidence to inspect, the failure to diagnose, and the output you must produce.</p>
+<h3>One full-day route (about 9 focused hours plus breaks)</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Time</th>
+<th>Fractional decision</th>
+<th>Minimum mechanism to learn</th>
+<th>Evidence you should demand</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00:00–00:35</td>
+<td>What is current versus legacy?</td>
+<td>Bedrock, Managed Knowledge Bases, AgentCore, Agents Classic</td>
+<td>Current AWS docs; service status; region and quota checks</td>
+<td>Corrected service map</td>
+</tr>
+<tr>
+<td>00:35–01:35</td>
+<td>Is RAG the right pattern?</td>
+<td>ingest → parse → chunk → embed → retrieve → rerank → generate → cite</td>
+<td>Retrieval and generation evaluated separately</td>
+<td>RAG pipeline sketch</td>
+</tr>
+<tr>
+<td>01:35–02:30</td>
+<td>What makes a knowledge base “better”?</td>
+<td>source quality, parsing, chunking, metadata, ACLs, hybrid search, reranking</td>
+<td>Golden queries, expected evidence, freshness/permission tests</td>
+<td>RAG acceptance scorecard</td>
+</tr>
+<tr>
+<td>02:30–03:15</td>
+<td>Which vector layer fits?</td>
+<td>S3 Vectors, OpenSearch, Aurora pgvector, Neptune, MongoDB Atlas, external options</td>
+<td>latency, QPS, filters, hybrid/graph needs, operations, cost</td>
+<td>Vector decision table</td>
+</tr>
+<tr>
+<td>03:15–04:05</td>
+<td>Where should the agent run?</td>
+<td>AgentCore Runtime, Memory, Identity, Gateway, Policy, Observability, Evaluations</td>
+<td>session isolation, auth, trace, evaluator, recovery evidence</td>
+<td>AgentCore responsibility map</td>
+</tr>
+<tr>
+<td>04:05–04:55</td>
+<td>API, tool call, or MCP?</td>
+<td>direct API contract; MCP discovery/translation; Gateway targets; OAuth/IAM</td>
+<td>schemas, timeouts, idempotency, auth flow, audit trail</td>
+<td>Integration decision record</td>
+</tr>
+<tr>
+<td>04:55–05:40</td>
+<td>Which AWS service owns which failure?</td>
+<td>Lambda, API Gateway, Step Functions, S3, DynamoDB, IAM</td>
+<td>retry, timeout, throttling, durability, source-of-truth ownership</td>
+<td>Failure-owner map</td>
+</tr>
+<tr>
+<td>05:40–06:25</td>
+<td>Do we need a framework?</td>
+<td>LangChain, LangGraph, Langfuse, LlamaIndex, Semantic Kernel, Strands</td>
+<td>pain solved, lock-in, state, trace interoperability</td>
+<td>Framework no/yes decision</td>
+</tr>
+<tr>
+<td>06:25–07:25</td>
+<td>Is it production-ready?</td>
+<td>least privilege, policy, guardrails, tenant isolation, human approval, replay safety</td>
+<td>threat model, denied-action tests, load tests, recovery tests</td>
+<td>Production gate checklist</td>
+</tr>
+<tr>
+<td>07:25–08:15</td>
+<td>Can we see why it failed?</td>
+<td>traces, spans, retrieval metrics, tool correctness, online/offline evals</td>
+<td>p50/p95, task success, groundedness, unauthorized action rate, cost</td>
+<td>PM observability dashboard spec</td>
+</tr>
+<tr>
+<td>08:15–09:00</td>
+<td>Can you defend the architecture?</td>
+<td>trade-off and incident review</td>
+<td>one architecture teardown and one trace diagnosis</td>
+<td>5-minute architecture review</td>
+</tr>
+</tbody>
+</table></div>
+<h3>The rule for using videos</h3>
+<p>Watch at 1.5×–2× speed. Pause only to draw a boundary or record a decision. Do not copy console clicks. A PM's useful output is “when would I choose this, what could fail, and what evidence would change my mind?”</p>
+<span class="eyebrow">Decision 04</span><h2 id="s4" tabindex="-1">3. The service map: what each AWS component actually owns</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>It owns</th>
+<th>It does not own</th>
+<th>PM decision question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Amazon Bedrock</strong></td>
+<td>managed access to foundation models plus features such as Guardrails, Knowledge Bases, prompts, and evaluations</td>
+<td>your business workflow, end-user authorization, or product acceptance</td>
+<td>Which model and Bedrock capability meets quality, latency, region, privacy, and cost constraints?</td>
+</tr>
+<tr>
+<td><strong>Bedrock Managed Knowledge Base</strong></td>
+<td>managed ingestion, parsing, embeddings, vector storage, reranking, retrieval optimization, connectors, and agentic retrieval</td>
+<td>proving the answer is correct for your users; upstream user authentication</td>
+<td>Can managed defaults meet retrieval, freshness, ACL, cost, and explainability needs?</td>
+</tr>
+<tr>
+<td><strong>Customer-managed Knowledge Base</strong></td>
+<td>full control of parsing, indexing, storage, and retrieval configuration</td>
+<td>lower operational burden</td>
+<td>Is the control genuinely differentiating, or are we rebuilding plumbing?</td>
+</tr>
+<tr>
+<td><strong>AgentCore Runtime</strong></td>
+<td>secure agent hosting, session isolation, long-running or asynchronous workloads, framework/model flexibility</td>
+<td>business authorization by itself</td>
+<td>Why is this an agent runtime rather than a bounded Lambda or deterministic workflow?</td>
+</tr>
+<tr>
+<td><strong>AgentCore Gateway</strong></td>
+<td>a governed entry point for agents to discover and call Lambda, API Gateway, OpenAPI, Smithy, MCP, connector, HTTP, and inference targets</td>
+<td>reliability of the downstream system; business correctness</td>
+<td>Which capabilities should be exposed, to whom, with what schema and policy?</td>
+</tr>
+<tr>
+<td><strong>AgentCore Identity</strong></td>
+<td>inbound identity integration and outbound credentials/tokens for AWS and SaaS tools</td>
+<td>business permissions unless policies enforce them</td>
+<td>Whose identity is used at every hop: service, user, or delegated user?</td>
+</tr>
+<tr>
+<td><strong>AgentCore Policy</strong></td>
+<td>deterministic, default-deny authorization of tool calls using Cedar policies</td>
+<td>semantic safety or factual accuracy</td>
+<td>Which tool and parameter combinations must be impossible, even if the model asks?</td>
+</tr>
+<tr>
+<td><strong>AgentCore Memory</strong></td>
+<td>short-term interaction history and extracted long-term memories</td>
+<td>authoritative business records</td>
+<td>What is safe and useful to remember, for how long, and under which user/tenant namespace?</td>
+</tr>
+<tr>
+<td><strong>AgentCore Observability/Evaluations</strong></td>
+<td>traces, production metrics, task/tool quality evaluation, dashboards</td>
+<td>deciding the product KPI for you</td>
+<td>Can we connect a bad user outcome to the exact retrieval, model, tool, policy, or downstream step?</td>
+</tr>
+<tr>
+<td><strong>Lambda</strong></td>
+<td>short, bounded compute and custom tool logic; transformations and service adapters</td>
+<td>durable long-running orchestration or exactly-once side effects</td>
+<td>Is this function idempotent, tightly scoped, and safe to retry?</td>
+</tr>
+<tr>
+<td><strong>API Gateway</strong></td>
+<td>application/API ingress, authentication options, routing, throttling, quotas</td>
+<td>agent tool discovery or reasoning</td>
+<td>Is this an app-facing API boundary, or should it be an AgentCore tool target?</td>
+</tr>
+<tr>
+<td><strong>Step Functions</strong></td>
+<td>explicit durable business workflow, retries, timeouts, branching, and human/async steps</td>
+<td>open-ended agent reasoning</td>
+<td>Which steps must remain deterministic and inspectable regardless of model behaviour?</td>
+</tr>
+<tr>
+<td><strong>S3</strong></td>
+<td>durable source documents, uploads, evaluation datasets, batch inputs/outputs, logs/archives; optionally S3 Vectors</td>
+<td>transactional workflow state</td>
+<td>Which artifacts must be immutable, versioned, retained, or reprocessed?</td>
+</tr>
+<tr>
+<td><strong>DynamoDB</strong></td>
+<td>low-latency operational state, idempotency keys, session/workflow metadata, status records</td>
+<td>semantic knowledge retrieval by default</td>
+<td>What is the source of truth and how are duplicate actions prevented?</td>
+</tr>
+<tr>
+<td><strong>IAM</strong></td>
+<td>AWS principals, roles, and permissions</td>
+<td>external SaaS OAuth consent or content safety</td>
+<td>What is the minimum AWS action/resource each component requires?</td>
+</tr>
+</tbody>
+</table></div>
+<p>Current AWS positions Bedrock as the model/application-AI platform and AgentCore as the framework-agnostic production platform for agents. AgentCore services can be adopted independently. <a href="https://aws.amazon.com/documentation-overview/bedrock/" rel="noopener noreferrer" target="_blank">AWS: Bedrock documentation</a> and <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" rel="noopener noreferrer" target="_blank">AWS: AgentCore overview</a></p>
+</div>
+
+<div class="note-part">
+<span class="eyebrow">Decision 05</span><h2 id="s5" tabindex="-1">4. RAG: the depth a PM actually needs</h2>
+<h3>RAG is two products joined together</h3>
+<ol>
+<li><strong>Retrieval product:</strong> Given a user query and their permissions, return the smallest set of evidence that contains the answer.</li>
+<li><strong>Generation product:</strong> Given the question and retrieved evidence, produce a useful answer that remains faithful to that evidence.</li>
+</ol>
+<p>If the answer is wrong, first ask whether the correct evidence was retrieved. Do not let a team hide retrieval failure inside one end-to-end “accuracy” number. Bedrock evaluations support retrieval metrics such as context relevance/coverage and generation metrics such as faithfulness, correctness, and completeness. <a href="https://aws.amazon.com/bedrock/evaluations/" rel="noopener noreferrer" target="_blank">AWS: Bedrock Evaluations</a> and <a href="https://aws.amazon.com/blogs/machine-learning/evaluate-and-improve-performance-of-amazon-bedrock-knowledge-bases/" rel="noopener noreferrer" target="_blank">AWS: Evaluate and improve Knowledge Bases</a></p>
+<h3>The seven levers of a better knowledge base</h3>
+<ol>
+<li><strong>Source quality and ownership.</strong> Name the authoritative source, owner, update frequency, deletion policy, and conflict rule. More documents can reduce quality when copies contradict one another.</li>
+<li><strong>Parsing.</strong> Tables, slides, scanned PDFs, images, audio, and video require more than plain text extraction. Managed Knowledge Bases now includes Smart Parsing and multimodal support; customer-managed pipelines require you to own these choices. <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html" rel="noopener noreferrer" target="_blank">AWS: Knowledge Bases overview</a></li>
+<li><strong>Chunking.</strong> Fixed chunks are easy; semantic or hierarchical chunks better preserve meaning in complex documents. Chunk size and overlap are evaluation variables, not universal best practices. <a href="https://aws.amazon.com/blogs/machine-learning/amazon-bedrock-knowledge-bases-now-supports-advanced-parsing-chunking-and-query-reformulation-giving-greater-control-of-accuracy-in-rag-based-applications/" rel="noopener noreferrer" target="_blank">AWS: Advanced parsing, chunking, and query reformulation</a></li>
+<li><strong>Metadata and filters.</strong> Add fields that support real product constraints: tenant, department, document type, effective date, geography, policy status, sensitivity, and version. Filters are often more important than a marginal embedding-model improvement.</li>
+<li><strong>Retrieval mode.</strong> Semantic search finds meaning; keyword search catches exact entities, codes, names, and prices. Hybrid search combines them where supported. <a href="https://aws.amazon.com/blogs/machine-learning/amazon-bedrock-knowledge-bases-now-supports-hybrid-search/" rel="noopener noreferrer" target="_blank">AWS: Hybrid search</a></li>
+<li><strong>Reranking and query decomposition.</strong> Retrieve a wider candidate set, rerank it for relevance, and break multi-part questions into subqueries when necessary. Reranking can reduce the number of chunks passed to the model, improving relevance and potentially latency/cost. <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/rerank.html" rel="noopener noreferrer" target="_blank">AWS: Reranking</a> and <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/kb-test-config.html" rel="noopener noreferrer" target="_blank">AWS: Query configuration</a></li>
+<li><strong>Authorization and freshness.</strong> A relevant document is still wrong if the user may not see it or if it is superseded. Bedrock's SharePoint ACL feature filters and verifies access, but AWS explicitly says ACL awareness is not authentication; the application must authenticate the user and supply verified identity context. <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/kb-managed-ds-sharepoint-acl.html" rel="noopener noreferrer" target="_blank">AWS: SharePoint document-level access controls</a></li>
+</ol>
+<h3>The PM acceptance scorecard for RAG</h3>
+<p>Ask the team for a versioned evaluation set with representative questions, expected evidence, allowed abstentions, user/tenant identities, and known edge cases. Review at least these measures:</p>
+<ul>
+<li><strong>retrieval hit:</strong> did any returned chunk contain the required evidence?</li>
+<li><strong>context relevance:</strong> how much retrieved material was useful rather than noise?</li>
+<li><strong>context coverage:</strong> did the evidence cover every part of the question?</li>
+<li><strong>citation correctness:</strong> does each citation support the adjacent claim?</li>
+<li><strong>faithfulness:</strong> is the answer supported by retrieved evidence?</li>
+<li><strong>completeness:</strong> were all required parts answered?</li>
+<li><strong>abstention quality:</strong> did the system decline when evidence was missing or unauthorized?</li>
+<li><strong>freshness:</strong> did a changed or deleted source propagate within the agreed window?</li>
+<li><strong>permission correctness:</strong> were forbidden documents absent from retrieval and logs?</li>
+<li><strong>p50/p95 latency and cost per successful answer:</strong> averages hide tail pain and repeated retrieval loops.</li>
+</ul>
+<h3>Three diagnostic examples</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely layer</th>
+<th>Evidence to inspect first</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Correct document exists, but is never cited</td>
+<td>ingestion, chunking, metadata, ACL/filter, embedding or retrieval</td>
+<td>sync status, parsed text, chunk boundaries, filter inputs, retrieved chunk IDs</td>
+</tr>
+<tr>
+<td>Correct evidence is retrieved, but answer invents a policy</td>
+<td>prompt/model/generation/guardrail</td>
+<td>exact context sent, prompt version, model response, faithfulness score</td>
+</tr>
+<tr>
+<td>One department gets good answers and another gets zero results</td>
+<td>identity/ACL mapping or source coverage</td>
+<td>authenticated user identity, groups, ACL sync and real-time verification, per-source coverage</td>
+</tr>
+</tbody>
+</table></div>
+<span class="eyebrow">Decision 06</span><h2 id="s6" tabindex="-1">5. Vector databases: what to decide, not how to tune an index</h2>
+<h3>Does Amazon have a vector database?</h3>
+<p>Yes—several AWS services support vector search, and Amazon S3 Vectors is an AWS-native purpose-built vector storage and query capability. The answer is not “pick the Amazon vector database,” because the options serve different workloads.</p>
+<p>Bedrock Knowledge Bases currently lists these supported vector stores: Amazon OpenSearch Serverless, OpenSearch managed clusters, Amazon Neptune, Amazon Aurora, Pinecone, Redis Enterprise Cloud, MongoDB Atlas, and Amazon S3 Vectors. <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-data.html" rel="noopener noreferrer" target="_blank">AWS: Supported data and vector stores</a></p>
+<h3>PM decision table</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Choose when</th>
+<th>Watch-outs / evidence needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bedrock Managed Knowledge Base</strong></td>
+<td>speed, managed operations, enterprise connectors, smart parsing, agentic retrieval, and predictable ownership matter more than custom pipeline control</td>
+<td>validate current region/features, connector ACL behaviour, retrieval quality, and cost on your corpus</td>
+</tr>
+<tr>
+<td><strong>S3 Vectors</strong></td>
+<td>very large, cost-sensitive vector collections can tolerate sub-second rather than ultra-low latency; semantic search is enough</td>
+<td>current Knowledge Bases integration supports semantic search but not hybrid search; check metadata limits and workload latency <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-bedrock-kb.html" rel="noopener noreferrer" target="_blank">AWS: S3 Vectors with Bedrock KB</a></td>
+</tr>
+<tr>
+<td><strong>OpenSearch Serverless / managed</strong></td>
+<td>hybrid keyword+vector search, filters, search analytics, and more query control matter</td>
+<td>cluster/serverless cost, operations, index tuning, and capacity behaviour</td>
+</tr>
+<tr>
+<td><strong>Aurora PostgreSQL + pgvector</strong></td>
+<td>relational joins, transactions, SQL, and vectors belong together</td>
+<td>scaling and vector-search performance must be tested on the real query/data distribution</td>
+</tr>
+<tr>
+<td><strong>Neptune / Neptune Analytics</strong></td>
+<td>relationships are first-class and GraphRAG or multi-hop relationship traversal is essential</td>
+<td>graph modelling and operations are justified only if graph questions matter</td>
+</tr>
+<tr>
+<td><strong>MongoDB Atlas</strong></td>
+<td>the product already uses MongoDB documents and wants vector search in that ecosystem</td>
+<td>third-party commercial/operational boundary and exact Bedrock integration support</td>
+</tr>
+<tr>
+<td><strong>Pinecone / Redis Enterprise Cloud</strong></td>
+<td>an existing platform standard, team expertise, or workload requirement justifies it</td>
+<td>external vendor, networking, identity, data residency, and cost boundary</td>
+</tr>
+<tr>
+<td><strong>DocumentDB / MemoryDB</strong></td>
+<td>AWS-native MongoDB-compatible or very-low-latency application patterns need vector capability outside the simplest KB integration path</td>
+<td>do not imply direct Bedrock Knowledge Bases support unless current documentation confirms it</td>
+</tr>
+</tbody>
+</table></div>
+<p class="problem"><strong>Top-PM default:</strong> start with Managed Knowledge Base or a supported managed store, then earn the complexity of a custom vector architecture with an explicit failing requirement. “We might need control” is not a requirement.</p>
+</div>
+
+<div class="note-part">
+<span class="eyebrow">Decision 07</span><h2 id="s7" tabindex="-1">6. Agents and AgentCore: understand the production boundary</h2>
+<h3>Bedrock versus AgentCore</h3>
+<ul>
+<li><strong>Bedrock</strong> supplies and governs model capabilities: inference, models, Guardrails, Knowledge Bases, and evaluations.</li>
+<li><strong>AgentCore</strong> supplies the production environment around agents: Runtime, Gateway, Identity, Memory, Policy, Observability, Evaluations, Browser, and Code Interpreter. It works with models and frameworks both inside and outside Bedrock. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" rel="noopener noreferrer" target="_blank">AWS: AgentCore overview</a></li>
+</ul>
+<h3>AgentCore modules as PM decisions</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Product question</th>
+<th>Failure if ignored</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime</td>
+<td>Does the workload need isolated, stateful, long-running agent execution?</td>
+<td>fragile custom hosting, session leakage, poor scaling</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td>How are tools discovered, authenticated, authorized, versioned, and observed?</td>
+<td>hard-coded integrations, credential sprawl, invisible tool calls</td>
+</tr>
+<tr>
+<td>Identity</td>
+<td>Is the agent acting as the service, the end user, or a delegated user?</td>
+<td>excessive privilege or broken SaaS access</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td>What actions and parameters are deterministically forbidden?</td>
+<td>prompt-only authorization and privilege escalation</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>What may persist within and across sessions?</td>
+<td>privacy leakage, false personalization, memory treated as truth</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td>Can one user outcome be traced across model, retrieval, tools, policies, and downstream calls?</td>
+<td>“the agent was weird” with no diagnosable cause</td>
+</tr>
+<tr>
+<td>Evaluations</td>
+<td>What counts as task success, correct tool use, and safe behaviour before and after launch?</td>
+<td>demo-driven shipping and silent production regression</td>
+</tr>
+</tbody>
+</table></div>
+<p>AgentCore Runtime provides dedicated microVM session isolation in its serverless mode, but the application still owns session-to-user mapping, input validation, dependency security, IAM permissions, and network configuration. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-security-best-practices.html" rel="noopener noreferrer" target="_blank">AWS: AgentCore Runtime security</a></p>
+<h3>Memory is not a database shortcut</h3>
+<p>AgentCore Memory distinguishes short-term raw interaction events from long-term extracted memories. Long-term memory generation is asynchronous and can store summaries, facts, or preferences under namespaces. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory-types.html" rel="noopener noreferrer" target="_blank">AWS: AgentCore memory types</a></p>
+<p>Use this rule:</p>
+<ul>
+<li><strong>Agent memory:</strong> “Rishi prefers a concise weekly report.”</li>
+<li><strong>DynamoDB or enterprise system of record:</strong> “Refund 78491 is approved for ₹12,000.”</li>
+</ul>
+<p>Never let extracted memory become the authoritative source for money, entitlements, compliance state, inventory, or customer records.</p>
+<h3>Multi-agent in one paragraph</h3>
+<p>Do not start with multiple agents. Add a specialist agent only when one bounded role needs a different tool set, context, model, security boundary, or quality objective—and when a measurable test shows the split improves the outcome. Multi-agent adds handoffs, context duplication, latency, cost, permissions, trace complexity, and new failure modes. AWS's current Agentic AI Lens explicitly calls for role/success/handoff definitions, atomic tasks, secure inter-agent communication, fallback mechanisms, and cost attribution. <a href="https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentic-ai-lens.html" rel="noopener noreferrer" target="_blank">AWS Well-Architected: Agentic AI Lens</a></p>
+<span class="eyebrow">Decision 08</span><h2 id="s8" tabindex="-1">7. Enterprise integrations: API, tool calling, and MCP</h2>
+<h3>First separate three ideas</h3>
+<ol>
+<li><strong>API:</strong> the actual contract used to ask a system for data or cause an action.</li>
+<li><strong>Tool calling:</strong> the model emits a structured request naming a tool and arguments; application code validates and executes it.</li>
+<li><strong>MCP:</strong> a standard client/server protocol for discovering and invoking tools and accessing resources/prompts across AI hosts.</li>
+</ol>
+<p>MCP does not replace the enterprise API. It normally wraps or exposes a curated part of that API. AgentCore Gateway can translate OpenAPI, API Gateway REST APIs, Lambda functions, Smithy models, MCP servers, and connectors into a consolidated MCP tool surface. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-core-concepts.html" rel="noopener noreferrer" target="_blank">AWS: AgentCore Gateway core concepts</a></p>
+<h3>Is API or MCP more reliable in real time?</h3>
+<p class="worked-example"><strong>Architecture answer:</strong> neither is inherently “more reliable.” A direct API can have fewer hops and is often the lower-risk choice for one stable, latency-sensitive integration. MCP adds a standard discovery/invocation layer and central governance, which becomes valuable across many tools and agents. The underlying API, authentication, idempotency, timeouts, retries, quotas, and downstream availability still determine whether the action succeeds.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Prefer</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>One internal service calls one stable API in a deterministic workflow</td>
+<td>direct API/SDK</td>
+<td>fewer moving parts; explicit contract; easiest latency budget</td>
+</tr>
+<tr>
+<td>Many agents need a governed catalogue of tools across APIs and SaaS systems</td>
+<td>MCP through AgentCore Gateway</td>
+<td>one discovery surface, protocol translation, credential providers, policy, semantic tool search, and observability</td>
+</tr>
+<tr>
+<td>Existing REST estate must become agent-accessible</td>
+<td>API Gateway/OpenAPI as an AgentCore Gateway target</td>
+<td>preserve existing APIs while presenting curated MCP tools <a href="https://aws.amazon.com/blogs/machine-learning/streamline-ai-agent-tool-interactions-connect-api-gateway-to-agentcore-gateway-with-mcp/" rel="noopener noreferrer" target="_blank">AWS architecture pattern</a></td>
+</tr>
+<tr>
+<td>High-impact action such as payment, refund, or access change</td>
+<td>either transport, plus deterministic policy/workflow and approval</td>
+<td>transport choice cannot replace authorization, idempotency, or human oversight</td>
+</tr>
+<tr>
+<td>Streaming progress from a long tool</td>
+<td>MCP/HTTP with supported streaming or an application streaming channel</td>
+<td>verify current client/server compatibility and end-to-end timeouts</td>
+</tr>
+</tbody>
+</table></div>
+<p class="worked-example"><strong>Recommended enterprise pattern:</strong> keep APIs as systems of record; expose a small, semantically clear, least-privilege subset as MCP tools through AgentCore Gateway; use direct APIs for deterministic backend steps; never expose a generic “call any URL” or “run arbitrary SQL” tool to an agent.</p>
+<h3>The tool contract a PM should review</h3>
+<p>For every tool, ask for:</p>
+<ul>
+<li>a precise name and description that state when it should and should not be used;</li>
+<li>typed input and output schemas;</li>
+<li>read-only versus side-effect classification;</li>
+<li>the caller identity and downstream identity;</li>
+<li>least-privilege scope and parameter-level policy;</li>
+<li>timeout, retry, backoff, quota, and circuit-breaker behaviour;</li>
+<li>an idempotency key for side effects;</li>
+<li>validation before execution and sanitization after execution;</li>
+<li>human approval threshold;</li>
+<li>audit fields: user, tenant, session, trace, tool, arguments hash, policy decision, result, latency, and error;</li>
+<li>versioning and deprecation plan.</li>
+</ul>
+<p>AgentCore Gateway supports IAM or JWT inbound authorization and multiple outbound credential patterns. AWS recommends real authorization at the gateway/policy/interceptor/target; <code>NONE</code> and authenticate-only configurations do not themselves authorize tool calls. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-inbound-auth.html" rel="noopener noreferrer" target="_blank">AWS: Gateway inbound authorization</a></p>
+<p>AgentCore Policy uses Cedar with default-deny and forbid-overrides-permit semantics, so policies can reject unsafe tool calls outside the model's prompt. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy-understanding-cedar.html" rel="noopener noreferrer" target="_blank">AWS: Cedar policy model</a></p>
+<span class="eyebrow">Decision 09</span><h2 id="s9" tabindex="-1">8. How the traditional AWS services fit around the AI</h2>
+<h3>Lambda versus AgentCore Runtime</h3>
+<ul>
+<li>Use <strong>Lambda</strong> for bounded tools, adapters, validators, and short event handlers.</li>
+<li>Use <strong>AgentCore Runtime</strong> for the stateful or long-running agent loop, session isolation, and framework execution.</li>
+<li>A Runtime-hosted agent can call Lambda tools through AgentCore Gateway.</li>
+</ul>
+<p>Lambda can retry events and process the same event more than once, so side-effecting functions must be idempotent. AWS recommends timeouts, backoff with jitter, concurrency controls, metrics/alarms, and awareness of downstream throughput. <a href="https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html" rel="noopener noreferrer" target="_blank">AWS: Lambda best practices</a></p>
+<h3>Step Functions versus LangGraph</h3>
+<ul>
+<li>Use <strong>Step Functions</strong> for a durable, cross-service business process: explicit states, retries, waits, approval, compensation, and operational history.</li>
+<li>Use <strong>LangGraph</strong> for stateful orchestration inside an AI application: agent nodes, branching, checkpointing, pause/resume, and human-in-the-loop around model/tool behaviour.</li>
+<li>They can coexist: LangGraph handles the conversational/agent loop; a tool starts a Step Functions workflow for an approved multi-system process.</li>
+</ul>
+<p>Step Functions has optimized integrations with Bedrock and other AWS services. <a href="https://docs.aws.amazon.com/step-functions/latest/dg/connect-bedrock.html" rel="noopener noreferrer" target="_blank">AWS: Bedrock integration with Step Functions</a></p>
+<h3>API Gateway versus AgentCore Gateway</h3>
+<ul>
+<li><strong>API Gateway</strong> is a general app/API front door with routing, authentication options, throttles, quotas, and REST/WebSocket capabilities.</li>
+<li><strong>AgentCore Gateway</strong> is an agentic traffic and tool boundary with MCP aggregation/translation, tool discovery, credential providers, agent/HTTP/inference targets, and policy integration.</li>
+<li>Existing API Gateway APIs can become targets behind AgentCore Gateway rather than being rebuilt.</li>
+</ul>
+<p>API Gateway throttles are protective targets, not guaranteed ceilings; clients still need retry discipline. <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html" rel="noopener noreferrer" target="_blank">AWS: API Gateway throttling</a></p>
+<h3>S3 versus DynamoDB versus Memory</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>versioned documents, uploads, evaluation datasets, batch artifacts</td>
+<td>S3</td>
+</tr>
+<tr>
+<td>operational key/value state, run status, idempotency keys, durable workflow metadata</td>
+<td>DynamoDB</td>
+</tr>
+<tr>
+<td>conversational continuity and selected extracted preferences/summaries</td>
+<td>AgentCore Memory</td>
+</tr>
+<tr>
+<td>semantic retrieval over enterprise content</td>
+<td>Bedrock Knowledge Base + vector layer</td>
+</tr>
+</tbody>
+</table></div>
+<span class="eyebrow">Decision 10</span><h2 id="s10" tabindex="-1">9. Frameworks: learn their decision value, not their syntax</h2>
+<p>The framework is not the architecture. Your durable product assets are the contracts, test cases, policies, traces, data model, and failure handling. Framework code can change.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Framework</th>
+<th>What it is for</th>
+<th>Choose when</th>
+<th>PM warning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LangChain</strong></td>
+<td>high-level agent/application abstractions and a large integration ecosystem</td>
+<td>the team wants fast assembly across models, tools, loaders, and vector stores</td>
+<td>ease of starting can hide implicit behaviour; insist on explicit tool, state, prompt, and trace contracts <a href="https://docs.langchain.com/oss/python/langchain/overview" rel="noopener noreferrer" target="_blank">LangChain overview</a></td>
+</tr>
+<tr>
+<td><strong>LangGraph</strong></td>
+<td>low-level graph runtime for long-running, stateful agent workflows with durable execution and human-in-the-loop</td>
+<td>pause/resume, checkpointing, branching, recovery, or inspectable state transitions are core requirements</td>
+<td>a graph does not supply business authorization, evaluation quality, or deployment security <a href="https://docs.langchain.com/oss/python/langgraph/overview" rel="noopener noreferrer" target="_blank">LangGraph overview</a></td>
+</tr>
+<tr>
+<td><strong>Langfuse</strong></td>
+<td>LLM/agent observability, tracing, prompt management, datasets, experiments, and evaluations</td>
+<td>the team needs vendor-neutral/self-hostable AI traces and quality operations beyond basic infrastructure metrics</td>
+<td>it is primarily an observability/evaluation platform, not the agent orchestrator <a href="https://langfuse.com/docs" rel="noopener noreferrer" target="_blank">Langfuse overview</a></td>
+</tr>
+<tr>
+<td><strong>LlamaIndex</strong></td>
+<td>data-centric RAG, connectors, indexes, retrieval, and agent/workflow abstractions</td>
+<td>data ingestion/retrieval is the product's hardest differentiator or the team already uses the ecosystem</td>
+<td>do not choose only because “we are doing RAG”; Managed Knowledge Bases may remove much of the undifferentiated work <a href="https://docs.llamaindex.ai/en/stable/module_guides/mcp/" rel="noopener noreferrer" target="_blank">LlamaIndex MCP overview</a></td>
+</tr>
+<tr>
+<td><strong>Semantic Kernel</strong></td>
+<td>Microsoft's SDK for AI services, plugins/function calling, agents, and orchestration in C#, Python, and Java</td>
+<td>the organization is Microsoft/.NET-heavy or its plugin and orchestration model aligns with existing systems</td>
+<td>verify feature maturity; some agent/memory capabilities are experimental and older group-chat APIs have been superseded <a href="https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/agent-architecture" rel="noopener noreferrer" target="_blank">Microsoft: Semantic Kernel agent architecture</a></td>
+</tr>
+<tr>
+<td><strong>Strands Agents</strong></td>
+<td>AWS-backed open-source agent framework with Bedrock/AgentCore, MCP, A2A, and multi-agent patterns</td>
+<td>an AWS-first team wants a current framework aligned with AgentCore</td>
+<td>it is missing from the JD, which is another signal that the JD's service map predates current AWS guidance <a href="https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentic-ai-lens.html" rel="noopener noreferrer" target="_blank">AWS Agentic AI Lens</a></td>
+</tr>
+</tbody>
+</table></div>
+<h3>A practical selection rule</h3>
+<ol>
+<li>Start with no framework decision.</li>
+<li>Write the workflow, state, tool, authorization, approval, recovery, and trace requirements.</li>
+<li>Pick the smallest framework that removes a demonstrated engineering pain.</li>
+<li>Run the same golden tasks through the candidate and a simpler baseline.</li>
+<li>Compare task success, tool correctness, unauthorized actions, p50/p95 latency, cost per successful task, recovery, trace usefulness, and engineering effort.</li>
+</ol>
+</div>
+
+<div class="note-part">
+<span class="eyebrow">Decision 11</span><h2 id="s11" tabindex="-1">10. Production-ready means a control system, not a deployment</h2>
+<h3>Security and governance gates</h3>
+<ul>
+<li>Authenticate the human or calling service before the agent.</li>
+<li>Bind each session to the authenticated user/tenant server-side; do not trust a client-supplied session ID.</li>
+<li>Give every runtime and tool a least-privilege IAM role.</li>
+<li>Put deterministic AgentCore/Cedar policy around tool calls; default deny.</li>
+<li>Use AgentCore Identity/OAuth for delegated SaaS access; avoid sharing broad service credentials.</li>
+<li>Keep secrets in a secrets manager, not prompts, source code, or memory.</li>
+<li>Apply document-level permission filtering, but do not confuse ACL-aware retrieval with user authentication.</li>
+<li>Validate tool inputs, URLs, file paths, and outputs; treat retrieved content and tool descriptions as untrusted.</li>
+<li>Use Bedrock Guardrails for prompt attacks, harmful content, denied topics, sensitive data, and contextual grounding where supported. Guardrails are one layer, not a substitute for authorization. <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html" rel="noopener noreferrer" target="_blank">AWS: Bedrock Guardrails</a></li>
+<li>Require approval for irreversible, financial, external-communication, access-control, or high-blast-radius actions.</li>
+<li>Encrypt at rest and in transit, define retention/deletion, and use private networking where required.</li>
+<li>Audit who asked, what evidence was retrieved, what the model proposed, what policy decided, what tool executed, and what changed.</li>
+</ul>
+<h3>Reliability gates</h3>
+<ul>
+<li>explicit timeouts at model, tool, gateway, and workflow boundaries;</li>
+<li>retries only for retryable failures, with exponential backoff and jitter;</li>
+<li>idempotency keys and deduplication for side effects;</li>
+<li>circuit breakers and fallback/partial responses;</li>
+<li>bounded model/tool loops and token/tool-call budgets;</li>
+<li>checkpoint/replay or durable workflow for long-running work;</li>
+<li>compensation or reconciliation when partial side effects occur;</li>
+<li>load and chaos tests that include downstream throttling, stale credentials, malformed tool results, and process death after a side effect;</li>
+<li>regional/service quota review and a data-residency decision before using cross-region inference.</li>
+</ul>
+<h3>The four evidence layers</h3>
+<ol>
+<li><strong>Deterministic tests:</strong> schemas, policy, auth, routing, idempotency, retry, and data isolation.</li>
+<li><strong>Offline evals:</strong> fixed representative tasks before release; retrieval and generation separated.</li>
+<li><strong>Online evals and telemetry:</strong> sampled production traces, business outcomes, safety, cost, latency, and drift.</li>
+<li><strong>Human review:</strong> high-risk actions, ambiguous failures, and evaluator calibration.</li>
+</ol>
+<p>AgentCore Evaluations can assess end-to-end goal attainment, tool-call accuracy, and custom dimensions for agents hosted inside or outside AgentCore. It supports online, on-demand, and batch evaluation patterns. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/how-it-works-evaluations.html" rel="noopener noreferrer" target="_blank">AWS: AgentCore Evaluations</a> and <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations-types.html" rel="noopener noreferrer" target="_blank">AWS: Evaluation types</a></p>
+<span class="eyebrow">Decision 12</span><h2 id="s12" tabindex="-1">11. Observability: the PM's fastest route to technical depth</h2>
+<h3>One trace must answer these questions</h3>
+<ol>
+<li>Which authenticated user/tenant/session initiated the run?</li>
+<li>Which application and prompt/model/version handled it?</li>
+<li>What retrieval query ran, against which knowledge base/index, with which filters?</li>
+<li>Which chunks and source versions were returned and reranked?</li>
+<li>Which tool did the model request, with which validated arguments?</li>
+<li>What identity and policy decision allowed or denied it?</li>
+<li>What did the downstream system return, and was a side effect committed?</li>
+<li>Where were time and money spent?</li>
+<li>What quality/safety evaluators scored the run?</li>
+<li>What user-visible outcome occurred?</li>
+</ol>
+<p>AgentCore Observability emits metrics and trace data for runtime, memory, gateway, built-in tools, identity, and policy resources, and is OpenTelemetry-compatible. <a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability-configure.html" rel="noopener noreferrer" target="_blank">AWS: Configure AgentCore observability</a></p>
+<p>Langfuse can add application-level traces, prompt versions, datasets, experiments, human/LLM/code evaluations, dashboards, and self-hosting. A useful trace captures model calls, retrieval, tools, inputs/outputs, latency, tokens, cost, and stable operation names. <a href="https://langfuse.com/docs/observability/overview" rel="noopener noreferrer" target="_blank">Langfuse observability</a> and <a href="https://langfuse.com/docs/observability/best-practices" rel="noopener noreferrer" target="_blank">Langfuse trace practices</a></p>
+<h3>PM dashboard, not infrastructure wallpaper</h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Outcome view</th>
+<th>Diagnostic view</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>successful task completion</td>
+<td>failures by retrieval/model/tool/policy/downstream layer</td>
+</tr>
+<tr>
+<td>grounded answer rate</td>
+<td>context relevance, coverage, faithfulness, citation correctness</td>
+</tr>
+<tr>
+<td>safe completed actions</td>
+<td>denied actions, approval rate, unauthorized-action rate, duplicate side effects</td>
+</tr>
+<tr>
+<td>user resolution / deflection / cycle-time improvement</td>
+<td>retries, fallback use, loop count, handoff failures</td>
+</tr>
+<tr>
+<td>p50/p95 user latency</td>
+<td>span latency by retrieval, model, tool, policy, workflow</td>
+</tr>
+<tr>
+<td>cost per successful outcome</td>
+<td>tokens, model calls, retrieval calls, tool calls, multi-agent overhead</td>
+</tr>
+</tbody>
+</table></div>
+<p>Do not expose hidden chain-of-thought. Expose bounded execution events, tool calls, policy decisions, evidence, latency, cost, and evaluator outcomes.</p>
+<span class="eyebrow">Decision 13</span><h2 id="s13" tabindex="-1">12. Architecture review: the top-1% PM questions</h2>
+<p>Use these in design reviews and interviews.</p>
+<h3>Product and scope</h3>
+<ol>
+<li>What user decision or action improves, and what is the non-AI baseline?</li>
+<li>Why does this need an agent rather than search, a form, rules, or a deterministic workflow?</li>
+<li>What must the system never do autonomously?</li>
+<li>What is the smallest end-to-end slice that proves business value and trust?</li>
+</ol>
+<h3>RAG and data</h3>
+<ol start="5">
+<li>What is the authoritative source for every answer class?</li>
+<li>What is the freshness SLA, and how are updates/deletions verified?</li>
+<li>How are tenant and document permissions enforced before retrieval?</li>
+<li>Which metric tells us retrieval failed even when the answer sounds good?</li>
+<li>What query types require exact keywords, semantic meaning, graph traversal, or SQL instead of one vector index?</li>
+</ol>
+<h3>Agent and workflow</h3>
+<ol start="10">
+<li>Which decisions are probabilistic, and which are deterministic?</li>
+<li>What state belongs in AgentCore Memory, DynamoDB, the workflow engine, or the enterprise system of record?</li>
+<li>Why is each additional agent necessary, and which measured failure does it fix?</li>
+<li>What happens if the process dies after the external action succeeds but before the agent records success?</li>
+</ol>
+<h3>Tools and integration</h3>
+<ol start="14">
+<li>Is the model selecting from narrow business tools or a dangerous generic capability?</li>
+<li>Is user identity delegated end-to-end, or is a shared service identity hiding authorization gaps?</li>
+<li>What is the idempotency key, timeout, retry, quota, and approval rule for each side effect?</li>
+<li>Why is MCP useful here—interoperability/discovery/governance—or is it an extra hop around one stable API?</li>
+</ol>
+<h3>Production and evidence</h3>
+<ol start="18">
+<li>Show me one complete trace of a success, a denial, a downstream timeout, and a duplicate request.</li>
+<li>What fixed evaluation set blocks release? What production signals trigger rollback?</li>
+<li>What are the cost and latency budgets per successful task, not per model call?</li>
+<li>How do we kill or degrade the agent safely while keeping core business operations available?</li>
+<li>Which assumption would make us remove the framework, vector store, or multi-agent design?</li>
+</ol>
+<span class="eyebrow">Decision 14</span><h2 id="s14" tabindex="-1">13. Failure detector: symptom → layer → PM response</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Observable symptom</th>
+<th>First suspect</th>
+<th>PM response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fluent but unsupported answer</td>
+<td>generation or bad context</td>
+<td>separate retrieval hit from faithfulness; inspect cited chunks</td>
+</tr>
+<tr>
+<td>zero results for an authorized user</td>
+<td>ACL/identity/filter/sync</td>
+<td>verify authenticated identity, group resolution, filters, and ingestion status</td>
+</tr>
+<tr>
+<td>stale policy answer</td>
+<td>source ownership/sync/versioning</td>
+<td>define effective-date metadata, deletion/sync tests, and source precedence</td>
+</tr>
+<tr>
+<td>wrong tool selected</td>
+<td>tool descriptions/routing/too many tools</td>
+<td>narrow catalogue; improve contracts; measure tool selection accuracy</td>
+</tr>
+<tr>
+<td>correct tool, wrong parameters</td>
+<td>schema/validation/context</td>
+<td>require typed schema, parameter policy, deterministic validation, approval</td>
+</tr>
+<tr>
+<td>duplicate refund or ticket</td>
+<td>retry/idempotency failure</td>
+<td>stop rollout; require idempotency key and reconciliation evidence</td>
+</tr>
+<tr>
+<td>agent can read another tenant's data</td>
+<td>identity/session/filter boundary</td>
+<td>security incident; fail closed; test tenant isolation at every layer</td>
+</tr>
+<tr>
+<td>good demos, poor production quality</td>
+<td>non-representative eval set</td>
+<td>sample real traffic; build failure taxonomy and golden cases</td>
+</tr>
+<tr>
+<td>latency spikes only on complex questions</td>
+<td>iterative retrieval/tool or multi-agent loop</td>
+<td>inspect spans, loop count, model calls, p95 and budgets</td>
+</tr>
+<tr>
+<td>cost rises without usage growth</td>
+<td>longer prompts, loops, retries, excessive retrieval/agents</td>
+<td>cost per successful task and per-step attribution</td>
+</tr>
+<tr>
+<td>system cannot explain a denial</td>
+<td>policy/trace observability</td>
+<td>show deterministic decision and policy reason, not model reasoning</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="note-part">
+<span class="eyebrow">Decision 15</span><h2 id="s15" tabindex="-1">14. Your end-of-day proof</h2>
+<p>You have working PM fluency when you can complete all five without notes:</p>
+<ol>
+<li>Draw the reference architecture and assign every component one responsibility.</li>
+<li>Explain the difference between a knowledge base and a vector database.</li>
+<li>Answer “API or MCP?” with a conditional decision, not a winner.</li>
+<li>Diagnose one bad RAG answer using separate retrieval and generation evidence.</li>
+<li>Reject a production proposal that relies on prompt instructions for authorization or retry safety.</li>
+</ol>
+<p>Then record a five-minute architecture review with this sequence:</p>
+<blockquote>
+<p>user outcome → data/knowledge boundary → agent/runtime boundary → tool/action boundary → deterministic authorization → failure recovery → observable evidence → release gate.</p>
+</blockquote>
+<p>Artifact generation is not proof that these abilities have been learned. Demonstrate them in a live architecture review or incident walkthrough.</p>
+<span class="eyebrow">Decision 16</span><h2 id="s16" tabindex="-1">15. YouTube path: watch only what changes a decision</h2>
+<h3>Required (about 2 hours at 1.5×–2×)</h3>
+<ol>
+<li><a href="https://www.youtube.com/watch?v=mhItmKsB5tQ" rel="noopener noreferrer" target="_blank">Amazon Bedrock overview (AWS, 2025)</a> — build the current platform map; ignore feature memorization.</li>
+<li><a href="https://www.youtube.com/watch?v=_sq3ixXMQTc" rel="noopener noreferrer" target="_blank">Back to Basics: Understanding RAG (AWS)</a> — draw the retrieve-then-generate pipeline and its failure split.</li>
+<li><a href="https://www.youtube.com/watch?v=hnyDDfo8e9Q" rel="noopener noreferrer" target="_blank">Build a RAG chatbot in 20 minutes with Bedrock Knowledge Bases (AWS)</a> — observe what the managed layer removes; the video uses OpenSearch, so compare it with newer Managed KB and S3 Vectors choices.</li>
+<li><a href="https://www.youtube.com/watch?v=usFIb9aEd1U" rel="noopener noreferrer" target="_blank">Amazon Bedrock AgentCore: Deploy &amp; Operate AI Agents in Minutes (AWS)</a> — map Runtime, Gateway, Memory, Identity, and Observability to production problems.</li>
+<li><a href="https://www.youtube.com/watch?v=atWXM5lziY8" rel="noopener noreferrer" target="_blank">AgentCore Gateway walkthrough (AWS)</a> — focus on tool exposure, authentication, and MCP, not console clicks.</li>
+<li><a href="https://www.youtube.com/watch?v=4_d8lxSO9LY" rel="noopener noreferrer" target="_blank">AgentCore Observability walkthrough (AWS)</a> — identify which trace evidence a PM needs for one failed task.</li>
+</ol>
+<h3>Optional deepening</h3>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=WyGK8UcAxKo" rel="noopener noreferrer" target="_blank">Build your first production-ready agent with AgentCore (AWS)</a></li>
+<li><a href="https://www.youtube.com/watch?v=Q-tYIAuv9WI" rel="noopener noreferrer" target="_blank">AgentCore Runtime walkthrough (AWS)</a></li>
+<li><a href="https://www.youtube.com/watch?v=-N4v6-kJgwA" rel="noopener noreferrer" target="_blank">AgentCore Memory walkthrough (AWS)</a></li>
+<li><a href="https://www.youtube.com/watch?v=wv2doVDF7KQ" rel="noopener noreferrer" target="_blank">AgentCore Identity walkthrough (AWS)</a></li>
+<li><a href="https://www.youtube.com/watch?v=tMqTy1HR974" rel="noopener noreferrer" target="_blank">Multi-Agent Collaboration with Amazon Bedrock (AWS, historical)</a> — learn the supervisor/specialist idea, but label this Bedrock Agents Classic context.</li>
+<li><a href="https://www.youtube.com/watch?v=7pvEYLW1yZw" rel="noopener noreferrer" target="_blank">AWS re:Invent 2024: Using multiple agents for scalable generative AI applications</a> — useful case study, also historical in platform terms.</li>
+</ul>
+<p>AWS curates the current AgentCore video set on its <a href="https://aws.amazon.com/bedrock/agentcore/resources/" rel="noopener noreferrer" target="_blank">AgentCore resources page</a>.</p>
+<span class="eyebrow">Decision 17</span><h2 id="s17" tabindex="-1">16. Primary reading library</h2>
+<h3>Current platform and architecture</h3>
+<ul>
+<li><a href="https://aws.amazon.com/documentation-overview/bedrock/" rel="noopener noreferrer" target="_blank">Amazon Bedrock documentation overview</a></li>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html" rel="noopener noreferrer" target="_blank">Amazon Bedrock AgentCore overview</a></li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentic-ai-lens.html" rel="noopener noreferrer" target="_blank">AWS Well-Architected Agentic AI Lens</a></li>
+<li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/retrieval-augmented-generation-options/retrieval-augmented-generation-options.pdf" rel="noopener noreferrer" target="_blank">AWS Prescriptive Guidance: RAG options and architectures</a></li>
+</ul>
+<h3>RAG and vector decisions</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html" rel="noopener noreferrer" target="_blank">Bedrock Knowledge Bases overview</a></li>
+<li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-data.html" rel="noopener noreferrer" target="_blank">Supported data sources and vector stores</a></li>
+<li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/choosing-an-aws-vector-database-for-rag-use-cases/choosing-an-aws-vector-database-for-rag-use-cases.pdf" rel="noopener noreferrer" target="_blank">Choose an AWS vector database for RAG</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-bedrock-kb.html" rel="noopener noreferrer" target="_blank">S3 Vectors with Bedrock Knowledge Bases</a></li>
+<li><a href="https://aws.amazon.com/blogs/machine-learning/evaluate-and-improve-performance-of-amazon-bedrock-knowledge-bases/" rel="noopener noreferrer" target="_blank">Evaluate and improve Bedrock Knowledge Bases</a></li>
+<li><a href="https://aws.amazon.com/blogs/machine-learning/evaluating-rag-applications-with-amazon-bedrock-knowledge-base-evaluation/" rel="noopener noreferrer" target="_blank">Bedrock Knowledge Base evaluations</a></li>
+</ul>
+<h3>Tool integration, MCP, identity, and policy</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-core-concepts.html" rel="noopener noreferrer" target="_blank">AgentCore Gateway core concepts</a></li>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-inbound-auth.html" rel="noopener noreferrer" target="_blank">Gateway inbound authorization</a></li>
+<li><a href="https://aws.amazon.com/blogs/machine-learning/streamline-ai-agent-tool-interactions-connect-api-gateway-to-agentcore-gateway-with-mcp/" rel="noopener noreferrer" target="_blank">Connect API Gateway to AgentCore Gateway with MCP</a></li>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy-understanding-cedar.html" rel="noopener noreferrer" target="_blank">AgentCore Policy and Cedar</a></li>
+<li><a href="https://blog.modelcontextprotocol.io/posts/2026-07-28/" rel="noopener noreferrer" target="_blank">MCP 2026-07-28 release</a></li>
+<li><a href="https://modelcontextprotocol.io/specification/2025-06-18" rel="noopener noreferrer" target="_blank">MCP specification: tools/resources/prompts and security</a></li>
+</ul>
+<h3>Security, operations, and evaluation</h3>
+<ul>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-security-best-practices.html" rel="noopener noreferrer" target="_blank">AgentCore Runtime security practices</a></li>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability-configure.html" rel="noopener noreferrer" target="_blank">AgentCore observability configuration</a></li>
+<li><a href="https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/how-it-works-evaluations.html" rel="noopener noreferrer" target="_blank">AgentCore Evaluations</a></li>
+<li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html" rel="noopener noreferrer" target="_blank">Bedrock Guardrails</a></li>
+<li><a href="https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html" rel="noopener noreferrer" target="_blank">Lambda best practices</a></li>
+<li><a href="https://docs.aws.amazon.com/step-functions/latest/dg/connect-bedrock.html" rel="noopener noreferrer" target="_blank">Step Functions integration with Bedrock</a></li>
+</ul>
+<h3>Framework decision sources</h3>
+<ul>
+<li><a href="https://docs.langchain.com/oss/python/langchain/overview" rel="noopener noreferrer" target="_blank">LangChain overview</a></li>
+<li><a href="https://docs.langchain.com/oss/python/langgraph/overview" rel="noopener noreferrer" target="_blank">LangGraph overview</a></li>
+<li><a href="https://langfuse.com/docs" rel="noopener noreferrer" target="_blank">Langfuse overview</a></li>
+<li><a href="https://docs.llamaindex.ai/en/stable/module_guides/mcp/" rel="noopener noreferrer" target="_blank">LlamaIndex MCP and data-tool concepts</a></li>
+<li><a href="https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/agent-architecture" rel="noopener noreferrer" target="_blank">Semantic Kernel agent architecture</a></li>
+</ul>
+<span class="eyebrow">Decision 18</span><h2 id="s18" tabindex="-1">17. One-page memory card</h2>
+<ul>
+<li>Bedrock = models and managed AI capabilities.</li>
+<li>AgentCore = production runtime, tools, identity, memory, policy, observability, and evaluations.</li>
+<li>Knowledge base = the managed RAG pipeline; vector store = one retrieval component.</li>
+<li>Better RAG = authoritative data + correct parsing/chunking + metadata/ACLs + retrieval/reranking + separate evals.</li>
+<li>API = underlying contract; tool calling = model proposes a structured invocation; MCP = standard discovery/invocation layer.</li>
+<li>API versus MCP is conditional; MCP does not repair a bad API.</li>
+<li>Lambda = bounded compute/tool; Step Functions = deterministic durable business flow; LangGraph = stateful AI orchestration.</li>
+<li>DynamoDB = authoritative operational state; AgentCore Memory = conversation-derived context.</li>
+<li>IAM/Identity authenticates and scopes; Cedar Policy authorizes tool calls; Guardrails handles content/safety; none replaces the others.</li>
+<li>Single agent first. Add agents only for a measurable boundary or outcome.</li>
+<li>Frameworks are replaceable. Contracts, policies, evaluations, and traces are the durable product.</li>
+<li>Production-ready = safe failure, diagnosable failure, bounded cost, reversible change, and evidence-gated release.</li>
+</ul>
+
+<footer class="closing-note">
+  <b>Learning boundary.</b> This guide can prepare a decision. It cannot prove that the reader has learned, applied, or retained it. Demonstrate that with the end-of-day architecture review and incident diagnosis.
+</footer>
+</div>
+
+</main>
+<!-- ============================================================
+     ANNOTATION LAYER — reader tools, not content.
+     Hidden in print. Excluded from the density metric.
+     Everything lives in localStorage until you press EXPORT.
+     ============================================================ -->
+<style>
+  #annot-bar, #annot-out { font-family:'Segoe UI',system-ui,sans-serif; }
+  /* small trigger — the only thing on screen until you ask for the tools */
+  #annot-fab { position:fixed; top:16px; right:16px; z-index:9999; width:42px; height:42px;
+               border-radius:50%; border:2px solid #4f6c91; background:#fffdf7; cursor:pointer;
+               display:flex; align-items:center; justify-content:center; opacity:.45;
+               box-shadow:0 2px 8px rgba(29,39,50,.14); transition:opacity .15s, transform .15s; }
+  #annot-fab:hover { opacity:1; transform:scale(1.06); }
+  #annot-fab { color:#173b66; }  #annot-fab.open { opacity:1; background:#173b66; border-color:#173b66; color:#fff9ef; }
+  #annot-fab svg { width:20px; height:20px; }
+  #annot-bar { display:none; position:fixed; top:66px; right:16px; z-index:9999; background:#fffdf7;
+               border:3px dashed #4f6c91; border-radius:16px; padding:12px 14px; width:196px;
+               box-shadow:0 6px 22px rgba(29,39,50,.18); }
+  #annot-bar.open { display:block; }
+  #annot-bar h6 { margin:0 0 8px; font-size:12px; letter-spacing:1.4px; color:#173b66; font-weight:800; }
+  #annot-bar .swatches { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; margin-bottom:10px; }
+  #annot-bar .sw { height:26px; border-radius:7px; border:2px solid rgba(29,39,50,.28); cursor:pointer; }
+  #annot-bar .sw.on { outline:3px solid #173b66; outline-offset:1px; }
+  #annot-bar button { display:flex; align-items:center; width:100%; margin-bottom:6px; padding:7px 9px;
+                      font-size:12.5px; font-weight:700; border-radius:9px; border:2px solid #4f6c91;
+                      background:#dbe7f5; color:#173b66; cursor:pointer; text-align:left; }
+  #annot-bar button .bico { width:17px; height:17px; flex:0 0 17px; margin-right:8px; overflow:visible; }
+  #annot-bar button:disabled { opacity:.42; cursor:default; }
+  #annot-bar button.alt  { border-color:#4f8a63; background:#dcecd8; color:#2f6b45; }
+  #annot-bar button.warn { border-color:#a85a50; background:#f6ddd1; color:#8b393b; }
+  #annot-bar button.on   { background:#173b66; color:#fff9ef; }
+  #annot-bar .legend { margin-top:8px; padding-top:8px; border-top:2px dotted #c8cfd8; font-size:11px; color:#6b7480; line-height:1.45; }
+  .hl { border-radius:4px; padding:0 2px; box-decoration-break:clone; -webkit-box-decoration-break:clone; cursor:pointer; }
+  .hl-1{background:#ffe9a3}.hl-2{background:#cfe9c4}.hl-3{background:#c9dcf2}.hl-4{background:#f7c9d4}
+  .hl-5{background:#fbd7ae}.hl-6{background:#ddd0ee}.hl-7{background:#bfe6e0}
+  .note-box { position:absolute; z-index:50; width:270px; background:#fffbe6; border:3px solid #c9a227;
+              border-radius:12px; padding:8px 10px 10px; box-shadow:0 4px 14px rgba(29,39,50,.16); }
+  .note-box textarea { width:100%; min-height:82px; border:none; background:transparent; resize:vertical;
+                       font-family:'Segoe Print','Comic Sans MS',cursive; font-size:15px; line-height:1.35;
+                       color:#4a3c08; outline:none; }
+  .note-box .nb-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;
+                       font-size:10.5px; font-weight:800; letter-spacing:1px; color:#8a6d10; cursor:move;
+                       font-family:'Segoe UI',system-ui,sans-serif; }
+  .note-box .nb-del { cursor:pointer; color:#a85a50; font-weight:800; }
+  #annot-out { position:fixed; inset:6% 12%; z-index:10000; background:#fffdf7; border:3px solid #173b66;
+               border-radius:18px; padding:20px 24px; display:none; flex-direction:column; }
+  #annot-out h5 { margin:0 0 10px; font-size:17px; color:#173b66; }
+  #annot-out textarea { flex:1; width:100%; font-family:'Consolas','Courier New',monospace; font-size:13px;
+                        border:2px solid #c8cfd8; border-radius:10px; padding:12px; resize:none; }
+  #annot-out .row { display:flex; gap:9px; margin-top:11px; }
+  #annot-out button { padding:8px 16px; font-size:13px; font-weight:700; border-radius:9px;
+                      border:2px solid #4f6c91; background:#dbe7f5; color:#173b66; cursor:pointer; }
+  @media print { #annot-bar, #annot-out, #annot-fab, .nb-head { display:none !important; }
+                 .note-box { border-width:2px; box-shadow:none; } }
+</style>
+
+<button id="annot-fab" title="Highlighter &amp; notes">
+  <svg viewBox="0 0 24 24"><path d="M14.5 3.5l6 6-9 9H6.5l-1-1v-5z" fill="#fceeaa" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M13 5l6 6" stroke="currentColor" stroke-width="1.7"/><path d="M3 21h18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+</button>
+
+<div id="annot-bar">
+  <h6>HIGHLIGHTER</h6>
+  <div class="swatches" id="sw"></div>
+  <button id="btn-note"><svg class="bico" viewBox="0 0 24 24"><path d="M4 20h4l10-10-4-4L4 16z" fill="#dbe7f5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 6l4 4" stroke="currentColor" stroke-width="1.8"/></svg>Add note box</button>
+  <button id="btn-erase" class="warn"><svg class="bico" viewBox="0 0 24 24"><g transform="rotate(-35 12 12)"><rect x="5" y="7" width="14" height="10" rx="2.2" fill="#f7c9d4" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v10" stroke="currentColor" stroke-width="1.6"/><rect x="12" y="7" width="7" height="10" rx="2.2" fill="#c9dcf2" stroke="currentColor" stroke-width="1.8"/></g><path d="M3 21h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Eraser</button>
+  <button id="btn-undo"><svg class="bico" viewBox="0 0 24 24"><path d="M4 9h9a5 5 0 0 1 0 10H8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 5L3 9l4 4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Undo <span style="opacity:.6;font-size:11px;">Ctrl+Z</span></button>
+  <button id="btn-export" class="alt"><svg class="bico" viewBox="0 0 24 24"><path d="M12 16V4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M7 9l5-5 5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 18v2h16v-2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>Export for v2</button>
+  <div class="legend"><b>Select text</b> then click a colour.<br><b>Eraser</b> on, then click a highlight.<br><b>Ctrl+Z</b> undoes · <b>Ctrl+Y</b> redoes.<br>Saved in this browser until exported.</div>
+</div>
+
+<div id="annot-out">
+  <h5>Annotations — copy this and paste it back into the chat for version 2</h5>
+  <textarea id="out-text" readonly></textarea>
+  <div class="row">
+    <button onclick="document.getElementById('out-text').select();document.execCommand('copy')">Copy all</button>
+    <button onclick="document.getElementById('annot-out').style.display='none'">Close</button>
+    <button class="warn" onclick="if(confirm('Delete every highlight and note?')){localStorage.removeItem(AN.key);location.reload()}">Clear all</button>
+  </div>
+</div>
+
+<script>
+const AN = {
+  key: 'studynote-annot-' + document.title.replace(/\W+/g,'-'),
+  colours: ['#ffe9a3','#cfe9c4','#c9dcf2','#f7c9d4','#fbd7ae','#ddd0ee','#bfe6e0'],
+  pen: 1, erase: false,
+  data: { highlights: [], notes: [] }
+};
+
+/* ---------- storage ---------- */
+AN.save = () => localStorage.setItem(AN.key, JSON.stringify(AN.data));
+AN.load = () => { try { AN.data = JSON.parse(localStorage.getItem(AN.key)) || AN.data; } catch(e){} };
+
+/* ---------- undo / redo ----------
+   Every mutation is pushed as a reversible op. Ctrl+Z walks back, Ctrl+Y forward.
+   Typing inside a note box is NOT captured here — the browser's own textarea
+   undo handles that, which is what you expect while typing.                  */
+AN.undoStack = []; AN.redoStack = [];
+AN.push = op => { AN.undoStack.push(op); if (AN.undoStack.length > 100) AN.undoStack.shift();
+                  AN.redoStack.length = 0; AN.refreshUndo(); };
+AN.refreshUndo = () => {
+  const b = document.getElementById('btn-undo');
+  if (b) { b.disabled = !AN.undoStack.length;
+           b.title = AN.undoStack.length ? 'Undo: ' + AN.undoStack[AN.undoStack.length-1].label : 'Nothing to undo'; }
+};
+
+AN.spanFor = id => [...document.querySelectorAll('.hl')].find(s => s.dataset.id === id);
+
+AN.paintHl = h => {
+  const scope = document.querySelectorAll('.note-part')[h.page - 1] || document.body;
+  const walk = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walk.nextNode())) {
+    if (node.parentElement.closest('.hl, #annot-bar, #annot-out, #annot-fab, script, style')) continue;
+    const i = node.nodeValue.indexOf(h.text);
+    if (i === -1) continue;
+    const r = document.createRange();
+    r.setStart(node, i); r.setEnd(node, i + h.text.length);
+    const s = document.createElement('span');
+    s.className = 'hl hl-' + h.c; s.dataset.id = h.id;
+    try { r.surroundContents(s); } catch (e) {}
+    return;
+  }
+};
+AN.removeHl = h => {
+  const s = AN.spanFor(h.id); if (s) s.replaceWith(...s.childNodes);
+  AN.data.highlights = AN.data.highlights.filter(x => x.id !== h.id);
+};
+AN.restoreHl = h => {
+  if (!AN.data.highlights.some(x => x.id === h.id)) AN.data.highlights.push(h);
+  AN.paintHl(h);
+};
+AN.removeNote = n => {
+  const b = document.querySelector('.note-box[data-id="' + n.id + '"]'); if (b) b.remove();
+  AN.data.notes = AN.data.notes.filter(x => x.id !== n.id);
+};
+AN.restoreNote = n => {
+  if (!AN.data.notes.some(x => x.id === n.id)) AN.data.notes.push(n);
+  AN.makeNote(n);
+};
+
+AN.apply = (op, dir) => {          /* dir = 'undo' | 'redo' */
+  const undoing = dir === 'undo';
+  switch (op.type) {
+    case 'hl-add': undoing ? AN.removeHl(op.h) : AN.restoreHl(op.h); break;
+    case 'hl-del': undoing ? AN.restoreHl(op.h) : AN.removeHl(op.h); break;
+    case 'note-add': undoing ? AN.removeNote(op.n) : AN.restoreNote(op.n); break;
+    case 'note-del': undoing ? AN.restoreNote(op.n) : AN.removeNote(op.n); break;
+    case 'note-move': {
+      const to = undoing ? op.from : op.to;
+      const n = AN.data.notes.find(x => x.id === op.id);
+      if (n) { n.x = to.x; n.y = to.y;
+               const box = document.querySelector('.note-box[data-id="' + op.id + '"]');
+               if (box) { box.style.left = to.x + 'px'; box.style.top = to.y + 'px'; } }
+      break;
+    }
+  }
+  AN.save();
+};
+
+AN.undo = () => { const op = AN.undoStack.pop(); if (!op) return;
+                  AN.apply(op, 'undo'); AN.redoStack.push(op); AN.refreshUndo(); };
+AN.redo = () => { const op = AN.redoStack.pop(); if (!op) return;
+                  AN.apply(op, 'redo'); AN.undoStack.push(op); AN.refreshUndo(); };
+
+document.addEventListener('keydown', e => {
+  const typing = /^(TEXTAREA|INPUT)$/.test(e.target.tagName);
+  if (typing) return;                      /* let the browser undo your typing */
+  const k = e.key.toLowerCase();
+  if ((e.ctrlKey || e.metaKey) && k === 'z' && !e.shiftKey) { e.preventDefault(); AN.undo(); }
+  else if ((e.ctrlKey || e.metaKey) && (k === 'y' || (k === 'z' && e.shiftKey))) { e.preventDefault(); AN.redo(); }
+});
+
+/* ---------- which section / page is a node in ---------- */
+AN.locate = node => {
+  let el = node.nodeType === 3 ? node.parentElement : node;
+  const page = el.closest('.note-part');
+  const pages = [...document.querySelectorAll('.note-part')];
+  let sec = '';
+  let h = el.closest('.note-part') ? el.closest('.note-part').querySelector('h2[id]') : null;
+  /* nearest preceding h2 in document order */
+  const heads = [...document.querySelectorAll('h2[id]')];
+  for (const hh of heads) {
+    if (hh.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) sec = hh.id;
+  }
+  return { page: pages.indexOf(page) + 1, sec: sec || '—' };
+};
+
+/* ---------- toolbar ---------- */
+const swWrap = document.getElementById('sw');
+AN.colours.forEach((c,i) => {
+  const d = document.createElement('div');
+  d.className = 'sw' + (i === 0 ? ' on' : '');
+  d.style.background = c;
+  d.title = 'Highlighter ' + (i+1);
+  d.onclick = () => {
+    AN.pen = i+1; AN.erase = false;
+    document.getElementById('btn-erase').classList.remove('on');
+    [...swWrap.children].forEach(s => s.classList.remove('on'));
+    d.classList.add('on');
+  };
+  swWrap.appendChild(d);
+});
+
+document.getElementById('btn-erase').onclick = function () {
+  AN.erase = !AN.erase; this.classList.toggle('on', AN.erase);
+};
+
+document.getElementById('btn-undo').onclick = () => AN.undo();
+
+// Change only the button's trailing text node, so its SVG icon survives.
+AN.setLabel = (btn, txt) => {
+  const last = btn.childNodes[btn.childNodes.length - 1];
+  if (last && last.nodeType === 3) last.nodeValue = txt; else btn.appendChild(document.createTextNode(txt));
+};
+
+/* ---------- highlight on selection ---------- */
+document.addEventListener('mouseup', () => {
+  if (AN.erase) return;
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed) return;
+  const r = sel.getRangeAt(0);
+  if (!r.commonAncestorContainer.parentElement?.closest('.note-part')) return;
+  const text = sel.toString().trim();
+  if (text.length < 2) return;
+  const span = document.createElement('span');
+  span.className = 'hl hl-' + AN.pen;
+  try { r.surroundContents(span); } catch (e) { return; }   /* crosses element boundary — skip */
+  const loc = AN.locate(span);
+  span.dataset.id = Date.now() + '-' + Math.floor(performance.now());
+  const rec = { id: span.dataset.id, c: AN.pen, text, sec: loc.sec, page: loc.page };
+  AN.data.highlights.push(rec);
+  AN.push({ type: 'hl-add', h: rec, label: 'highlight' });
+  AN.save(); sel.removeAllRanges();
+});
+
+/* ---------- eraser ---------- */
+document.addEventListener('click', e => {
+  if (!AN.erase) return;
+  const h = e.target.closest('.hl');
+  if (!h) return;
+  const rec = AN.data.highlights.find(x => x.id === h.dataset.id);
+  AN.data.highlights = AN.data.highlights.filter(x => x.id !== h.dataset.id);
+  h.replaceWith(...h.childNodes);
+  if (rec) AN.push({ type: 'hl-del', h: rec, label: 'erase' });
+  AN.save();
+});
+
+/* ---------- note boxes ---------- */
+AN.makeNote = (n) => {
+  const page = document.querySelectorAll('.note-part')[n.page - 1];
+  if (!page) return;
+  if (getComputedStyle(page).position === 'static') page.style.position = 'relative';
+  const box = document.createElement('div');
+  box.className = 'note-box';
+  box.dataset.id = n.id;
+  box.style.left = n.x + 'px'; box.style.top = n.y + 'px';
+  box.innerHTML = '<div class="nb-head"><span>MY NOTE &mdash; ' + (n.sec || '') + '</span><span class="nb-del">&times;</span></div><textarea placeholder="Type your note…"></textarea>';
+  const ta = box.querySelector('textarea');
+  ta.value = n.text || '';
+  ta.oninput = () => { n.text = ta.value; AN.save(); };
+  box.querySelector('.nb-del').onclick = () => {
+    AN.data.notes = AN.data.notes.filter(x => x.id !== n.id); box.remove();
+    AN.push({ type: 'note-del', n: n, label: 'delete note' });
+    AN.save();
+  };
+  /* drag by header */
+  const head = box.querySelector('.nb-head');
+  head.onmousedown = ev => {
+    ev.preventDefault();
+    const ox = ev.clientX - box.offsetLeft, oy = ev.clientY - box.offsetTop;
+    const from = { x: n.x, y: n.y };
+    const mv = e2 => { box.style.left = (e2.clientX - ox) + 'px'; box.style.top = (e2.clientY - oy) + 'px'; };
+    const up = () => {
+      document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', up);
+      n.x = box.offsetLeft; n.y = box.offsetTop;
+      if (from.x !== n.x || from.y !== n.y)
+        AN.push({ type: 'note-move', id: n.id, from: from, to: { x: n.x, y: n.y }, label: 'move note' });
+      AN.save();
+    };
+    document.addEventListener('mousemove', mv); document.addEventListener('mouseup', up);
+  };
+  page.appendChild(box);
+};
+
+document.getElementById('btn-note').onclick = function () {
+  this.classList.add('on'); AN.setLabel(this, 'Click where it goes…');
+  const place = e => {
+    const page = e.target.closest('.note-part');
+    if (!page) return;
+    e.preventDefault();
+    const r = page.getBoundingClientRect();
+    const n = { id: 'n' + Date.now(), page: [...document.querySelectorAll('.note-part')].indexOf(page) + 1,
+                x: Math.round(e.clientX - r.left), y: Math.round(e.clientY - r.top),
+                sec: AN.locate(e.target).sec, text: '' };
+    AN.data.notes.push(n); AN.makeNote(n);
+    AN.push({ type: 'note-add', n: n, label: 'add note' });
+    AN.save();
+    document.removeEventListener('click', place, true);
+    this.classList.remove('on'); AN.setLabel(this, 'Add note box');
+  };
+  setTimeout(() => document.addEventListener('click', place, true), 10);
+};
+
+/* ---------- export ---------- */
+document.getElementById('btn-export').onclick = () => {
+  const byColour = {};
+  AN.data.highlights.forEach(h => { (byColour[h.c] = byColour[h.c] || []).push(h); });
+  let out = '## Annotations for version 2\n\n';
+  out += '### Highlights (' + AN.data.highlights.length + ')\n\n';
+  Object.keys(byColour).sort().forEach(c => {
+    out += '**Colour ' + c + '**\n';
+    byColour[c].forEach(h => { out += '- [' + h.sec + ', section ' + h.page + '] "' + h.text + '"\n'; });
+    out += '\n';
+  });
+  out += '### My notes (' + AN.data.notes.length + ')\n\n';
+  AN.data.notes.forEach(n => {
+    if (n.text.trim()) out += '- [' + n.sec + ', section ' + n.page + '] ' + n.text.trim().replace(/\n/g,' ') + '\n';
+  });
+  if (!AN.data.highlights.length && !AN.data.notes.length) out += '_(nothing yet)_\n';
+  document.getElementById('out-text').value = out;
+  document.getElementById('annot-out').style.display = 'flex';
+};
+
+/* ---------- restore on load ---------- */
+AN.load();
+AN.data.notes.forEach(AN.makeNote);
+AN.data.highlights.forEach(AN.paintHl);
+AN.refreshUndo();
+
+/* ---------- show / hide the toolbar ---------- */
+AN.togglePanel = (force) => {
+  const bar = document.getElementById('annot-bar'), fab = document.getElementById('annot-fab');
+  const open = force !== undefined ? force : !bar.classList.contains('open');
+  bar.classList.toggle('open', open); fab.classList.toggle('open', open);
+  fab.title = open ? 'Hide tools' : 'Highlighter & notes';
+  if (!open) { AN.erase = false; document.getElementById('btn-erase').classList.remove('on'); }
+};
+document.getElementById('annot-fab').onclick = () => AN.togglePanel();
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') AN.togglePanel(false);
+});
+AN.refreshUndo();
+</script>
+
+<footer class="portfolio-footer"><p>Published as a portfolio learning artifact. The original source links and evidence boundaries are preserved in the guide. <a href="/blog.html">More working notes</a>.</p></footer></body>
+</html>

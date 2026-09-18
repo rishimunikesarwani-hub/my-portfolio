@@ -57,6 +57,8 @@ Section `type` can be:
 - `note` — a paragraph block with a cyan left rule, for the punchline
 - `figure` — one or more architecture diagrams
 
+`code` renders a syntax-preserved code block from a single string. `compare` renders side-by-side comparison cards with `label`, `title`, `summary`, `items` and optional `tone` fields.
+
 ### Adding a blog post
 
 Posts live in `posts` in `data.js`, next to `items`. Copy an entry, change the

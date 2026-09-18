@@ -2,7 +2,7 @@
 
 > Agentic AI Product Manager. Greater Noida, India · Open to Remote.
 
-**The sales guy who builds.**
+**Self-taught in everything, mentored by curiosity.**
 
 I build agentic AI products and design the point where they stop deciding. Six shipped — grounded retrieval, evaluation suites, human-approval gates — with twenty more in build. Nine years owning B2B revenue taught me the part most AI teams skip: what it actually costs when the system is wrong.
 
@@ -31,7 +31,14 @@ Software I build to make my own work better, and kept. Each entry says plainly w
 - [What Is Hot? — A Newspaper With No Buttons](https://rishi-ships-every-day.vercel.app/breakdown.html?id=what-is-hot) — Shipped. The cheapest agent call is the one you designed out. A daily broadsheet of what is actually hot across 16 tech sources, scraped without a model, sub-edited by a single Claude call, and rendered as print — no buttons, no spinners, no chat box. The design question was never how to make the AI better. It was how little AI the thing needed.
 - [TabLink — A Tablet That Dials Its Own Loopback](https://rishi-ships-every-day.vercel.app/breakdown.html?id=tablink) — Shipped. The safest port is the one that was never listening. Open, edit and save the files on a Windows PC from an Android tablet, over the USB-C cable and nothing else. No wifi, no cloud, no copies. The tablet connects to 127.0.0.1 — its own loopback address — and lands on the desktop's disk.
 - [This Site — One Object, No Build Step](https://rishi-ships-every-day.vercel.app/breakdown.html?id=portfolio-site) — Shipped. Every page you are reading renders from a single JavaScript object. The site you are on. No framework, no bundler, no build step, no deploy pipeline — five HTML shells and one data file. Every page, card, filter, search result and detail view is generated from one object, so content is edited in exactly one place and can never disagree with itself.
+- [SignalWise — Evidence Before Opinion](https://rishi-ships-every-day.vercel.app/breakdown.html?id=signalwise-mvp) — Designed, not built. A CSV does not become a recommendation until it passes a gate. A docs-first MVP for turning safe CSV uploads into auditable evidence and product recommendations. The public package fixes the workflow, agent boundaries, registries, protocol contracts and security before implementation. The architecture is shipped; the runtime is not claimed as built yet.
 - [A six-role firm that argues, then stops](https://rishi-ships-every-day.vercel.app/breakdown.html?id=strategy-room) — Designed, not built. Seven decisions, one reversal, and a room that stops talking when it runs out of things to say. An agentic co-strategy team: six specialist roles plus an Engagement Lead, running as a group-chat boardroom rather than a pipeline. Every architectural decision is locked and logged, including the one that was made and reversed on the same day. No code yet.
+
+### Tools Breakdown
+
+Tools deconstructed to reveal the product strategy, agent architecture and business model beneath the interface.
+
+- [Mission Control HQ — What They're Actually Selling](https://rishi-ships-every-day.vercel.app/breakdown.html?id=mission-control-hq) — Breakdown. The AI turned out to be the least interesting part. An AI agent product for solo founders that runs no models of its own — you connect the ChatGPT or Claude plan you already pay for. What's being sold isn't intelligence. It's coordination. Four decisions make it work, and every one of them costs something.
 
 ### Agents I've Built
 
@@ -43,16 +50,18 @@ Grounded retrieval, anti-fabrication guardrails, evaluation suites, and human-ap
 - [Investor Research & Outreach Agent](https://rishi-ships-every-day.vercel.app/breakdown.html?id=investor-agent) — Pre-deployment. Human-in-the-loop by design, not by patch. A two-agent pipeline that turns a pitch deck into qualified, personalised investor outreach. The product judgement is not in the drafting. It is in the routing: the fit score decides how much autonomy the system gets.
 - [AI Evaluation Framework](https://rishi-ships-every-day.vercel.app/breakdown.html?id=eval-framework) — In build. A plausible citation and a real one look identical to a judge. Standalone eval methodology built for The Job Qualifier: golden-set construction, LLM-as-judge design with its failure modes mapped, and a deterministic guard against fabricated citations that a rubric-judge would pass on plausibility alone.
 
-### Product cases
+### Case studies
 
-A shipped AI product taken apart from its own source rather than from its marketing — what it actually does, what it charges for, and where the cost really sits. The product-sense exercises that used to live here are now on the blog, where they read as thinking rather than as shipped work.
+AI product case studies that stress-test a real product challenge — how a system creates value, where it fails, and which design decision changes the outcome.
 
-- [Mission Control HQ — What They're Actually Selling](https://rishi-ships-every-day.vercel.app/breakdown.html?id=mission-control-hq) — Breakdown. The AI turned out to be the least interesting part. An AI agent product for solo founders that runs no models of its own — you connect the ChatGPT or Claude plan you already pay for. What's being sold isn't intelligence. It's coordination. Four decisions make it work, and every one of them costs something.
+- [The Loan Decision Is Not a Chatbot Problem](https://rishi-ships-every-day.vercel.app/breakdown.html?id=agentic-loan-processing) — Architecture case study. The agents can make a loan file ready. They should not make a consequential decision opaque. A plain-language, product-led adaptation of an agentic loan-processing case study: specialist agents collect evidence, verify credit and policy conditions, assess risk, and build a reviewable decision packet. The architecture is the lesson; no bank implementation is being claimed.
 
 ## Writing
 
-- [AI Agents Need Control Systems, Not Just Better Prompts](https://rishi-ships-every-day.vercel.app/post.html?id=ai-agents-need-control-systems) — 2026-08-31. A PM note on what turns an agent from a demo into a product: cost limits, threat checks, compliance gates, evals, and traces that prove where the system failed.
-- [LangSmith Is the PM Control Room for AI Products](https://rishi-ships-every-day.vercel.app/post.html?id=langsmith-is-the-pm-control-room) — 2026-08-31. A PM-readable note on why AI observability matters: traces explain failures, metrics expose cost and latency, and eval datasets stop teams from shipping regressions.
+- [The AWS Agentic AI Decisions an AI PM Should Be Able to Defend](https://rishi-ships-every-day.vercel.app/post.html?id=aws-agentic-ai-pm-decision-guide) — 2026-09-18. A full, source-linked decision guide for reviewing enterprise RAG and agent systems on AWS: architecture boundaries, governance, observability, failure diagnosis, and the questions a product manager should ask.
+- [The Future of UI Is Designing It for Observability](https://rishi-ships-every-day.vercel.app/post.html?id=the-enterprise-interface-is-becoming-an-agent) — 2026-09-13. Voice is the first visible use case, but the deeper shift is enterprise software becoming callable through agents inside a context layer. The UI is changing from navigation to observability.
+- [AI Agents Will Do the Work. Who Defines the Work?](https://rishi-ships-every-day.vercel.app/post.html?id=the-work-before-the-agent) — 2026-09-01. A story-led reflection on persistent AI coworkers, ambition, trusted decisions, and why the PM must define the work before the agent can do it.
+- [AI Agents Need Control Systems, Not Just Better Prompts](https://rishi-ships-every-day.vercel.app/post.html?id=ai-agents-need-control-systems) — 2026-08-31. A production agent is a closed-loop system: it senses input, checks policy, reasons over context, acts through tools, records evidence, and improves against measured failures.
 - [NesGPT & the Nescafé Content Engine](https://rishi-ships-every-day.vercel.app/post.html?id=nestle-nesgpt) — 2026-08-05. A private ChatGPT for 30,000 employees cut campaign production time 60% across 15 markets — and produced content that was technically correct and culturally flat. Not a model problem. A decision-rights problem.
 - [Lilli, and the Death of Hourly Billing](https://rishi-ships-every-day.vercel.app/post.html?id=mckinsey-lilli) — 2026-08-04. An internal AI that searches 100,000 documents in seconds turned two days of research into two hours. Everyone read that as a workforce crisis. It is a business model crisis that shows up first as a workforce question.
 - [AI-Led Operations & the Human Delivery Manager](https://rishi-ships-every-day.vercel.app/post.html?id=zomato-ops) — 2026-08-03. 50 million decisions a day. During a heat wave the AI optimised for speed and cost and routed riders into unsafe conditions. The AI was not wrong — its objective function simply had no safety constraint in it.

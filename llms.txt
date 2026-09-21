@@ -58,7 +58,7 @@ AI product case studies that stress-test a real product challenge — how a syst
 
 ## Writing
 
-- [The Model Is Not the AI Product. The Decision System Is.](https://rishi-ships-every-day.vercel.app/post.html?id=the-model-is-not-the-ai-product) — 2026-09-21. Choosing a model is only the visible part of building an AI product. The harder work is designing the decisions, measurements, controls, and ownership around it.
+- [Connecting AI/ML Knowledge to Product Management Craft](https://rishi-ships-every-day.vercel.app/the-model-is-not-the-ai-product.html) — 2026-09-21. My complete field guide to discovering worthwhile AI opportunities, measuring value, running experiments, operating models with MLOps, and building responsibly.
 - [The AWS Agentic AI Decisions an AI PM Should Be Able to Defend](https://rishi-ships-every-day.vercel.app/post.html?id=aws-agentic-ai-pm-decision-guide) — 2026-09-18. A full, source-linked decision guide for reviewing enterprise RAG and agent systems on AWS: architecture boundaries, governance, observability, failure diagnosis, and the questions a product manager should ask.
 - [The Future of UI Is Designing It for Observability](https://rishi-ships-every-day.vercel.app/post.html?id=the-enterprise-interface-is-becoming-an-agent) — 2026-09-13. Voice is the first visible use case, but the deeper shift is enterprise software becoming callable through agents inside a context layer. The UI is changing from navigation to observability.
 - [AI Agents Will Do the Work. Who Defines the Work?](https://rishi-ships-every-day.vercel.app/post.html?id=the-work-before-the-agent) — 2026-09-01. A story-led reflection on persistent AI coworkers, ambition, trusted decisions, and why the PM must define the work before the agent can do it.

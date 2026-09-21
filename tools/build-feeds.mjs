@@ -37,6 +37,7 @@ const posts = P.posts.filter((x) => !x.draft)
   .sort((a, b) => (a.date < b.date ? 1 : -1));
 
 const rfc822 = (d) => new Date(d + 'T09:00:00Z').toUTCString();
+const postUrl = (p) => `${SITE}/${p.href || `post.html?id=${p.id}`}`;
 
 /* ---------- feed.xml ------------------------------------------------ */
 const rss =
@@ -53,8 +54,8 @@ const rss =
     <lastBuildDate>${rfc822(posts[0].date)}</lastBuildDate>
 ${posts.map((p) => `    <item>
       <title>${esc(p.title)}</title>
-      <link>${SITE}/post.html?id=${esc(p.id)}</link>
-      <guid isPermaLink="true">${SITE}/post.html?id=${esc(p.id)}</guid>
+      <link>${esc(postUrl(p))}</link>
+      <guid isPermaLink="true">${esc(postUrl(p))}</guid>
       <pubDate>${rfc822(p.date)}</pubDate>
       <description>${esc(strip(p.summary))}</description>
 ${(p.tags || []).map((t) => `      <category>${esc(t)}</category>`).join('\n')}
@@ -69,7 +70,7 @@ const pages = ['index.html', 'work.html', 'blog.html', 'about.html', 'contact.ht
 const urls = [
   ...pages.map((f) => `${SITE}/${f}`),
   ...P.items.map((i) => `${SITE}/breakdown.html?id=${i.id}`),
-  ...posts.map((p) => `${SITE}/post.html?id=${p.id}`)
+  ...posts.map(postUrl)
 ];
 writeFileSync(join(root, 'sitemap.xml'),
 `<?xml version="1.0" encoding="UTF-8"?>
@@ -112,7 +113,7 @@ ${P.categories.map((c) => `### ${c.name}\n\n${strip(c.blurb)}\n\n${
 
 ## Writing
 
-${posts.map((p) => `- [${p.title}](${SITE}/post.html?id=${p.id}) — ${p.date}. ${strip(p.summary)}`).join('\n')}
+${posts.map((p) => `- [${p.title}](${postUrl(p)}) — ${p.date}. ${strip(p.summary)}`).join('\n')}
 
 ## Experience
 

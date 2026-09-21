@@ -949,6 +949,10 @@
     return allPosts().filter(function (p) { return p.id === id; })[0] || null;
   }
 
+  function postHref(p) {
+    return p.href || ("post.html?id=" + encodeURIComponent(p.id));
+  }
+
   /* "12 August 2026". Returns "" rather than "Invalid Date" on a bad date. */
   function postDate(iso) {
     if (!iso) return "";
@@ -961,6 +965,7 @@
 
   /* Rough reading time from the words actually rendered. */
   function postMinutes(p) {
+    if (Number.isFinite(p.minutes) && p.minutes > 0) return p.minutes;
     var words = (p.sections || []).reduce(function (n, s) {
       var text;
       if (s.type === "table")       text = s.head.join(" ") + " " + s.body.map(function (r) { return r.join(" "); }).join(" ");
@@ -975,7 +980,7 @@
 
   function postCard(p) {
     return '<li class="post-item reveal">' +
-      '<a class="post-link" href="post.html?id=' + encodeURIComponent(p.id) + '">' +
+      '<a class="post-link" href="' + esc(postHref(p)) + '">' +
         '<div class="post-meta">' +
           '<span>' + esc(postDate(p.date)) + '</span>' +
           '<span class="sep" aria-hidden="true">/</span>' +
@@ -1073,6 +1078,11 @@
       return;
     }
 
+    if (p.href) {
+      window.location.replace(p.href);
+      return;
+    }
+
     document.title = p.title + " — Blog — " + P.person.name;
     buildCrumbs([{ label: "Blog", href: "blog.html" }, { label: p.title }]);
 
@@ -1123,12 +1133,12 @@
         ((newer || older)
           ? '<nav class="post-nav" aria-label="More posts">' +
               (older
-                ? '<a class="post-nav-link" href="post.html?id=' + encodeURIComponent(older.id) + '">' +
+                ? '<a class="post-nav-link" href="' + esc(postHref(older)) + '">' +
                     '<span class="post-nav-dir">Older</span>' +
                     '<span class="post-nav-title">' + esc(older.title) + '</span></a>'
                 : '<span></span>') +
               (newer
-                ? '<a class="post-nav-link align-right" href="post.html?id=' + encodeURIComponent(newer.id) + '">' +
+                ? '<a class="post-nav-link align-right" href="' + esc(postHref(newer)) + '">' +
                     '<span class="post-nav-dir">Newer</span>' +
                     '<span class="post-nav-title">' + esc(newer.title) + '</span></a>'
                 : '<span></span>') +
@@ -1346,7 +1356,7 @@
         return (s.h || "") + " " + b;
       }).join(" ");
       idx.push({ kind: "Blog", title: p.title, blurb: p.summary,
-                 href: "post.html?id=" + encodeURIComponent(p.id),
+                 href: postHref(p),
                  text: [p.title, p.summary, (p.tags || []).join(" "), body].join(" ").replace(/<[^>]+>/g, " ") });
     });
 

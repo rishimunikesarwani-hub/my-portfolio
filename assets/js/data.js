@@ -1738,66 +1738,15 @@ window.PORTFOLIO = {
       id: "the-model-is-not-the-ai-product",
       date: "2026-09-21",
       draft: false,
-      title: "The Model Is Not the AI Product. The Decision System Is.",
-      heroEyebrow: "Product note / AI systems",
-      heroThesis: "A model creates possibilities. The product decides when those possibilities are useful, safe, and worth trusting.",
+      href: "the-model-is-not-the-ai-product.html",
+      minutes: 27,
+      title: "Connecting AI/ML Knowledge to Product Management Craft",
+      heroEyebrow: "Field guide / AI product management",
+      heroThesis: "The model is one component. Product craft connects opportunity, value, operations, and responsibility.",
       summary:
-        "Choosing a model is only the visible part of building an AI product. The harder work is designing the decisions, measurements, controls, and ownership around it.",
+        "My complete field guide to discovering worthwhile AI opportunities, measuring value, running experiments, operating models with MLOps, and building responsibly.",
       tags: ["AI products", "AI PM", "MLOps", "Evals", "Responsible AI"],
-      sections: [
-        {
-          h: "The demo is the easy part",
-          type: "prose",
-          body: [
-            "I used to judge an AI product by the moment it produced an impressive answer. If the demo looked intelligent, the product felt close.",
-            "I was looking at the most visible layer and missing the harder one. A model can classify, predict, rank, generate, or recommend. But it does not decide which customer problem deserves attention, what a useful result means, when an error becomes expensive, or who takes responsibility when the system is wrong.",
-            "That is product work. The model creates a capability. The surrounding decision system turns that capability into something people can rely on."
-          ]
-        },
-        {
-          h: "Start with the decision, not the feature",
-          type: "prose",
-          body: [
-            "The weakest starting question is: <em>Where can we add AI?</em> It encourages a solution to go hunting for a problem. A better question is: <strong>Which repeated decision is currently slow, inconsistent, expensive, or impossible to make well?</strong>",
-            "That framing forces clarity. Who is making the decision? What information do they have? What is missing? What happens when they are wrong? Only then should the team ask whether prediction, generation, ranking, or automation can improve the outcome.",
-            "It also gives the team a baseline. If a person, rule, search box, or existing workflow already performs the job, the AI system must beat that alternative on something users or the business actually value."
-          ]
-        },
-        {
-          h: "A better model can still make a worse product",
-          type: "prose",
-          body: [
-            "Technical metrics tell us whether the system performs its computational task. Product metrics tell us whether that performance changes behaviour or creates value. The two are connected, but they are not interchangeable.",
-            "A support classifier can become more accurate while sending the most costly cases to the wrong queue. A recommendation system can earn more clicks while reducing long-term trust. A writing assistant can sound fluent while making review slower because people must verify every confident sentence.",
-            "So I would not approve an AI feature with one success number. I would want model quality, product outcome, and error cost on the same scorecard. Average performance can hide the exact failure that matters most."
-          ]
-        },
-        {
-          h: "Deployment is the middle, not the finish",
-          type: "prose",
-          body: [
-            "AI products change after launch even when nobody edits the interface. User behaviour shifts. Data changes. Providers update models. Prompts, retrieval sources, thresholds, and policies evolve. A result that looked reliable during evaluation can quietly become weaker in production.",
-            "This makes operations part of the product design. The team needs versioning, live monitoring, sampled review, feedback capture, safe rollback, and a clear trigger for retraining or replacement. A launch plan without these controls is only a release plan.",
-            "For an AI PM, the useful question is not just <em>Did we ship?</em> It is <em>Can we detect when the system should no longer be trusted?</em>"
-          ]
-        },
-        {
-          h: "Responsible AI is product architecture",
-          type: "prose",
-          body: [
-            "Fairness, privacy, explanation, and human review cannot be a policy page attached at the end. They change which data may be used, what the interface must reveal, where automation must stop, and how a person can challenge an outcome.",
-            "This is where ownership becomes concrete. Name the decisions the system may make, the decisions it may only recommend, the evidence a reviewer can inspect, and the route for redress when a user is harmed. These are not compliance decorations. They are product requirements."
-          ]
-        },
-        {
-          h: "The operating contract",
-          type: "note",
-          body: [
-            "Before building, define the decision, the baseline, the valuable outcome, the unacceptable error, and the human owner. Before launching, define the evaluation, monitoring, intervention, and rollback path. After launching, learn from real failures instead of protecting the original plan.",
-            "<strong>An AI feature becomes a product only when its mistakes have an owner.</strong>"
-          ]
-        }
-      ]
+      sections: []
     },
     {
       id: "the-enterprise-interface-is-becoming-an-agent",

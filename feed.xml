@@ -8,7 +8,19 @@
     <language>en</language>
     <copyright>© 2026 Rishi Muni Kesarwani. All rights reserved. Read it, quote it, cite it — with attribution and a link back. Do not republish it whole, and do not train a model on it without asking first.</copyright>
     <managingEditor>rishi.rte@gmail.com (Rishi Muni Kesarwani)</managingEditor>
-    <lastBuildDate>Fri, 18 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 21 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <item>
+      <title>The Model Is Not the AI Product. The Decision System Is.</title>
+      <link>https://rishi-ships-every-day.vercel.app/post.html?id=the-model-is-not-the-ai-product</link>
+      <guid isPermaLink="true">https://rishi-ships-every-day.vercel.app/post.html?id=the-model-is-not-the-ai-product</guid>
+      <pubDate>Mon, 21 Sep 2026 09:00:00 GMT</pubDate>
+      <description>Choosing a model is only the visible part of building an AI product. The harder work is designing the decisions, measurements, controls, and ownership around it.</description>
+      <category>AI products</category>
+      <category>AI PM</category>
+      <category>MLOps</category>
+      <category>Evals</category>
+      <category>Responsible AI</category>
+    </item>
     <item>
       <title>The AWS Agentic AI Decisions an AI PM Should Be Able to Defend</title>
       <link>https://rishi-ships-every-day.vercel.app/post.html?id=aws-agentic-ai-pm-decision-guide</link>
